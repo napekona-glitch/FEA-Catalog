@@ -1,0 +1,297 @@
+/* Variables de couleur */
+:root {
+    --accent-500: #f5a623;
+    --accent-400: #ffd27a;
+    --accent-200: #fff3cf;
+    --gray-050: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-600: #6b7280;
+    --gray-700: #4b5563;
+    --gray-800: #374151;
+    --gray-900: #111827;
+    --accent: var(--accent-500);
+}
+
+/* Reset et styles de base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #fff;
+    color: var(--gray-900);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Structure de la page */
+.page {
+    height: 100vh;
+    padding: 1rem 2%;
+    position: relative;
+    overflow: auto;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* En-tête */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: relative;
+    z-index: 2;
+    margin: 0 0 1rem 0;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(47, 50, 58, 0.05);
+    border: 1px solid var(--gray-200);
+}
+
+.title-block h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--gray-900);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+/* Contenu principal */
+.content {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    flex: 1;
+    overflow: hidden;
+    padding-bottom: 1rem;
+}
+
+/* Cartes d'informations */
+.facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.8rem;
+    max-width: 100%;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    max-height: 100%;
+}
+
+.fact-card {
+    background: linear-gradient(135deg, #ffffff, #f9fafb);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--gray-200);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    height: fit-content;
+}
+
+.fact-card h3 {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-500);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.fact-card p,
+.fact-card li {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--gray-700);
+    font-size: 0.85rem;
+}
+
+/* Carte d'icône */
+.icon-card {
+    justify-self: center;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    max-height: 280px;
+    border-radius: 12px;
+    background: radial-gradient(circle at top left, #fff6dd, #ffe5b0 45%, #ffd27a 75%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(245, 166, 35, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(245, 166, 35, 0.2);
+}
+
+.icon-card i {
+    font-size: 4rem;
+    color: var(--gray-900);
+    position: relative;
+    z-index: 1;
+    opacity: 0.9;
+}
+
+/* Pied de page */
+.footer {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--gray-050);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    position: relative;
+    z-index: 2;
+    border: 1px solid var(--gray-200);
+}
+
+/* Liens */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent-500);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background: var(--accent-200);
+    border: 1px solid var(--accent-300);
+}
+
+.back-link:hover {
+    background: var(--accent-300);
+    transform: translateY(-1px);
+}
+
+/* Éléments de formulaire */
+button, input[type="submit"] {
+    background: var(--accent-500);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+    background: var(--accent-600);
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .icon-card {
+        max-width: 280px;
+        margin: 0 auto;
+    }
+    
+    .facts {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 1.5rem;
+    }
+
+    .header {
+        padding: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin: 1.5rem 0;
+    }
+
+    .icon-card {
+        width: 240px;
+        height: 240px;
+        margin: 0 auto;
+    }
+
+    .icon-card i {
+        font-size: 5rem;
+    }
+
+    .facts {
+        gap: 1.25rem;
+    }
+
+    .fact-card {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .facts {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .back-link {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fact-card {
+    animation: fadeIn 0.3s ease-out forwards;
+    opacity: 0;
+}
+
+/* Délais d'animation pour les cartes */
+.fact-card:nth-child(1) { animation-delay: 0.1s; }
+.fact-card:nth-child(2) { animation-delay: 0.2s; }
+.fact-card:nth-child(3) { animation-delay: 0.3s; }
+.fact-card:nth-child(4) { animation-delay: 0.4s; }
+.fact-card:nth-child(5) { animation-delay: 0.5s; }
+.fact-card:nth-child(6) { animation-delay: 0.6s; }
