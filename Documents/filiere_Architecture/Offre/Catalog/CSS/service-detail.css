@@ -312,7 +312,7 @@ body {
     background: var(--accent-400);
     border-radius: 50%;
     opacity: 0.3;
-    animation: float 15s linear infinite;
+    /* animation: float 15s linear infinite; */ /* Désactivé */
     bottom: -150px;
 }
 
@@ -320,24 +320,24 @@ body {
     left: 25%;
     width: 8px;
     height: 8px;
-    animation-delay: 0s;
-    animation-duration: 15s;
+    /* animation-delay: 0s; */ /* Désactivé */
+    /* animation-duration: 15s; */ /* Désactivé */
 }
 
 .shape-dot span:nth-child(2) {
     left: 50%;
     width: 10px;
     height: 10px;
-    animation-delay: 2s;
-    animation-duration: 18s;
+    /* animation-delay: 2s; */ /* Désactivé */
+    /* animation-duration: 18s; */ /* Désactivé */
 }
 
 .shape-dot span:nth-child(3) {
     left: 10%;
     width: 12px;
     height: 12px;
-    animation-delay: 4s;
-    animation-duration: 20s;
+    /* animation-delay: 4s; */ /* Désactivé */
+    /* animation-duration: 20s; */ /* Désactivé */
 }
 
 /* Icône flottante */
