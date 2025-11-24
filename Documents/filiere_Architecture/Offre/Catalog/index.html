@@ -595,11 +595,12 @@
         </div>
         <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: 260px; overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
             <div class="chatbot-message bot" style="margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; background: #fff; border: 1px solid var(--gray-200);">
-                Bonjour ! Je suis l'assistant du catalogue de services Architecture. Je peux vous aider à choisir une offre et à comprendre rapidement ce qu’elle couvre (bénéfices, livrables, durée et profils mobilisés).
-                Par exemple, vous pouvez demander :
-                - « Quels services peuvent m'aider sur le cloud ? »
-                - « Quelle offre traite de l'observabilité et du monitoring ? »
-                - « Où trouver des informations sur PCA/PRA et la continuité d'activité ? »
+                Bonjour ! Je suis votre assistant pour le catalogue Architecture. Je vous aide à choisir la bonne offre.
+                
+                Exemples :
+                - "Services cloud ?"
+                - "Observabilité ?"
+                - "PCA/PRA ?"
             </div>
         </div>
         <div class="chatbot-input" style="display: flex; padding: 10px; background: #fff; border-top: 1px solid var(--gray-200);">
@@ -796,107 +797,185 @@
                         }
                     ],
                     answer: "Pour l'industrialisation DevOps : <a href='ci-cd-industrialisation.html'>CI/CD & Industrialisation</a> (pipelines, automatisation). Pour la supervision : <a href='observabilite-monitoring.html'>Observabilité & Monitoring</a> (logs, métriques, traces).",
-                    examples: [
-                        "Comment mettre en place une chaîne CI/CD ?",
-                        "Quelle offre couvre l'observabilité ?",
-                        "Industrialiser mes déploiements",
-                        "Mettre en place du monitoring"
-                    ]
                 },
                 {
-                    id: 'security',
-                    title: "Sécurité & Continuité",
-                    category: 'Sécurité & Gouvernance',
-                    keywords: ['sécurité', 'zero trust', 'iam', 'identité', 'pca', 'pra', 'continuité', 'résilience', 'sauvegarde', 'disaster recovery'],
-                    description: "Sécurité des accès et continuité d'activité",
-                    offers: [
-                        {
-                            name: 'Zero Trust & IAM',
-                            link: 'zero-trust-iam.html',
-                            keywords: ['zero trust', 'iam', 'identités', 'accès']
-                        },
-                        {
-                            name: 'PCA/PRA & Continuité',
-                            link: 'pca-pra-continuite.html',
-                            keywords: ['pca', 'pra', 'continuité', 'résilience', 'reprise']
-                        }
-                    ],
-                    answer: "Sécurité : <a href='zero-trust-iam.html'>Zero Trust & IAM</a> (identités, accès). Continuité : <a href='pca-pra-continuite.html'>PCA/PRA & Continuité</a> (plans de continuité, tests de reprise).",
-                    examples: [
-                        "Quelle offre pour le Zero Trust ?",
-                        "Avez-vous une offre sur le PCA/PRA ?",
-                        "Sécuriser mes accès",
-                        "Continuité d'activité"
-                    ]
+                    title: "SD-WAN & SASE",
+                    keywords: ["sd-wan", "sase", "réseau", "sécurité", "connectivité"],
+                    description: "Architecture réseau SD-WAN et sécurité SASE",
+                    file: "sd-wan-sase.html",
+                    answer: "L'offre <strong>SD-WAN & SASE</strong> modernise votre architecture réseau avec SD-WAN et sécurité SASE. Durée : 1-2 mois. <a href='sd-wan-sase.html'>Voir la fiche détaillée</a>.",
+                    examples: ["Moderniser mon réseau", "SD-WAN", "Sécurité réseau", "SASE"]
                 },
                 {
-                    id: 'data-ai',
-                    title: "Data & IA",
-                    category: 'Data & IA',
-                    keywords: ['data', 'données', 'ia', 'mlops', 'rag', 'générative', 'génératif', 'intelligence artificielle', 'data mesh', 'machine learning', 'llm'],
-                    description: "Architecture data et industrialisation de l'IA",
-                    offers: [
-                        {
-                            name: 'Architecture Data Mesh',
-                            link: 'architecture-data-mesh.html',
-                            keywords: ['data mesh', 'architecture data', 'domaines']
-                        },
-                        {
-                            name: 'MLOps & IA industrielle',
-                            link: 'mlops-ia-industrielle.html',
-                            keywords: ['mlops', 'industrialisation ia', 'pipelines ml']
-                        },
-                        {
-                            name: 'RAG & IA générative responsable',
-                            link: 'rag-ia-generative-responsable.html',
-                            keywords: ['rag', 'ia générative', 'llm', 'responsable']
-                        }
-                    ],
-                    answer: "Data & IA : <a href='architecture-data-mesh.html'>Architecture Data Mesh</a> (data distribuée), <a href='mlops-ia-industrielle.html'>MLOps & IA industrielle</a> (industrialisation), <a href='rag-ia-generative-responsable.html'>RAG & IA générative</a> (IA avec sources internes).",
-                    examples: [
-                        "Quelle offre couvre le RAG ?",
-                        "Comment industrialiser mes modèles d'IA ?",
-                        "Mise en place Data Mesh",
-                        "IA générative responsable"
-                    ]
+                    title: "CI/CD & Industrialisation",
+                    keywords: ["cicd", "pipeline", "devops", "industrialisation", "automatisation"],
+                    description: "Pipelines CI/CD et industrialisation",
+                    file: "ci-cd-industrialisation.html",
+                    answer: "L'offre <strong>CI/CD & Industrialisation</strong> met en place vos pipelines CI/CD avec documentation et formation. Durée : 2-4 semaines. <a href='ci-cd-industrialisation.html'>Voir la fiche détaillée</a>.",
+                    examples: ["Mettre en place CI/CD", "Industrialiser mes développements", "Pipelines DevOps"]
                 },
                 {
-                    id: 'workplace',
-                    title: "Digital Workplace",
-                    category: 'Digital Workplace',
-                    keywords: ['digital workplace', 'workplace', 'collaborateur', 'm365', 'google workspace', 'office 365', 'collaboration', 'expérience employé'],
-                    description: "Modernisation de l'environnement de travail",
-                    deliverables: ['Schémas cibles workplace', 'Intégrations M365/Google'],
-                    profiles: ['Workplace Architect', 'IAM Engineer'],
-                    duration: '1-2 mois',
-                    kpis: ['Taux d adoption', 'Satisfaction utilisateurs'],
-                    answer: "L'offre <strong>Modernisation Digital Workplace</strong> transforme l'environnement utilisateur. Livrables : schémas cibles, intégrations M365/Google. Profils : Workplace Architect, IAM Engineer. <a href='modernisation-digital-workplace.html'>Voir la fiche détaillée</a>.",
-                    examples: [
-                        "Quelle offre pour moderniser mon Digital Workplace ?",
-                        "Avez-vous une offre autour de Microsoft 365 ?",
-                        "Moderniser collaboration",
-                        "Expérience employé"
-                    ]
+                    title: "Observabilité & Monitoring",
+                    keywords: ["observabilite", "monitoring", "logs", "metrics", "traces", "sre"],
+                    description: "Stack logs/metrics/traces et monitoring",
+                    file: "observabilite-monitoring.html",
+                    answer: "L'offre <strong>Observabilité & Monitoring</strong> déploie votre stack logs/metrics/traces avec dashboards et runbooks. Durée : 1-2 mois. <a href='observabilite-monitoring.html'>Voir la fiche détaillée</a>.",
+                    examples: ["Observer mes applications", "Monitoring", "Logs metrics traces", "SRE"]
                 },
                 {
-                    id: 'audit',
+                    title: "Zero Trust & IAM",
+                    keywords: ["zero trust", "iam", "sécurité", "identité", "accès"],
+                    description: "Modèle Zero Trust et gestion des identités",
+                    file: "zero-trust-iam.html",
+                    answer: "L'offre <strong>Zero Trust & IAM</strong> implémente votre modèle Zero Trust avec plan IAM et gouvernance des accès. Durée : 1-2 mois. <a href='zero-trust-iam.html'>Voir la fiche détaillée</a>.",
+                    examples: ["Zero Trust", "Gestion des identités", "IAM", "Sécurité des accès"]
+                },
+                {
+                    title: "PCA/PRA & Continuité",
+                    keywords: ["pca", "pra", "continuité", "disaster", "recovery", "pdc"],
+                    description: "Plans PCA/PRA et continuité d'activité",
+                    file: "pca-pra-continuite.html",
+                    answer: "L'offre <strong>PCA/PRA & Continuité</strong> établit vos plans PCA/PRA avec tests de reprise et runbooks. Durée : 1-2 mois. <a href='pca-pra-continuite.html'>Voir la fiche détaillée</a>.",
+                    examples: ["PCA/PRA", "Continuité d'activité", "Plan de reprise", "Disaster recovery"]
+                },
+                {
+                    title: "Architecture Data Mesh",
+                    keywords: ["data mesh", "data", "données", "architecture", "domaine"],
+                    description: "Architecture Data Mesh et gouvernance des données",
+                    file: "architecture-data-mesh.html",
+                    answer: "L'offre <strong>Architecture Data Mesh</strong> conçoit vos modèles data domain avec gouvernance data et POC. Durée : 2-3 mois. <a href='architecture-data-mesh.html'>Voir la fiche détaillée</a>.",
+                    examples: ["Data Mesh", "Architecture des données", "Gouvernance data", "Data domain"]
+                },
+                {
+                    title: "MLOps & IA Industrielle",
+                    keywords: ["mlops", "ia", "machine learning", "ai", "industrielle"],
+                    description: "Pipelines MLOps et IA industrielle",
+                    file: "mlops-ia-industrielle.html",
+                    answer: "L'offre <strong>MLOps & IA Industrielle</strong> déploie vos pipelines MLOps avec monitoring modèles et gouvernance IA. Durée : 1-2 mois. <a href='mlops-ia-industrielle.html'>Voir la fiche détaillée</a>.",
+                    examples: ["MLOps", "IA industrielle", "Machine learning", "Monitoring modèles"]
+                },
+                {
+                    title: "RAG & IA Générative Responsable",
+                    keywords: ["rag", "ia", "générative", "llm", "responsable"],
+                    description: "Architecture RAG et IA générative responsable",
+                    file: "rag-ia-generative-responsable.html",
+                    answer: "L'offre <strong>RAG & IA Générative Responsable</strong> construit votre architecture RAG avec intégration sources internes. Durée : 1-2 mois. <a href='rag-ia-generative-responsable.html'>Voir la fiche détaillée</a>.",
+                    examples: ["RAG", "IA générative", "LLM", "IA responsable"]
+                },
+                {
+                    title: "Modernisation Digital Workplace",
+                    keywords: ["workplace", "digital", "m365", "google", "collaboration"],
+                    description: "Modernisation du digital workplace",
+                    file: "modernisation-digital-workplace.html",
+                    answer: "L'offre <strong>Modernisation Digital Workplace</strong> définit vos schémas cibles workplace avec intégrations M365/Google. Durée : 1-2 mois. <a href='modernisation-digital-workplace.html'>Voir la fiche détaillée</a>.",
+                    examples: ["Moderniser mon workplace", "Digital workplace", "M365", "Google Workspace"]
+                },
+                {
                     title: "Audit de Qualité Logicielle",
-                    category: 'Qualité & Tests',
-                    keywords: ['audit', 'qualité', 'tests', 'dette technique', 'vulnérabilités', 'code review', 'performance'],
-                    description: "Audit et plan d'amélioration de la qualité logicielle",
-                    deliverables: ['Rapport d audit', 'Plan d action', 'Recommandations'],
-                    profiles: ['Expert Qualité Logicielle', 'DevOps'],
-                    duration: '2-4 semaines',
-                    kpis: ['Dette technique', 'Couverture tests', 'Vulnérabilités'],
-                    answer: "L'offre <strong>Audit de Qualité Logicielle</strong> évalue votre maturité logicielle. Livrables : rapport d'audit, plan d'action. Profils : Expert Qualité, DevOps. Durée : 2-4 semaines. <a href='audit-qualite-logicielle.html'>Voir la fiche détaillée</a>.",
-                    examples: [
-                        "Comment auditer mon code ?",
-                        "Réduire ma dette technique",
-                        "Améliorer qualité logicielle",
-                        "Audit de sécurité applicative"
-                    ]
+                    keywords: ["audit", "qualité", "logiciel", "code", "test", "dette"],
+                    description: "Audit de qualité logicielle et dette technique",
+                    file: "audit-qualite-logicielle.html",
+                    answer: "L'offre <strong>Audit de Qualité Logicielle</strong> évalue votre maturité logicielle. Livrables : rapport d'audit, plan d'action. Durée : 2-4 semaines. <a href='audit-qualite-logicielle.html'>Voir la fiche détaillée</a>.",
+                    examples: ["Auditer mon code", "Réduire ma dette technique", "Qualité logicielle", "Audit de sécurité applicative"]
                 }
             ];
+
+            // Fonction pour charger et indexer toutes les fiches HTML
+            async function loadAllSheets() {
+                const sheets = catalogueIndex.map(entry => entry.file);
+                const fullTextIndex = {};
+                
+                for (const sheet of sheets) {
+                    try {
+                        const response = await fetch(sheet);
+                        const html = await response.text();
+                        
+                        // Extraction du contenu textuel simple
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = html;
+                        
+                        // Récupérer le titre principal
+                        const title = tempDiv.querySelector('h1')?.textContent || '';
+                        
+                        // Récupérer la description famille
+                        const familyDesc = tempDiv.querySelector('.family-description')?.textContent || '';
+                        
+                        // Récupérer tous les textes pertinents
+                        const allText = tempDiv.textContent.toLowerCase();
+                        
+                        fullTextIndex[sheet] = {
+                            title: title,
+                            familyDescription: familyDesc,
+                            fullText: allText,
+                            url: sheet
+                        };
+                    } catch (error) {
+                        console.warn(`Impossible de charger ${sheet}:`, error);
+                    }
+                }
+                
+                return fullTextIndex;
+            }
+
+            // Recherche étendue dans toutes les fiches
+            async function searchInAllSheets(query) {
+                const sheetsIndex = await loadAllSheets();
+                const results = [];
+                const queryLower = query.toLowerCase();
+                
+                for (const [filename, content] of Object.entries(sheetsIndex)) {
+                    let score = 0;
+                    const matches = [];
+                    
+                    // Recherche dans le titre
+                    if (content.title.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                        matches.push(`Titre: ${content.title}`);
+                    }
+                    
+                    // Recherche dans la description famille
+                    if (content.familyDescription.toLowerCase().includes(queryLower)) {
+                        score += 5;
+                        matches.push(`Description: ${content.familyDescription.substring(0, 100)}...`);
+                    }
+                    
+                    // Recherche dans le texte complet
+                    if (content.fullText.includes(queryLower)) {
+                        score += 2;
+                        
+                        // Chercher des extraits pertinents
+                        const words = queryLower.split(' ');
+                        for (const word of words) {
+                            if (word.length > 2) {
+                                const index = content.fullText.indexOf(word);
+                                if (index !== -1) {
+                                    const start = Math.max(0, index - 50);
+                                    const end = Math.min(content.fullText.length, index + word.length + 50);
+                                    const excerpt = content.fullText.substring(start, end).trim();
+                                    if (excerpt.length > 20) {
+                                        matches.push(`...${excerpt}...`);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (score > 0) {
+                        const entry = catalogueIndex.find(e => e.file === filename);
+                        results.push({
+                            score: score,
+                            title: content.title,
+                            file: filename,
+                            matches: matches.slice(0, 3), // Limiter à 3 matches
+                            answer: entry ? entry.answer : `Consultez la fiche <a href='${filename}'>${content.title}</a> pour plus d'informations.`
+                        });
+                    }
+                }
+                
+                // Trier par score décroissant
+                results.sort((a, b) => b.score - a.score);
+                return results;
+            }
 
             async function getBotResponse(message) {
                 try {
@@ -905,10 +984,10 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': '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' // Remplacez avec votre clé API Groq
+                            'Authorization': 'Bearer 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' // Remplacez avec votre clé API Groq
                         },
                         body: JSON.stringify({
-                            model: 'mixtral-8x7b-32768', // ou 'llama2-70b-4096'
+                            model: 'llama-3.1-8b-instant', // modèle gratuit Groq
                             messages: [
                                 {
                                     role: 'system',
@@ -969,7 +1048,9 @@
                     });
 
                     if (!response.ok) {
-                        throw new Error('Erreur API Groq');
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('Détail erreur Groq:', response.status, errorData);
+                        throw new Error(`Erreur API Groq: ${response.status} - ${errorData.error?.message || 'Message inconnu'}`);
                     }
 
                     const data = await response.json();
@@ -983,12 +1064,12 @@
                 }
             }
 
-            function getBasicResponse(message) {
+            async function getBasicResponse(message) {
                 const m = message.toLowerCase();
 
                 // Salutations
                 if (m.includes('bonjour') || m.includes('salut') || m.includes('bonsoir')) {
-                    return "Bonjour ! Je suis l'assistant du catalogue de services Architecture. Je peux vous aider à choisir une offre et à comprendre rapidement ce qu'elle couvre (bénéfices, livrables, durée et profils mobilisés).";
+                    return "Bonjour ! Je suis votre assistant pour le catalogue Architecture. Je vous aide à choisir la bonne offre.";
                 }
 
                 // Questions sur les prix
@@ -996,7 +1077,33 @@
                     return "Les ordres de grandeur de prix et modèles économiques sont présentés dans la section 'Modèles économiques' du catalogue (TJM, packages). Pour un devis précis, utilisez le bouton 'Passez à l'action' en bas de page.";
                 }
 
-                // Recherche avancée dans l'index enrichi
+                // Recherche étendue dans toutes les fiches d'abord
+                try {
+                    const sheetResults = await searchInAllSheets(message);
+                    if (sheetResults.length > 0) {
+                        const bestResult = sheetResults[0];
+                        if (bestResult.score >= 5) { // Score élevé = bonne correspondance
+                            let response = bestResult.answer;
+                            if (bestResult.matches.length > 0) {
+                                response += `<br><br><small>🔍 Trouvé dans: ${bestResult.matches.join(', ')}</small>`;
+                            }
+                            return response;
+                        } else if (sheetResults.length > 1) {
+                            // Plusieurs résultats avec score moyen
+                            const topResults = sheetResults.slice(0, 3);
+                            let response = "J'ai trouvé plusieurs offres pertinentes:<br><br>";
+                            topResults.forEach((result, index) => {
+                                response += `${index + 1}. <strong>${result.title}</strong><br>`;
+                                response += `${result.answer}<br><br>`;
+                            });
+                            return response;
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Erreur recherche étendue:', error);
+                }
+
+                // Recherche avancée dans l'index enrichi (fallback)
                 let bestScore = 0;
                 let bestEntry = null;
 
