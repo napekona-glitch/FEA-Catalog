@@ -690,94 +690,349 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
-            // Index simple des offres du catalogue pour le chatbot
+            // Index enrichi des offres du catalogue pour le chatbot
             const catalogueIndex = [
                 {
                     id: 'urbanisation',
                     title: "Urbanisation SI",
-                    keywords: ['urbanisation', 'cartographie', 'rationalisation', 'paysage applicatif'],
-                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Vous pouvez consulter la fiche détaillée en cliquant sur <a href='urbanisation-si.html'>Urbanisation SI</a>.",
+                    category: 'Architecture',
+                    keywords: ['urbanisation', 'cartographie', 'rationalisation', 'paysage applicatif', 'architecture entreprise', 'transformation si', 'cartes', 'applications', 'redondances', 'roadmap'],
+                    description: "Cartographie complète du SI, identification des redondances, roadmap de transformation",
+                    deliverables: ['Cartographies complètes', 'Roadmaps de transformation', 'Diagnostic urbanisation'],
+                    profiles: ['Architecte d entreprise', 'Urbaniste SI'],
+                    duration: '1-2 mois',
+                    kpis: ['% couverture cartographique', '% redondances identifiées'],
+                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Livrables : cartographies complètes, roadmaps. Profils : Architecte d'entreprise, Urbaniste SI. Durée : 1-2 mois. <a href='urbanisation-si.html'>Voir la fiche détaillée</a>.",
                     examples: [
                         "Comment rationaliser mon SI ?",
-                        "Qu'est-ce que l'urbanisation du SI ?"
+                        "Qu'est-ce que l'urbanisation du SI ?",
+                        "J'ai trop d'applications redondantes",
+                        "Comment cartographier mon système d'information"
+                    ]
+                },
+                {
+                    id: 'microservices',
+                    title: "Monolithe → Microservices",
+                    category: 'Architecture',
+                    keywords: ['microservices', 'monolithe', 'architecture applicative', 'découpage', 'services', 'api', 'scalabilité', 'performance'],
+                    description: "Transformation d'architecture monolithique vers microservices",
+                    deliverables: ['HLD', 'Schémas microservices', 'Backlog technique'],
+                    profiles: ['Architecte Solution', 'Lead Tech'],
+                    duration: '2-3 mois',
+                    kpis: ['Vitesse de déploiement', 'Time-to-market'],
+                    answer: "L'offre <strong>Monolithe → Microservices</strong> modernise votre architecture applicative. Livrables : HLD, schémas microservices, backlog technique. Profils : Architecte Solution, Lead Tech. Durée : 2-3 mois. <a href='monolithe-microservices.html'>Voir la fiche détaillée</a>.",
+                    examples: [
+                        "Comment passer en microservices ?",
+                        "Mon application est lente",
+                        "Je veux découper mon monolithe",
+                        "Architecture moderne applicative"
+                    ]
+                },
+                {
+                    id: 'api-management',
+                    title: "API Management & Intégration",
+                    category: 'Architecture',
+                    keywords: ['api', 'integration', 'middleware', 'gouvernance', 'catalogue api', 'rest', 'soap', 'connectivité'],
+                    description: "Gouvernance et gestion du parc d'APIs",
+                    deliverables: ['Catalogue API', 'Gouvernance', 'Schémas d intégrégration'],
+                    profiles: ['Architecte Solution', 'Expert Middleware/API'],
+                    duration: '1-2 mois',
+                    kpis: ['% APIs inventoriées', 'Latence d intégration'],
+                    answer: "L'offre <strong>API Management & Intégration</strong> structure votre parc d'APIs. Livrables : catalogue API, gouvernance. Profils : Architecte Solution, Expert Middleware. Durée : 1-2 mois. <a href='api-management-integration.html'>Voir la fiche détaillée</a>.",
+                    examples: [
+                        "Comment gérer mes APIs ?",
+                        "Mise en place gouvernance API",
+                        "Intégration systèmes",
+                        "Catalogue d'APIs"
                     ]
                 },
                 {
                     id: 'cloud',
                     title: "Cloud & Infrastructure",
-                    keywords: ['cloud', 'migration', 'infra', 'infrastructure', 'iac', 'infrastructure as code', 'sd-wan', 'sase'],
-                    answer: "Pour vos enjeux <strong>Cloud & Infrastructure</strong>, regardez les offres <a href='migration-cloud-hybride.html'>Migration Cloud Hybride</a>, <a href='infrastructure-as-code.html'>Infrastructure as Code</a> et <a href='sd-wan-sase.html'>SD-WAN &amp; SASE</a>. Elles décrivent profils, livrables, durée et KPIs attendus.",
+                    category: 'Cloud & Infrastructure',
+                    keywords: ['cloud', 'migration', 'infra', 'infrastructure', 'iac', 'infrastructure as code', 'sd-wan', 'sase', 'terraform', 'ansible', 'aws', 'azure', 'gcp'],
+                    description: "Transformation cloud et industrialisation de l'infrastructure",
+                    offers: [
+                        {
+                            name: 'Migration Cloud Hybride',
+                            link: 'migration-cloud-hybride.html',
+                            keywords: ['migration cloud', 'hybride', 'transformation', 'business case']
+                        },
+                        {
+                            name: 'Infrastructure as Code',
+                            link: 'infrastructure-as-code.html',
+                            keywords: ['iac', 'terraform', 'ansible', 'automatisation']
+                        },
+                        {
+                            name: 'SD-WAN & SASE',
+                            link: 'sd-wan-sase.html',
+                            keywords: ['sd-wan', 'sase', 'réseau', 'sécurité réseau']
+                        }
+                    ],
+                    answer: "Pour vos enjeux <strong>Cloud & Infrastructure</strong>, plusieurs offres disponibles : <a href='migration-cloud-hybride.html'>Migration Cloud Hybride</a> (transformation), <a href='infrastructure-as-code.html'>Infrastructure as Code</a> (automatisation), <a href='sd-wan-sase.html'>SD-WAN & SASE</a> (réseau sécurisé).",
                     examples: [
                         "Quelle offre pour migrer vers le cloud ?",
-                        "Comment industrialiser mon infrastructure ?"
+                        "Comment industrialiser mon infrastructure ?",
+                        "Mise en place Terraform",
+                        "SD-WAN ou SASE ?"
                     ]
                 },
                 {
                     id: 'devops',
                     title: "DevOps, CI/CD & Observabilité",
-                    keywords: ['ci/cd', 'cicd', 'pipeline', 'devops', 'observabilité', 'monitoring', 'logs', 'metrics', 'traces'],
-                    answer: "Pour industrialiser vos déploiements et mieux superviser vos systèmes, consultez <a href='ci-cd-industrialisation.html'>CI/CD &amp; Industrialisation</a> et <a href='observabilite-monitoring.html'>Observabilité &amp; Monitoring</a>. Vous y trouverez les profils mobilisés, les livrables et les indicateurs de performance.",
+                    category: 'DevOps & SRE',
+                    keywords: ['ci/cd', 'cicd', 'pipeline', 'devops', 'observabilité', 'monitoring', 'logs', 'metrics', 'traces', 'sre', 'supervision', 'alerting'],
+                    description: "Industrialisation des déploiements et supervision des systèmes",
+                    offers: [
+                        {
+                            name: 'CI/CD & Industrialisation',
+                            link: 'ci-cd-industrialisation.html',
+                            keywords: ['ci/cd', 'pipeline', 'industrialisation', 'automatisation']
+                        },
+                        {
+                            name: 'Observabilité & Monitoring',
+                            link: 'observabilite-monitoring.html',
+                            keywords: ['observabilité', 'monitoring', 'logs', 'metrics', 'traces']
+                        }
+                    ],
+                    answer: "Pour l'industrialisation DevOps : <a href='ci-cd-industrialisation.html'>CI/CD & Industrialisation</a> (pipelines, automatisation). Pour la supervision : <a href='observabilite-monitoring.html'>Observabilité & Monitoring</a> (logs, métriques, traces).",
                     examples: [
                         "Comment mettre en place une chaîne CI/CD ?",
-                        "Quelle offre couvre l'observabilité ?"
+                        "Quelle offre couvre l'observabilité ?",
+                        "Industrialiser mes déploiements",
+                        "Mettre en place du monitoring"
                     ]
                 },
                 {
                     id: 'security',
-                    title: "Sécurité & Continuité (Zero Trust, IAM, PCA/PRA)",
-                    keywords: ['sécurité', 'zero trust', 'iam', 'identité', 'pca', 'pra', 'continuité', 'résilience'],
-                    answer: "Pour la <strong>sécurité</strong> et la <strong>résilience</strong>, vous pouvez consulter <a href='zero-trust-iam.html'>Zero Trust &amp; IAM</a> et <a href='pca-pra-continuite.html'>PCA/PRA &amp; Continuité</a>. Elles couvrent les identités, les accès, ainsi que la continuité d'activité et la reprise après sinistre.",
+                    title: "Sécurité & Continuité",
+                    category: 'Sécurité & Gouvernance',
+                    keywords: ['sécurité', 'zero trust', 'iam', 'identité', 'pca', 'pra', 'continuité', 'résilience', 'sauvegarde', 'disaster recovery'],
+                    description: "Sécurité des accès et continuité d'activité",
+                    offers: [
+                        {
+                            name: 'Zero Trust & IAM',
+                            link: 'zero-trust-iam.html',
+                            keywords: ['zero trust', 'iam', 'identités', 'accès']
+                        },
+                        {
+                            name: 'PCA/PRA & Continuité',
+                            link: 'pca-pra-continuite.html',
+                            keywords: ['pca', 'pra', 'continuité', 'résilience', 'reprise']
+                        }
+                    ],
+                    answer: "Sécurité : <a href='zero-trust-iam.html'>Zero Trust & IAM</a> (identités, accès). Continuité : <a href='pca-pra-continuite.html'>PCA/PRA & Continuité</a> (plans de continuité, tests de reprise).",
                     examples: [
                         "Quelle offre pour le Zero Trust ?",
-                        "Avez-vous une offre sur le PCA/PRA ?"
+                        "Avez-vous une offre sur le PCA/PRA ?",
+                        "Sécuriser mes accès",
+                        "Continuité d'activité"
                     ]
                 },
                 {
                     id: 'data-ai',
-                    title: "Data & IA (Data Mesh, MLOps, RAG)",
-                    keywords: ['data', 'données', 'ia', 'mlops', 'rag', 'générative', 'génératif', 'intelligence artificielle', 'data mesh'],
-                    answer: "Côté <strong>Data &amp; IA</strong>, vous disposez des offres <a href='architecture-data-mesh.html'>Architecture Data Mesh</a>, <a href='mlops-ia-industrielle.html'>MLOps &amp; IA industrielle</a> et <a href='rag-ia-generative-responsable.html'>RAG &amp; IA générative responsable</a>. Chaque fiche détaille les cas d'usage, les livrables et les bénéfices.",
+                    title: "Data & IA",
+                    category: 'Data & IA',
+                    keywords: ['data', 'données', 'ia', 'mlops', 'rag', 'générative', 'génératif', 'intelligence artificielle', 'data mesh', 'machine learning', 'llm'],
+                    description: "Architecture data et industrialisation de l'IA",
+                    offers: [
+                        {
+                            name: 'Architecture Data Mesh',
+                            link: 'architecture-data-mesh.html',
+                            keywords: ['data mesh', 'architecture data', 'domaines']
+                        },
+                        {
+                            name: 'MLOps & IA industrielle',
+                            link: 'mlops-ia-industrielle.html',
+                            keywords: ['mlops', 'industrialisation ia', 'pipelines ml']
+                        },
+                        {
+                            name: 'RAG & IA générative responsable',
+                            link: 'rag-ia-generative-responsable.html',
+                            keywords: ['rag', 'ia générative', 'llm', 'responsable']
+                        }
+                    ],
+                    answer: "Data & IA : <a href='architecture-data-mesh.html'>Architecture Data Mesh</a> (data distribuée), <a href='mlops-ia-industrielle.html'>MLOps & IA industrielle</a> (industrialisation), <a href='rag-ia-generative-responsable.html'>RAG & IA générative</a> (IA avec sources internes).",
                     examples: [
                         "Quelle offre couvre le RAG ?",
-                        "Comment industrialiser mes modèles d'IA ?"
+                        "Comment industrialiser mes modèles d'IA ?",
+                        "Mise en place Data Mesh",
+                        "IA générative responsable"
                     ]
                 },
                 {
                     id: 'workplace',
                     title: "Digital Workplace",
-                    keywords: ['digital workplace', 'workplace', 'collaborateur', 'm365', 'google workspace'],
-                    answer: "L'offre <a href='modernisation-digital-workplace.html'>Modernisation Digital Workplace</a> vise à moderniser l'environnement utilisateur (collaboration, sécurité, expérience employé).",
+                    category: 'Digital Workplace',
+                    keywords: ['digital workplace', 'workplace', 'collaborateur', 'm365', 'google workspace', 'office 365', 'collaboration', 'expérience employé'],
+                    description: "Modernisation de l'environnement de travail",
+                    deliverables: ['Schémas cibles workplace', 'Intégrations M365/Google'],
+                    profiles: ['Workplace Architect', 'IAM Engineer'],
+                    duration: '1-2 mois',
+                    kpis: ['Taux d adoption', 'Satisfaction utilisateurs'],
+                    answer: "L'offre <strong>Modernisation Digital Workplace</strong> transforme l'environnement utilisateur. Livrables : schémas cibles, intégrations M365/Google. Profils : Workplace Architect, IAM Engineer. <a href='modernisation-digital-workplace.html'>Voir la fiche détaillée</a>.",
                     examples: [
                         "Quelle offre pour moderniser mon Digital Workplace ?",
-                        "Avez-vous une offre autour de Microsoft 365 ?"
+                        "Avez-vous une offre autour de Microsoft 365 ?",
+                        "Moderniser collaboration",
+                        "Expérience employé"
+                    ]
+                },
+                {
+                    id: 'audit',
+                    title: "Audit de Qualité Logicielle",
+                    category: 'Qualité & Tests',
+                    keywords: ['audit', 'qualité', 'tests', 'dette technique', 'vulnérabilités', 'code review', 'performance'],
+                    description: "Audit et plan d'amélioration de la qualité logicielle",
+                    deliverables: ['Rapport d audit', 'Plan d action', 'Recommandations'],
+                    profiles: ['Expert Qualité Logicielle', 'DevOps'],
+                    duration: '2-4 semaines',
+                    kpis: ['Dette technique', 'Couverture tests', 'Vulnérabilités'],
+                    answer: "L'offre <strong>Audit de Qualité Logicielle</strong> évalue votre maturité logicielle. Livrables : rapport d'audit, plan d'action. Profils : Expert Qualité, DevOps. Durée : 2-4 semaines. <a href='audit-qualite-logicielle.html'>Voir la fiche détaillée</a>.",
+                    examples: [
+                        "Comment auditer mon code ?",
+                        "Réduire ma dette technique",
+                        "Améliorer qualité logicielle",
+                        "Audit de sécurité applicative"
                     ]
                 }
             ];
 
-            function getBotResponse(message) {
+            async function getBotResponse(message) {
+                try {
+                    // Appel à l'API Groq pour une réponse intelligente
+                    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': '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' // Remplacez avec votre clé API Groq
+                        },
+                        body: JSON.stringify({
+                            model: 'mixtral-8x7b-32768', // ou 'llama2-70b-4096'
+                            messages: [
+                                {
+                                    role: 'system',
+                                    content: `Tu es un assistant expert pour le catalogue de services Architecture & Transformation de Wekey. 
+                                    Ton rôle est d'aider les clients à comprendre les offres et à choisir celle qui correspond à leurs besoins.
+                                    
+                                    CATALOGUE COMPLET DES OFFRES:
+                                    
+                                    **ARCHITECTURE:**
+                                    1. Urbanisation SI: cartographie complète SI, identification redondances, roadmap transformation (1-2 mois, Architecte d'entreprise, Urbaniste SI)
+                                    2. Monolithe → Microservices: transformation architecture applicative moderne, HLD, schémas microservices (2-3 mois, Architecte Solution, Lead Tech)  
+                                    3. API Management & Intégration: gouvernance parc APIs, catalogue API, schémas intégration (1-2 mois, Architecte Solution, Expert Middleware)
+                                    
+                                    **CLOUD & INFRASTRUCTURE:**
+                                    4. Migration Cloud Hybride: transformation cloud hybride, plans migration 30/60/90 jours, business case (2-3 mois, Architecte Cloud, DevOps, Security)
+                                    5. Infrastructure as Code: automatisation avec Terraform/Ansible, templates, documentation (2-4 semaines, DevOps Engineer, Cloud Architect)
+                                    6. SD-WAN & SASE: architecture réseau cible, migration SD-WAN, sécurité réseau (1-2 mois, Network Architect, Cloud Network Engineer)
+                                    
+                                    **DEVOPS & SRE:**
+                                    7. CI/CD & Industrialisation: pipelines CI/CD, documentation, formation (2-4 semaines, Architecte DevOps, SRE, Test Automation)
+                                    8. Observabilité & Monitoring: stack logs/metrics/traces, dashboards, runbooks (1-2 mois, SRE, Architecte Observabilité)
+                                    
+                                    **SÉCURITÉ & GOUVERNANCE:**
+                                    9. Zero Trust & IAM: modèle Zero Trust, plan IAM, gouvernance accès (1-2 mois, Security Architect, IAM Specialist)
+                                    10. PCA/PRA & Continuité: plans PCA/PRA, tests reprise, runbooks (1-2 mois, Business Continuity Manager, Security Architect)
+                                    
+                                    **DATA & IA:**
+                                    11. Architecture Data Mesh: modèles data domain, gouvernance data, POC (2-3 mois, Data Architect, Data Engineer)
+                                    12. MLOps & IA industrielle: pipelines MLOps, monitoring modèles, gouvernance IA (1-2 mois, MLOps Engineer, AI Solution Architect)
+                                    13. RAG & IA générative responsable: architecture RAG, intégration sources internes, pilote métier (1-2 mois, Data Architect, AI Solution Architect, MLOps)
+                                    
+                                    **DIGITAL WORKPLACE:**
+                                    14. Modernisation Digital Workplace: schémas cibles workplace, intégrations M365/Google (1-2 mois, Workplace Architect, IAM Engineer)
+                                    
+                                    **QUALITÉ & TESTS:**
+                                    15. Audit de Qualité Logicielle: rapport audit, plan action, recommandations (2-4 semaines, Expert Qualité, DevOps)
+                                    
+                                    INFORMATIONS TARIFAIRES (section "Modèles économiques"):
+                                    - TJM indicatifs: 850€ (DevOps/SRE) à 1200€ (Architecte d'entreprise/AI Solution Architect)
+                                    - Packages: 25-50k€ (2-4 semaines), 50-90k€ (1-2 mois), 90-150k€ (2-3 mois)
+                                    
+                                    RÈGLES DE RÉPONSE:
+                                    - Sois concis, professionnel et orienté action
+                                    - Inclus toujours les liens vers les fiches détaillées (format: nom-offre.html)
+                                    - Mentionne les profils mobilisés, livrables clés et durée quand pertinent
+                                    - Pour les questions prix, oriente vers la section "Modèles économiques"
+                                    - Si la question est vague, demande des précisions sur le contexte
+                                    - Format des liens: <a href='nom-offre.html'>Nom de l'offre</a>`
+                                },
+                                {
+                                    role: 'user',
+                                    content: message
+                                }
+                            ],
+                            temperature: 0.7,
+                            max_tokens: 500
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Erreur API Groq');
+                    }
+
+                    const data = await response.json();
+                    return data.choices[0].message.content;
+
+                } catch (error) {
+                    console.error('Erreur lors de l\'appel à Groq:', error);
+                    
+                    // Fallback vers le système basique si Groq n'est pas disponible
+                    return getBasicResponse(message);
+                }
+            }
+
+            function getBasicResponse(message) {
                 const m = message.toLowerCase();
 
                 // Salutations
                 if (m.includes('bonjour') || m.includes('salut') || m.includes('bonsoir')) {
-                    return "Bonjour ! Je suis l'assistant du catalogue de services Architecture. Je peux vous aider à choisir une offre et à comprendre rapidement ce qu’elle couvre (bénéfices, livrables, durée et profils mobilisés). Vous pouvez par exemple demander : 'Quelle offre pour la sécurité ?', 'Quels services autour du cloud ?' ou 'Quelle offre pour la data & l'IA ?'.";
+                    return "Bonjour ! Je suis l'assistant du catalogue de services Architecture. Je peux vous aider à choisir une offre et à comprendre rapidement ce qu'elle couvre (bénéfices, livrables, durée et profils mobilisés).";
                 }
 
-                // Questions sur les prix / modèles économiques
+                // Questions sur les prix
                 if (m.includes('prix') || m.includes('tarif') || m.includes('coût') || m.includes('budget')) {
                     return "Les ordres de grandeur de prix et modèles économiques sont présentés dans la section 'Modèles économiques' du catalogue (TJM, packages). Pour un devis précis, utilisez le bouton 'Passez à l'action' en bas de page.";
                 }
 
-                // Recherche dans l'index des offres
+                // Recherche avancée dans l'index enrichi
                 let bestScore = 0;
                 let bestEntry = null;
 
                 catalogueIndex.forEach(entry => {
                     let score = 0;
+                    
+                    // Recherche dans les mots-clés principaux
                     entry.keywords.forEach(kw => {
-                        if (m.includes(kw)) {
-                            score++;
+                        if (m.includes(kw.toLowerCase())) {
+                            score += 2; // Poids double pour les mots-clés
                         }
                     });
+
+                    // Recherche dans la description et le titre
+                    if (entry.description && m.includes(entry.description.toLowerCase().substring(0, 20))) {
+                        score += 1;
+                    }
+                    
+                    if (m.includes(entry.title.toLowerCase())) {
+                        score += 3; // Poids triple pour le titre
+                    }
+
+                    // Recherche dans les sous-offres (pour les catégories multi-offres)
+                    if (entry.offers) {
+                        entry.offers.forEach(offer => {
+                            offer.keywords.forEach(kw => {
+                                if (m.includes(kw.toLowerCase())) {
+                                    score += 1;
+                                }
+                            });
+                            if (m.includes(offer.name.toLowerCase())) {
+                                score += 2;
+                            }
+                        });
+                    }
+
                     if (score > bestScore) {
                         bestScore = score;
                         bestEntry = entry;
@@ -785,26 +1040,56 @@
                 });
 
                 if (bestEntry && bestScore > 0) {
-                    const examplesText = bestEntry.examples && bestEntry.examples.length
-                        ? "<br/><br/><em>Par exemple, vous pouvez demander :</em> " + bestEntry.examples.map(e => `"${e}"`).join(', ') + '.'
-                        : '';
-                    return bestEntry.answer + examplesText;
+                    return bestEntry.answer;
                 }
 
-                // Réponse générique enrichie
-                return "Je peux vous aider à comprendre les différentes offres du catalogue et à vous orienter vers la fiche la plus adaptée. Vous pouvez par exemple demander : 'Quels services proposent de l'observabilité ?', 'Quelle offre traite de la continuité d'activité (PCA/PRA) ?' ou 'Quelles sont vos offres Data & IA ?'.";
+                // Suggestions par catégorie si aucun match précis
+                const categorySuggestions = {
+                    'cloud': 'Pour vos enjeux cloud, consultez les offres Migration Cloud Hybride, Infrastructure as Code et SD-WAN & SASE.',
+                    'sécurité': 'Pour la sécurité, explorez Zero Trust & IAM ainsi que PCA/PRA & Continuité.',
+                    'data': 'Côté Data & IA, découvrez Architecture Data Mesh, MLOps & IA industrielle et RAG & IA générative.',
+                    'devops': 'Pour l industrialisation, regardez CI/CD & Industrialisation et Observabilité & Monitoring.'
+                };
+
+                for (const [key, suggestion] of Object.entries(categorySuggestions)) {
+                    if (m.includes(key)) {
+                        return suggestion;
+                    }
+                }
+
+                return "Je peux vous aider à comprendre les différentes offres du catalogue. Vous pouvez me poser des questions sur: cloud, sécurité, data & IA, DevOps, urbanisation SI, microservices, API, etc.";
             }
 
-            function sendMessage() {
+            async function sendMessage() {
                 const text = userInput.value.trim();
                 if (!text) return;
                 appendMessage(text, 'user');
                 userInput.value = '';
 
-                setTimeout(() => {
-                    const resp = getBotResponse(text);
+                // Afficher un message de chargement
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'chatbot-message bot';
+                loadingDiv.style.marginBottom = '10px';
+                loadingDiv.style.padding = '10px 15px';
+                loadingDiv.style.borderRadius = '15px';
+                loadingDiv.style.background = '#fff';
+                loadingDiv.style.border = '1px solid var(--gray-200)';
+                loadingDiv.style.marginRight = 'auto';
+                loadingDiv.style.fontSize = '0.9rem';
+                loadingDiv.textContent = 'Je réfléchis...';
+                chatMessages.appendChild(loadingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                try {
+                    const resp = await getBotResponse(text);
+                    // Remplacer le message de chargement par la réponse
+                    chatMessages.removeChild(loadingDiv);
                     appendMessage(resp, 'bot', true);
-                }, 400);
+                } catch (error) {
+                    // Remplacer le message de chargement par un message d'erreur
+                    chatMessages.removeChild(loadingDiv);
+                    appendMessage('Désolé, une erreur est survenue. Veuillez réessayer.', 'bot');
+                }
             }
 
             sendButton.addEventListener('click', sendMessage);
