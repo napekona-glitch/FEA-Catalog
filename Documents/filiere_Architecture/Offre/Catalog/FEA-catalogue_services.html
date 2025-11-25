@@ -580,7 +580,7 @@
             <h4 style="margin: 0; font-size: 0.95rem;">Assistant Catalogue Architecture</h4>
             <button class="chatbot-close" id="chatbotClose" style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; line-height: 1; padding: 0 5px;">×</button>
         </div>
-        <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: 260px; overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
+        <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: calc(70vh - 120px); overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
             <div class="chatbot-message bot" style="margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; background: #fff; border: 1px solid var(--gray-200);">
                 Bonjour ! Je suis l'assistant du catalogue de services Architecture. Je peux vous aider à choisir une offre et à comprendre rapidement ce qu’elle couvre (bénéfices, livrables, durée et profils mobilisés).
                 Par exemple, vous pouvez demander :
@@ -630,7 +630,10 @@
             chatContainer.style.position = 'fixed';
             chatContainer.style.bottom = '90px';
             chatContainer.style.right = '20px';
-            chatContainer.style.width = '340px';
+            chatContainer.style.width = '50vw';
+            chatContainer.style.maxWidth = '800px';
+            chatContainer.style.minWidth = '400px';
+            chatContainer.style.height = '70vh';
             chatContainer.style.background = '#fff';
             chatContainer.style.borderRadius = '10px';
             chatContainer.style.boxShadow = '0 5px 15px rgba(0,0,0,0.15)';
@@ -683,7 +686,7 @@
                     id: 'urbanisation',
                     title: "Urbanisation SI",
                     keywords: ['urbanisation', 'cartographie', 'rationalisation', 'paysage applicatif'],
-                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Vous pouvez consulter la fiche détaillée en cliquant sur <a href='urbanisation-si.html'>Urbanisation SI</a>.",
+                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Vous pouvez consulter la fiche détaillée en cliquant sur <a href=\"urbanisation-si.html\">Urbanisation SI</a>.",
                     examples: [
                         "Comment rationaliser mon SI ?",
                         "Qu'est-ce que l'urbanisation du SI ?"
@@ -693,7 +696,7 @@
                     id: 'cloud',
                     title: "Cloud & Infrastructure",
                     keywords: ['cloud', 'migration', 'infra', 'infrastructure', 'iac', 'infrastructure as code', 'sd-wan', 'sase'],
-                    answer: "Pour vos enjeux <strong>Cloud & Infrastructure</strong>, regardez les offres <a href='migration-cloud-hybride.html'>Migration Cloud Hybride</a>, <a href='infrastructure-as-code.html'>Infrastructure as Code</a> et <a href='sd-wan-sase.html'>SD-WAN &amp; SASE</a>. Elles décrivent profils, livrables, durée et KPIs attendus.",
+                    answer: "Pour vos enjeux <strong>Cloud & Infrastructure</strong>, regardez les offres <a href=\"migration-cloud-hybride.html\">Migration Cloud Hybride</a>, <a href=\"infrastructure-as-code.html\">Infrastructure as Code</a> et <a href=\"sd-wan-sase.html\">SD-WAN &amp; SASE</a>. Elles décrivent profils, livrables, durée et KPIs attendus.",
                     examples: [
                         "Quelle offre pour migrer vers le cloud ?",
                         "Comment industrialiser mon infrastructure ?"
@@ -703,7 +706,7 @@
                     id: 'devops',
                     title: "DevOps, CI/CD & Observabilité",
                     keywords: ['ci/cd', 'cicd', 'pipeline', 'devops', 'observabilité', 'monitoring', 'logs', 'metrics', 'traces'],
-                    answer: "Pour industrialiser vos déploiements et mieux superviser vos systèmes, consultez <a href='ci-cd-industrialisation.html'>CI/CD &amp; Industrialisation</a> et <a href='observabilite-monitoring.html'>Observabilité &amp; Monitoring</a>. Vous y trouverez les profils mobilisés, les livrables et les indicateurs de performance.",
+                    answer: "Pour industrialiser vos déploiements et mieux superviser vos systèmes, consultez <a href=\"ci-cd-industrialisation.html\">CI/CD &amp; Industrialisation</a> et <a href=\"observabilite-monitoring.html\">Observabilité &amp; Monitoring</a>. Vous y trouverez les profils mobilisés, les livrables et les indicateurs de performance.",
                     examples: [
                         "Comment mettre en place une chaîne CI/CD ?",
                         "Quelle offre couvre l'observabilité ?"
@@ -713,7 +716,7 @@
                     id: 'security',
                     title: "Sécurité & Continuité (Zero Trust, IAM, PCA/PRA)",
                     keywords: ['sécurité', 'zero trust', 'iam', 'identité', 'pca', 'pra', 'continuité', 'résilience'],
-                    answer: "Pour la <strong>sécurité</strong> et la <strong>résilience</strong>, vous pouvez consulter <a href='zero-trust-iam.html'>Zero Trust &amp; IAM</a> et <a href='pca-pra-continuite.html'>PCA/PRA &amp; Continuité</a>. Elles couvrent les identités, les accès, ainsi que la continuité d'activité et la reprise après sinistre.",
+                    answer: "Pour la <strong>sécurité</strong> et la <strong>résilience</strong>, vous pouvez consulter <a href=\"zero-trust-iam.html\">Zero Trust &amp; IAM</a> et <a href=\"pca-pra-continuite.html\">PCA/PRA &amp; Continuité</a>. Elles couvrent les identités, les accès, ainsi que la continuité d'activité et la reprise après sinistre.",
                     examples: [
                         "Quelle offre pour le Zero Trust ?",
                         "Avez-vous une offre sur le PCA/PRA ?"
@@ -723,7 +726,7 @@
                     id: 'data-ai',
                     title: "Data & IA (Data Mesh, MLOps, RAG)",
                     keywords: ['data', 'données', 'ia', 'mlops', 'rag', 'générative', 'génératif', 'intelligence artificielle', 'data mesh'],
-                    answer: "Côté <strong>Data &amp; IA</strong>, vous disposez des offres <a href='architecture-data-mesh.html'>Architecture Data Mesh</a>, <a href='mlops-ia-industrielle.html'>MLOps &amp; IA industrielle</a> et <a href='rag-ia-generative-responsable.html'>RAG &amp; IA générative responsable</a>. Chaque fiche détaille les cas d'usage, les livrables et les bénéfices.",
+                    answer: "Côté <strong>Data &amp; IA</strong>, vous disposez des offres <a href=\"architecture-data-mesh.html\">Architecture Data Mesh</a>, <a href=\"mlops-ia-industrielle.html\">MLOps &amp; IA industrielle</a> et <a href=\"rag-ia-generative-responsable.html\">RAG &amp; IA générative responsable</a>. Chaque fiche détaille les cas d'usage, les livrables et les bénéfices.",
                     examples: [
                         "Quelle offre couvre le RAG ?",
                         "Comment industrialiser mes modèles d'IA ?"
@@ -733,7 +736,7 @@
                     id: 'workplace',
                     title: "Digital Workplace",
                     keywords: ['digital workplace', 'workplace', 'collaborateur', 'm365', 'google workspace'],
-                    answer: "L'offre <a href='modernisation-digital-workplace.html'>Modernisation Digital Workplace</a> vise à moderniser l'environnement utilisateur (collaboration, sécurité, expérience employé).",
+                    answer: "L'offre <a href=\"modernisation-digital-workplace.html\">Modernisation Digital Workplace</a> vise à moderniser l'environnement utilisateur (collaboration, sécurité, expérience employé).",
                     examples: [
                         "Quelle offre pour moderniser mon Digital Workplace ?",
                         "Avez-vous une offre autour de Microsoft 365 ?"

@@ -595,7 +595,7 @@
             <h4 style="margin: 0; font-size: 0.95rem;">Assistant Catalogue Architecture</h4>
             <button class="chatbot-close" id="chatbotClose" style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; line-height: 1; padding: 0 5px;">×</button>
         </div>
-        <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: 260px; overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
+        <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: calc(70vh - 120px); overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
             <div class="chatbot-message bot" style="margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; background: #fff; border: 1px solid var(--gray-200);">
                 Bonjour ! Je suis votre assistant pour le catalogue Architecture. Je vous aide à choisir la bonne offre.
                 
@@ -646,7 +646,10 @@
             chatContainer.style.position = 'fixed';
             chatContainer.style.bottom = '90px';
             chatContainer.style.right = '20px';
-            chatContainer.style.width = '340px';
+            chatContainer.style.width = '50vw';
+            chatContainer.style.maxWidth = '800px';
+            chatContainer.style.minWidth = '400px';
+            chatContainer.style.height = '70vh';
             chatContainer.style.background = '#fff';
             chatContainer.style.borderRadius = '10px';
             chatContainer.style.boxShadow = '0 5px 15px rgba(0,0,0,0.15)';
@@ -705,7 +708,7 @@
                     profiles: ['Architecte d entreprise', 'Urbaniste SI'],
                     duration: '1-2 mois',
                     kpis: ['% couverture cartographique', '% redondances identifiées'],
-                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Livrables : cartographies complètes, roadmaps. Profils : Architecte d'entreprise, Urbaniste SI. Durée : 1-2 mois. <a href='urbanisation-si.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Livrables : cartographies complètes, roadmaps. Profils : Architecte d'entreprise, Urbaniste SI. Durée : 1-2 mois. <a href=\"urbanisation-si.html\">Voir la fiche détaillée</a>.",
                     examples: [
                         "Comment rationaliser mon SI ?",
                         "Qu'est-ce que l'urbanisation du SI ?",
@@ -723,7 +726,7 @@
                     profiles: ['Architecte Solution', 'Lead Tech'],
                     duration: '2-3 mois',
                     kpis: ['Vitesse de déploiement', 'Time-to-market'],
-                    answer: "L'offre <strong>Monolithe → Microservices</strong> modernise votre architecture applicative. Livrables : HLD, schémas microservices, backlog technique. Profils : Architecte Solution, Lead Tech. Durée : 2-3 mois. <a href='monolithe-microservices.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>Monolithe → Microservices</strong> modernise votre architecture applicative. Livrables : HLD, schémas microservices, backlog technique. Profils : Architecte Solution, Lead Tech. Durée : 2-3 mois. <a href=\"monolithe-microservices.html\">Voir la fiche détaillée</a>.",
                     examples: [
                         "Comment passer en microservices ?",
                         "Mon application est lente",
@@ -741,7 +744,7 @@
                     profiles: ['Architecte Solution', 'Expert Middleware/API'],
                     duration: '1-2 mois',
                     kpis: ['% APIs inventoriées', 'Latence d intégration'],
-                    answer: "L'offre <strong>API Management & Intégration</strong> structure votre parc d'APIs. Livrables : catalogue API, gouvernance. Profils : Architecte Solution, Expert Middleware. Durée : 1-2 mois. <a href='api-management-integration.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>API Management & Intégration</strong> structure votre parc d'APIs. Livrables : catalogue API, gouvernance. Profils : Architecte Solution, Expert Middleware. Durée : 1-2 mois. <a href=\"api-management-integration.html\">Voir la fiche détaillée</a>.",
                     examples: [
                         "Comment gérer mes APIs ?",
                         "Mise en place gouvernance API",
@@ -798,14 +801,14 @@
                             keywords: ['observabilité', 'monitoring', 'logs', 'metrics', 'traces']
                         }
                     ],
-                    answer: "Pour l'industrialisation DevOps : <a href='ci-cd-industrialisation.html'>CI/CD & Industrialisation</a> (pipelines, automatisation). Pour la supervision : <a href='observabilite-monitoring.html'>Observabilité & Monitoring</a> (logs, métriques, traces).",
+                    answer: "Pour l'industrialisation DevOps : <a href=\"ci-cd-industrialisation.html\">CI/CD & Industrialisation</a> (pipelines, automatisation). Pour la supervision : <a href=\"observabilite-monitoring.html\">Observabilité & Monitoring</a> (logs, métriques, traces).",
                 },
                 {
                     title: "SD-WAN & SASE",
                     keywords: ["sd-wan", "sase", "réseau", "sécurité", "connectivité"],
                     description: "Architecture réseau SD-WAN et sécurité SASE",
                     file: "sd-wan-sase.html",
-                    answer: "L'offre <strong>SD-WAN & SASE</strong> modernise votre architecture réseau avec SD-WAN et sécurité SASE. Durée : 1-2 mois. <a href='sd-wan-sase.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>SD-WAN & SASE</strong> modernise votre architecture réseau avec SD-WAN et sécurité SASE. Durée : 1-2 mois. <a href=\"sd-wan-sase.html\">Voir la fiche détaillée</a>.",
                     examples: ["Moderniser mon réseau", "SD-WAN", "Sécurité réseau", "SASE"]
                 },
                 {
@@ -813,7 +816,7 @@
                     keywords: ["cicd", "pipeline", "devops", "industrialisation", "automatisation"],
                     description: "Pipelines CI/CD et industrialisation",
                     file: "ci-cd-industrialisation.html",
-                    answer: "L'offre <strong>CI/CD & Industrialisation</strong> met en place vos pipelines CI/CD avec documentation et formation. Durée : 2-4 semaines. <a href='ci-cd-industrialisation.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>CI/CD & Industrialisation</strong> met en place vos pipelines CI/CD avec documentation et formation. Durée : 2-4 semaines. <a href=\"ci-cd-industrialisation.html\">Voir la fiche détaillée</a>.",
                     examples: ["Mettre en place CI/CD", "Industrialiser mes développements", "Pipelines DevOps"]
                 },
                 {
@@ -821,7 +824,7 @@
                     keywords: ["observabilite", "monitoring", "logs", "metrics", "traces", "sre"],
                     description: "Stack logs/metrics/traces et monitoring",
                     file: "observabilite-monitoring.html",
-                    answer: "L'offre <strong>Observabilité & Monitoring</strong> déploie votre stack logs/metrics/traces avec dashboards et runbooks. Durée : 1-2 mois. <a href='observabilite-monitoring.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>Observabilité & Monitoring</strong> déploie votre stack logs/metrics/traces avec dashboards et runbooks. Durée : 1-2 mois. <a href=\"observabilite-monitoring.html\">Voir la fiche détaillée</a>.",
                     examples: ["Observer mes applications", "Monitoring", "Logs metrics traces", "SRE"]
                 },
                 {
@@ -829,7 +832,7 @@
                     keywords: ["zero trust", "iam", "sécurité", "identité", "accès"],
                     description: "Modèle Zero Trust et gestion des identités",
                     file: "zero-trust-iam.html",
-                    answer: "L'offre <strong>Zero Trust & IAM</strong> implémente votre modèle Zero Trust avec plan IAM et gouvernance des accès. Durée : 1-2 mois. <a href='zero-trust-iam.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>Zero Trust & IAM</strong> implémente votre modèle Zero Trust avec plan IAM et gouvernance des accès. Durée : 1-2 mois. <a href=\"zero-trust-iam.html\">Voir la fiche détaillée</a>.",
                     examples: ["Zero Trust", "Gestion des identités", "IAM", "Sécurité des accès"]
                 },
                 {
@@ -837,7 +840,7 @@
                     keywords: ["pca", "pra", "continuité", "disaster", "recovery", "pdc"],
                     description: "Plans PCA/PRA et continuité d'activité",
                     file: "pca-pra-continuite.html",
-                    answer: "L'offre <strong>PCA/PRA & Continuité</strong> établit vos plans PCA/PRA avec tests de reprise et runbooks. Durée : 1-2 mois. <a href='pca-pra-continuite.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>PCA/PRA & Continuité</strong> établit vos plans PCA/PRA avec tests de reprise et runbooks. Durée : 1-2 mois. <a href=\"pca-pra-continuite.html\">Voir la fiche détaillée</a>.",
                     examples: ["PCA/PRA", "Continuité d'activité", "Plan de reprise", "Disaster recovery"]
                 },
                 {
@@ -845,7 +848,7 @@
                     keywords: ["data mesh", "data", "données", "architecture", "domaine"],
                     description: "Architecture Data Mesh et gouvernance des données",
                     file: "architecture-data-mesh.html",
-                    answer: "L'offre <strong>Architecture Data Mesh</strong> conçoit vos modèles data domain avec gouvernance data et POC. Durée : 2-3 mois. <a href='architecture-data-mesh.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>Architecture Data Mesh</strong> conçoit vos modèles data domain avec gouvernance data et POC. Durée : 2-3 mois. <a href=\"architecture-data-mesh.html\">Voir la fiche détaillée</a>.",
                     examples: ["Data Mesh", "Architecture des données", "Gouvernance data", "Data domain"]
                 },
                 {
@@ -853,7 +856,7 @@
                     keywords: ["mlops", "ia", "machine learning", "ai", "industrielle"],
                     description: "Pipelines MLOps et IA industrielle",
                     file: "mlops-ia-industrielle.html",
-                    answer: "L'offre <strong>MLOps & IA Industrielle</strong> déploie vos pipelines MLOps avec monitoring modèles et gouvernance IA. Durée : 1-2 mois. <a href='mlops-ia-industrielle.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>MLOps & IA Industrielle</strong> déploie vos pipelines MLOps avec monitoring modèles et gouvernance IA. Durée : 1-2 mois. <a href=\"mlops-ia-industrielle.html\">Voir la fiche détaillée</a>.",
                     examples: ["MLOps", "IA industrielle", "Machine learning", "Monitoring modèles"]
                 },
                 {
@@ -861,7 +864,7 @@
                     keywords: ["rag", "ia", "générative", "llm", "responsable"],
                     description: "Architecture RAG et IA générative responsable",
                     file: "rag-ia-generative-responsable.html",
-                    answer: "L'offre <strong>RAG & IA Générative Responsable</strong> construit votre architecture RAG avec intégration sources internes. Durée : 1-2 mois. <a href='rag-ia-generative-responsable.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>RAG & IA Générative Responsable</strong> construit votre architecture RAG avec intégration sources internes. Durée : 1-2 mois. <a href=\"rag-ia-generative-responsable.html\">Voir la fiche détaillée</a>.",
                     examples: ["RAG", "IA générative", "LLM", "IA responsable"]
                 },
                 {
@@ -869,7 +872,7 @@
                     keywords: ["workplace", "digital", "m365", "google", "collaboration"],
                     description: "Modernisation du digital workplace",
                     file: "modernisation-digital-workplace.html",
-                    answer: "L'offre <strong>Modernisation Digital Workplace</strong> définit vos schémas cibles workplace avec intégrations M365/Google. Durée : 1-2 mois. <a href='modernisation-digital-workplace.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>Modernisation Digital Workplace</strong> définit vos schémas cibles workplace avec intégrations M365/Google. Durée : 1-2 mois. <a href=\"modernisation-digital-workplace.html\">Voir la fiche détaillée</a>.",
                     examples: ["Moderniser mon workplace", "Digital workplace", "M365", "Google Workspace"]
                 },
                 {
@@ -877,7 +880,7 @@
                     keywords: ["audit", "qualité", "logiciel", "code", "test", "dette"],
                     description: "Audit de qualité logicielle et dette technique",
                     file: "audit-qualite-logicielle.html",
-                    answer: "L'offre <strong>Audit de Qualité Logicielle</strong> évalue votre maturité logicielle. Livrables : rapport d'audit, plan d'action. Durée : 2-4 semaines. <a href='audit-qualite-logicielle.html'>Voir la fiche détaillée</a>.",
+                    answer: "L'offre <strong>Audit de Qualité Logicielle</strong> évalue votre maturité logicielle. Livrables : rapport d'audit, plan d'action. Durée : 2-4 semaines. <a href=\"audit-qualite-logicielle.html\">Voir la fiche détaillée</a>.",
                     examples: ["Auditer mon code", "Réduire ma dette technique", "Qualité logicielle", "Audit de sécurité applicative"]
                 }
             ];
@@ -969,7 +972,7 @@
                             title: content.title,
                             file: filename,
                             matches: matches.slice(0, 3), // Limiter à 3 matches
-                            answer: entry ? entry.answer : `Consultez la fiche <a href='${filename}'>${content.title}</a> pour plus d'informations.`
+                            answer: entry ? entry.answer : `Consultez la fiche <a href=\"${filename}\">${content.title}</a> pour plus d'informations.`
                         });
                     }
                 }
@@ -999,33 +1002,33 @@
                                     CATALOGUE COMPLET DES OFFRES:
                                     
                                     **ARCHITECTURE:**
-                                    1. Urbanisation SI: cartographie complète SI, identification redondances, roadmap transformation (1-2 mois, Architecte d'entreprise, Urbaniste SI)
-                                    2. Monolithe → Microservices: transformation architecture applicative moderne, HLD, schémas microservices (2-3 mois, Architecte Solution, Lead Tech)  
-                                    3. API Management & Intégration: gouvernance parc APIs, catalogue API, schémas intégration (1-2 mois, Architecte Solution, Expert Middleware)
+                                    1. Urbanisation SI: cartographie complète SI, identification redondances, roadmap transformation (1-2 mois, Architecte d'entreprise, Urbaniste SI) - FICHIER: urbanisation-si.html
+                                    2. Monolithe → Microservices: transformation architecture applicative moderne, HLD, schémas microservices (2-3 mois, Architecte Solution, Lead Tech) - FICHIER: monolithe-microservices.html
+                                    3. API Management & Intégration: gouvernance parc APIs, catalogue API, schémas intégration (1-2 mois, Architecte Solution, Expert Middleware) - FICHIER: api-management-integration.html
                                     
                                     **CLOUD & INFRASTRUCTURE:**
-                                    4. Migration Cloud Hybride: transformation cloud hybride, plans migration 30/60/90 jours, business case (2-3 mois, Architecte Cloud, DevOps, Security)
-                                    5. Infrastructure as Code: automatisation avec Terraform/Ansible, templates, documentation (2-4 semaines, DevOps Engineer, Cloud Architect)
-                                    6. SD-WAN & SASE: architecture réseau cible, migration SD-WAN, sécurité réseau (1-2 mois, Network Architect, Cloud Network Engineer)
+                                    4. Migration Cloud Hybride: transformation cloud hybride, plans migration 30/60/90 jours, business case (2-3 mois, Architecte Cloud, DevOps, Security) - FICHIER: migration-cloud-hybride.html
+                                    5. Infrastructure as Code: automatisation avec Terraform/Ansible, templates, documentation (2-4 semaines, DevOps Engineer, Cloud Architect) - FICHIER: infrastructure-as-code.html
+                                    6. SD-WAN & SASE: architecture réseau cible, migration SD-WAN, sécurité réseau (1-2 mois, Network Architect, Cloud Network Engineer) - FICHIER: sd-wan-sase.html
                                     
                                     **DEVOPS & SRE:**
-                                    7. CI/CD & Industrialisation: pipelines CI/CD, documentation, formation (2-4 semaines, Architecte DevOps, SRE, Test Automation)
-                                    8. Observabilité & Monitoring: stack logs/metrics/traces, dashboards, runbooks (1-2 mois, SRE, Architecte Observabilité)
+                                    7. CI/CD & Industrialisation: pipelines CI/CD, documentation, formation (2-4 semaines, Architecte DevOps, SRE, Test Automation) - FICHIER: ci-cd-industrialisation.html
+                                    8. Observabilité & Monitoring: stack logs/metrics/traces, dashboards, runbooks (1-2 mois, SRE, Architecte Observabilité) - FICHIER: observabilite-monitoring.html
                                     
                                     **SÉCURITÉ & GOUVERNANCE:**
-                                    9. Zero Trust & IAM: modèle Zero Trust, plan IAM, gouvernance accès (1-2 mois, Security Architect, IAM Specialist)
-                                    10. PCA/PRA & Continuité: plans PCA/PRA, tests reprise, runbooks (1-2 mois, Business Continuity Manager, Security Architect)
+                                    9. Zero Trust & IAM: modèle Zero Trust, plan IAM, gouvernance accès (1-2 mois, Security Architect, IAM Specialist) - FICHIER: zero-trust-iam.html
+                                    10. PCA/PRA & Continuité: plans PCA/PRA, tests reprise, runbooks (1-2 mois, Business Continuity Manager, Security Architect) - FICHIER: pca-pra-continuite.html
                                     
                                     **DATA & IA:**
-                                    11. Architecture Data Mesh: modèles data domain, gouvernance data, POC (2-3 mois, Data Architect, Data Engineer)
-                                    12. MLOps & IA industrielle: pipelines MLOps, monitoring modèles, gouvernance IA (1-2 mois, MLOps Engineer, AI Solution Architect)
-                                    13. RAG & IA générative responsable: architecture RAG, intégration sources internes, pilote métier (1-2 mois, Data Architect, AI Solution Architect, MLOps)
+                                    11. Architecture Data Mesh: modèles data domain, gouvernance data, POC (2-3 mois, Data Architect, Data Engineer) - FICHIER: architecture-data-mesh.html
+                                    12. MLOps & IA industrielle: pipelines MLOps, monitoring modèles, gouvernance IA (1-2 mois, MLOps Engineer, AI Solution Architect) - FICHIER: mlops-ia-industrielle.html
+                                    13. RAG & IA générative responsable: architecture RAG, intégration sources internes, pilote métier (1-2 mois, Data Architect, AI Solution Architect, MLOps) - FICHIER: rag-ia-generative-responsable.html
                                     
                                     **DIGITAL WORKPLACE:**
-                                    14. Modernisation Digital Workplace: schémas cibles workplace, intégrations M365/Google (1-2 mois, Workplace Architect, IAM Engineer)
+                                    14. Modernisation Digital Workplace: schémas cibles workplace, intégrations M365/Google (1-2 mois, Workplace Architect, IAM Engineer) - FICHIER: modernisation-digital-workplace.html
                                     
                                     **QUALITÉ & TESTS:**
-                                    15. Audit de Qualité Logicielle: rapport audit, plan action, recommandations (2-4 semaines, Expert Qualité, DevOps)
+                                    15. Audit de Qualité Logicielle: rapport audit, plan action, recommandations (2-4 semaines, Expert Qualité, DevOps) - FICHIER: audit-qualite-logicielle.html
                                     
                                     INFORMATIONS TARIFAIRES (section "Modèles économiques"):
                                     - TJM indicatifs: 850€ (DevOps/SRE) à 1200€ (Architecte d'entreprise/AI Solution Architect)
@@ -1033,11 +1036,12 @@
                                     
                                     RÈGLES DE RÉPONSE:
                                     - Sois concis, professionnel et orienté action
-                                    - Inclus toujours les liens vers les fiches détaillées (format: nom-offre.html)
+                                    - Inclus toujours les liens vers les fiches détaillées en utilisant les noms de fichiers EXACTS indiqués ci-dessus
+                                    - Utilise TOUJOURS les noms de fichiers après "FICHIER:" pour créer les liens
                                     - Mentionne les profils mobilisés, livrables clés et durée quand pertinent
                                     - Pour les questions prix, oriente vers la section "Modèles économiques"
                                     - Si la question est vague, demande des précisions sur le contexte
-                                    - Format des liens: <a href='nom-offre.html'>Nom de l'offre</a>`
+                                    - Format des liens: <a href=\"nom-offre.html\">Nom de l'offre</a>`
                                 },
                                 {
                                     role: 'user',
@@ -1056,7 +1060,12 @@
                     }
 
                     const data = await response.json();
-                    return data.choices[0].message.content;
+                    let responseContent = data.choices[0].message.content;
+                    
+                    // Corriger les noms de fichiers incorrects dans les liens
+                    responseContent = responseContent.replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"');
+                    
+                    return responseContent;
 
                 } catch (error) {
                     console.error('Erreur lors de l\'appel à Groq:', error);
@@ -1086,6 +1095,8 @@
                         const bestResult = sheetResults[0];
                         if (bestResult.score >= 5) { // Score élevé = bonne correspondance
                             let response = bestResult.answer;
+                            // Corriger les noms de fichiers incorrects dans les liens
+                            response = response.replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"');
                             if (bestResult.matches.length > 0) {
                                 response += `<br><br><small>🔍 Trouvé dans: ${bestResult.matches.join(', ')}</small>`;
                             }
@@ -1149,7 +1160,10 @@
                 });
 
                 if (bestEntry && bestScore > 0) {
-                    return bestEntry.answer;
+                    let response = bestEntry.answer;
+                    // Corriger les noms de fichiers incorrects dans les liens
+                    response = response.replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"');
+                    return response;
                 }
 
                 // Suggestions par catégorie si aucun match précis
