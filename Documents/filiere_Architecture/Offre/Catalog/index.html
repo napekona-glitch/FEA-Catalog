@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <!-- Architecte : Napé Kona -->
 <!-- FEA Wekey -->
+<!-- Date : 25/11/2025 -->
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
@@ -241,6 +242,64 @@
             section {
                 padding: 24px;
             }
+        }
+
+        /* Styles améliorés pour le chatbot */
+        .chatbot-message {
+            line-height: 1.6 !important;
+            word-wrap: break-word;
+        }
+
+        .chatbot-message.bot {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa) !important;
+            border: 1px solid #e9ecef !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        }
+
+        .chatbot-message.bot strong {
+            color: var(--accent-500) !important;
+            font-weight: 600 !important;
+        }
+
+        .chatbot-message.user {
+            background: linear-gradient(135deg, var(--accent-500), #e67e00) !important;
+            border: none !important;
+            box-shadow: 0 3px 12px rgba(245, 166, 35, 0.3) !important;
+        }
+
+        .chatbot-message br {
+            display: block;
+            margin: 6px 0;
+            content: "";
+        }
+
+        .chatbot-message a {
+            color: var(--accent-500) !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            border-bottom: 1px solid transparent !important;
+            transition: border-color 0.2s !important;
+        }
+
+        .chatbot-message.bot a:hover {
+            border-bottom-color: var(--accent-500) !important;
+        }
+
+        .chatbot-message.user a {
+            color: #fff !important;
+        }
+
+        .chatbot-message ul, .chatbot-message ol {
+            margin: 8px 0 !important;
+            padding-left: 20px !important;
+        }
+
+        .chatbot-message li {
+            margin: 4px 0 !important;
+        }
+
+        .chatbot-messages {
+            scroll-behavior: smooth !important;
         }
     </style>
 </head>
@@ -598,12 +657,14 @@
         </div>
         <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: calc(70vh - 120px); overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
             <div class="chatbot-message bot" style="margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; background: #fff; border: 1px solid var(--gray-200);">
-                Bonjour ! Je suis votre assistant pour le catalogue Architecture. Je vous aide à choisir la bonne offre.
-                
-                Exemples :
-                - "Services cloud ?"
-                - "Observabilité ?"
-                - "PCA/PRA ?"
+                👋 <strong>Bienvenue dans la filière Architecture Wekey !</strong><br><br>
+                Je suis votre assistant spécialisé. Je vous aide à choisir la bonne offre parmi nos 15 services packagés.<br><br>
+                <strong>Exemples de questions :</strong><br>
+                • "Quelles offres cloud ?"<br>
+                • "Comment observer mes systèmes ?"<br>
+                • "PCA/PRA ?"<br>
+                • "MLOps pour l'IA ?"<br><br>
+                Quelle est votre problématique ?
             </div>
         </div>
         <div class="chatbot-input" style="display: flex; padding: 10px; background: #fff; border-top: 1px solid var(--gray-200);">
@@ -617,6 +678,22 @@
     <script>
         // Chatbot catalogue
         document.addEventListener('DOMContentLoaded', function() {
+            // Fonction de nettoyage centralisée pour les liens
+            function cleanLinksAndArtifacts(content) {
+                return content
+                    // Remplacer les patterns "FICHIER: nom-fichier.html" par des vrais liens
+                    .replace(/FICHIER:\s*([a-zA-Z0-9\-_]+\.html)/g, '<a href="$1">$1</a>')
+                    // Nettoyer les liens déjà existants mais mal formatés
+                    .replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"')
+                    // Remplacer les noms de fichiers seuls par des liens cliquables (mais pas ceux déjà dans des balises <a>)
+                    .replace(/\b([a-zA-Z0-9\-_]+\.html)\b(?![^<]*<\/a>)/g, '<a href="$1">$1</a>')
+                    // Nettoyer les "FICHIER:" restants
+                    .replace(/FICHIER:\s*/g, '')
+                    // Nettoyer les espaces multiples mais préserver les <br>
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
             const chatContainer = document.getElementById('chatbotContainer');
             const chatMessages = document.getElementById('chatbotMessages');
             const userInput = document.getElementById('userInput');
@@ -687,7 +764,8 @@
                     messageDiv.style.marginRight = 'auto';
                 }
 
-                if (isHtml && sender !== 'user') {
+                // TOUJOURS traiter les messages du bot comme HTML pour les liens
+                if (sender === 'bot') {
                     messageDiv.innerHTML = content;
                 } else {
                     messageDiv.textContent = content;
@@ -709,7 +787,7 @@
                     profiles: ['Architecte d entreprise', 'Urbaniste SI'],
                     duration: '1-2 mois',
                     kpis: ['% couverture cartographique', '% redondances identifiées'],
-                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Livrables : cartographies complètes, roadmaps. Profils : Architecte d'entreprise, Urbaniste SI. Durée : 1-2 mois. <a href=\"urbanisation-si.html\">Voir la fiche détaillée</a>.",
+                    answer: "🏗️ **Urbanisation SI**<br><br>Cette offre vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente.<br><br>**Points clés :**<br>• 🗺️ Cartographie complète du système d'information<br>• 🔍 Identification des redondances applicatives<br>• 📋 Roadmap de transformation sur 30/60/90 jours<br><br>**Profils :** Architecte d'entreprise, Urbaniste SI<br>**Durée :** 1-2 mois<br><br><a href=\"urbanisation-si.html\">Voir la fiche détaillée</a>",
                     examples: [
                         "Comment rationaliser mon SI ?",
                         "Qu'est-ce que l'urbanisation du SI ?",
@@ -727,7 +805,7 @@
                     profiles: ['Architecte Solution', 'Lead Tech'],
                     duration: '2-3 mois',
                     kpis: ['Vitesse de déploiement', 'Time-to-market'],
-                    answer: "L'offre <strong>Monolithe → Microservices</strong> modernise votre architecture applicative. Livrables : HLD, schémas microservices, backlog technique. Profils : Architecte Solution, Lead Tech. Durée : 2-3 mois. <a href=\"monolithe-microservices.html\">Voir la fiche détaillée</a>.",
+                    answer: "🔧 **Monolithe → Microservices**<br><br>Cette offre modernise votre architecture applicative pour plus de scalabilité et de performance.<br><br>**Points clés :**<br>• 🏗️ High-Level Design (HLD) de la nouvelle architecture<br>• ⚙️ Schémas détaillés des microservices<br>• 📋 Backlog technique priorisé<br><br>**Profils :** Architecte Solution, Lead Tech<br>**Durée :** 2-3 mois<br><br><a href=\"monolithe-microservices.html\">Voir la fiche détaillée</a>",
                     examples: [
                         "Comment passer en microservices ?",
                         "Mon application est lente",
@@ -745,7 +823,7 @@
                     profiles: ['Architecte Solution', 'Expert Middleware/API'],
                     duration: '1-2 mois',
                     kpis: ['% APIs inventoriées', 'Latence d intégration'],
-                    answer: "L'offre <strong>API Management & Intégration</strong> structure votre parc d'APIs. Livrables : catalogue API, gouvernance. Profils : Architecte Solution, Expert Middleware. Durée : 1-2 mois. <a href=\"api-management-integration.html\">Voir la fiche détaillée</a>.",
+                    answer: "🔗 **API Management & Intégration**<br><br>Cette offre structure votre parc d'APIs et industrialise vos intégrations pour une meilleure gouvernance.<br><br>**Points clés :**<br>• 📋 Catalogue complet des APIs existantes<br>• 🛡️ Gouvernance et politiques d'accès<br>• 🔧 Schémas d'intégration normalisés<br><br>**Profils :** Architecte Solution, Expert Middleware/API<br>**Durée :** 1-2 mois<br><br><a href=\"api-management-integration.html\">Voir la fiche détaillée</a>",
                     examples: [
                         "Comment gérer mes APIs ?",
                         "Mise en place gouvernance API",
@@ -1000,6 +1078,26 @@
                                     content: `Tu es un assistant expert pour le catalogue de services Architecture & Transformation de Wekey. 
                                     Ton rôle est d'aider les clients à comprendre les offres et à choisir celle qui correspond à leurs besoins.
                                     
+                                    FORMAT OBLIGATOIRE DES RÉPONSES:
+                                    🎯 Utilise TOUJOURS ce format pour chaque offre:
+                                    
+                                    🏗️ **[Titre de l'offre]**
+                                    
+                                    [Description claire en 1-2 phrases]
+                                    
+                                    **Points clés :**
+                                    • Point 1 avec émoji pertinent
+                                    • Point 2 avec émoji pertinent  
+                                    • Point 3 avec émoji pertinent
+                                    
+                                    **Profils :** [Liste des profils]
+                                    **Durée :** [Période]
+                                    
+                                    <a href="[nom-fichier-exact].html">Voir la fiche détaillée</a>
+                                    
+                                    ÉMOJIS THÉMATIQUES:
+                                    🏗️ Architecture • ☁️ Cloud • 🔧 DevOps • 🛡️ Sécurité • 📊 Data & IA • 💼 Workplace • 🔍 Qualité • ⚡ Performance • 🚀 Transformation • 💡 Conseil • 🎯 Objectifs • 📋 Livrables • 🔍 Audit • 🔄 Industrialisation
+                                    
                                     CATALOGUE COMPLET DES OFFRES:
                                     
                                     **ARCHITECTURE:**
@@ -1035,22 +1133,56 @@
                                     - TJM indicatifs: 850€ (DevOps/SRE) à 1200€ (Architecte d'entreprise/AI Solution Architect)
                                     - Packages: 25-50k€ (2-4 semaines), 50-90k€ (1-2 mois), 90-150k€ (2-3 mois)
                                     
-                                    RÈGLES DE RÉPONSE:
-                                    - Sois concis, professionnel et orienté action
-                                    - Inclus toujours les liens vers les fiches détaillées en utilisant les noms de fichiers EXACTS indiqués ci-dessus
-                                    - Utilise TOUJOURS les noms de fichiers après "FICHIER:" pour créer les liens
-                                    - Mentionne les profils mobilisés, livrables clés et durée quand pertinent
-                                    - Pour les questions prix, oriente vers la section "Modèles économiques"
-                                    - Si la question est vague, demande des précisions sur le contexte
-                                    - Format des liens: <a href=\"nom-offre.html\">Nom de l'offre</a>`
+                                    EXEMPLES DE RÉPONSES BIEN FORMATÉES:
+                                    
+                                    Question: "urbanisation ?"
+                                    Réponse: 🏗️ **Urbanisation SI**
+                                    
+                                    Cette offre vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente.
+                                    
+                                    **Points clés :**
+                                    • 🗺️ Cartographie complète du système d'information
+                                    • 🔍 Identification des redondances applicatives  
+                                    • 📋 Roadmap de transformation sur 30/60/90 jours
+                                    
+                                    **Profils :** Architecte d'entreprise, Urbaniste SI
+                                    **Durée :** 1-2 mois
+                                    
+                                    <a href="urbanisation-si.html">Voir la fiche détaillée</a>
+                                    
+                                    Question: "prix ?"
+                                    Réponse: 💰 **Informations tarifaires Wekey**
+                                    
+                                    📊 Nos modèles économiques sont détaillés dans la section "Modèles économiques" du catalogue.
+                                    
+                                    **Tarifs indicatifs :**
+                                    • 💵 TJM: 850€ à 1200€ selon les profils
+                                    • 📦 Packages: 25-150k€ selon la durée
+                                    
+                                    🎯 Pour un devis précis, utilisez le bouton "Passez à l'action" en bas de page.
+                                    
+                                    RÈGLES DE FORMATTAGE:
+                                    - Structure tes réponses avec le format obligatoire ci-dessus
+                                    - Utilise TOUJOURS les émojis thématisés
+                                    - Mets les titres en gras avec ** 
+                                    - Fais des paragraphes aérés avec des sauts de ligne (<br><br>)
+                                    - Utilise des listes à puces avec •
+                                    - Inclus TOUJOURS les liens vers les fiches détaillées au format HTML exact: <a href="nom-fichier.html">Voir la fiche détaillée</a>
+                                    - Mentionne "Wekey" ou "filière Architecture Wekey" dans tes réponses
+                                    - N'utilise JAMAIS "FICHIER:" dans tes réponses finales
+                                    
+                                    CONTRAINTES CONTEXTUELLES STRICTES:
+                                    - Tu réponds UNIQUEMENT sur le catalogue Architecture Wekey
+                                    - Si la question concerne autre chose, réponds: "Je suis spécialisé dans le catalogue Architecture Wekey. Comment puis-je vous aider sur nos offres d'architecture et transformation ?"
+                                    - Ne fais jamais de recommandations en dehors des 15 offres listées ci-dessus`
                                 },
                                 {
                                     role: 'user',
                                     content: message
                                 }
                             ],
-                            temperature: 0.7,
-                            max_tokens: 500
+                            temperature: 0.3,
+                            max_tokens: 800
                         })
                     });
 
@@ -1063,8 +1195,8 @@
                     const data = await response.json();
                     let responseContent = data.choices[0].message.content;
                     
-                    // Corriger les noms de fichiers incorrects dans les liens
-                    responseContent = responseContent.replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"');
+                    // Nettoyage avec la fonction centralisée
+                    responseContent = cleanLinksAndArtifacts(responseContent);
                     
                     return responseContent;
 
@@ -1079,14 +1211,20 @@
             async function getBasicResponse(message) {
                 const m = message.toLowerCase();
 
+                // Validation contextuelle stricte
+                const topicsHorsCatalogue = ['politique', 'sport', 'football', 'météo', 'actualité', 'news', 'divertissement', 'jeu', 'film', 'musique', 'cuisine', 'voyage'];
+                if (topicsHorsCatalogue.some(topic => m.includes(topic))) {
+                    return "Je suis spécialisé dans le catalogue Architecture Wekey. Comment puis-je vous aider sur nos offres d'architecture et transformation ?";
+                }
+
                 // Salutations
                 if (m.includes('bonjour') || m.includes('salut') || m.includes('bonsoir')) {
-                    return "Bonjour ! Je suis votre assistant pour le catalogue Architecture. Je vous aide à choisir la bonne offre.";
+                    return "👋 Bonjour !<br><br>Je suis votre assistant spécialisé pour la <strong>filière Architecture Wekey</strong>.<br><br>Je vous aide à choisir la bonne offre parmi nos 15 services packagés :<br>🏗️ Architecture d'entreprise<br>☁️ Cloud & Infrastructure<br>🔧 DevOps & SRE<br>🛡️ Sécurité & Gouvernance<br>📊 Data & IA<br><br>Quelle est votre problématique ?";
                 }
 
                 // Questions sur les prix
                 if (m.includes('prix') || m.includes('tarif') || m.includes('coût') || m.includes('budget')) {
-                    return "Les ordres de grandeur de prix et modèles économiques sont présentés dans la section 'Modèles économiques' du catalogue (TJM, packages). Pour un devis précis, utilisez le bouton 'Passez à l'action' en bas de page.";
+                    return "💰 <strong>Informations tarifaires Wekey</strong><br><br>📊 Nos modèles économiques sont détaillés dans la section <strong>'Modèles économiques'</strong> du catalogue :<br><br>• <strong>TJM indicatifs</strong> : 850€ à 1200€ selon les profils<br>• <strong>Packages forfaitaires</strong> :<br>  - Mission courte (2-4 semaines) : 25-50k€<br>  - Mission moyenne (1-2 mois) : 50-90k€<br>  - Mission complexe (2-3 mois) : 90-150k€<br><br>🎯 Pour un devis précis adapté à votre contexte, utilisez le bouton <strong>'Passez à l'action'</strong> en bas de page.";
                 }
 
                 // Recherche étendue dans toutes les fiches d'abord
@@ -1096,8 +1234,8 @@
                         const bestResult = sheetResults[0];
                         if (bestResult.score >= 5) { // Score élevé = bonne correspondance
                             let response = bestResult.answer;
-                            // Corriger les noms de fichiers incorrects dans les liens
-                            response = response.replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"');
+                            // Nettoyage avec la fonction centralisée
+                            response = cleanLinksAndArtifacts(response);
                             if (bestResult.matches.length > 0) {
                                 response += `<br><br><small>🔍 Trouvé dans: ${bestResult.matches.join(', ')}</small>`;
                             }
@@ -1108,7 +1246,7 @@
                             let response = "J'ai trouvé plusieurs offres pertinentes:<br><br>";
                             topResults.forEach((result, index) => {
                                 response += `${index + 1}. <strong>${result.title}</strong><br>`;
-                                response += `${result.answer}<br><br>`;
+                                response += cleanLinksAndArtifacts(result.answer) + "<br><br>";
                             });
                             return response;
                         }
@@ -1162,17 +1300,17 @@
 
                 if (bestEntry && bestScore > 0) {
                     let response = bestEntry.answer;
-                    // Corriger les noms de fichiers incorrects dans les liens
-                    response = response.replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"');
+                    // Nettoyage avec la fonction centralisée
+                    response = cleanLinksAndArtifacts(response);
                     return response;
                 }
 
                 // Suggestions par catégorie si aucun match précis
                 const categorySuggestions = {
-                    'cloud': 'Pour vos enjeux cloud, consultez les offres Migration Cloud Hybride, Infrastructure as Code et SD-WAN & SASE.',
-                    'sécurité': 'Pour la sécurité, explorez Zero Trust & IAM ainsi que PCA/PRA & Continuité.',
-                    'data': 'Côté Data & IA, découvrez Architecture Data Mesh, MLOps & IA industrielle et RAG & IA générative.',
-                    'devops': 'Pour l industrialisation, regardez CI/CD & Industrialisation et Observabilité & Monitoring.'
+                    'cloud': '☁️ <strong>Offres Cloud & Infrastructure Wekey</strong><br><br>• <strong>Migration Cloud Hybride</strong> : transformation cloud hybride<br>• <strong>Infrastructure as Code</strong> : automatisation Terraform/Ansible<br>• <strong>SD-WAN & SASE</strong> : réseau sécurisé<br><br><a href="migration-cloud-hybride.html">Voir Migration Cloud</a> | <a href="infrastructure-as-code.html">Voir IaC</a>',
+                    'sécurité': '🛡️ <strong>Offres Sécurité & Gouvernance Wekey</strong><br><br>• <strong>Zero Trust & IAM</strong> : modèle Zero Trust, plan IAM<br>• <strong>PCA/PRA & Continuité</strong> : plans continuité, tests reprise<br><br><a href="zero-trust-iam.html">Voir Zero Trust</a> | <a href="pca-pra-continuite.html">Voir PCA/PRA</a>',
+                    'data': '📊 <strong>Offres Data & IA Wekey</strong><br><br>• <strong>Architecture Data Mesh</strong> : modèles data domain, gouvernance<br>• <strong>MLOps & IA industrielle</strong> : pipelines MLOps, monitoring<br>• <strong>RAG & IA générative</strong> : architecture RAG, intégration sources<br><br><a href="architecture-data-mesh.html">Voir Data Mesh</a> | <a href="mlops-ia-industrielle.html">Voir MLOps</a>',
+                    'devops': '🔧 <strong>Offres DevOps & Industrialisation Wekey</strong><br><br>• <strong>CI/CD & Industrialisation</strong> : pipelines, documentation<br>• <strong>Observabilité & Monitoring</strong> : logs/metrics/traces<br><br><a href="ci-cd-industrialisation.html">Voir CI/CD</a> | <a href="observabilite-monitoring.html">Voir Observabilité</a>'
                 };
 
                 for (const [key, suggestion] of Object.entries(categorySuggestions)) {
@@ -1181,7 +1319,7 @@
                     }
                 }
 
-                return "Je peux vous aider à comprendre les différentes offres du catalogue. Vous pouvez me poser des questions sur: cloud, sécurité, data & IA, DevOps, urbanisation SI, microservices, API, etc.";
+                return "🎯 <strong>Assistant Filière Architecture Wekey</strong><br><br>Je suis spécialisé dans nos <strong>15 offres packagées</strong> :<br><br>🏗️ <strong>Architecture</strong> : Urbanisation SI, Microservices, API<br>☁️ <strong>Cloud & Infra</strong> : Migration, IaC, SD-WAN<br>🔧 <strong>DevOps & SRE</strong> : CI/CD, Observabilité<br>🛡️ <strong>Sécurité</strong> : Zero Trust, PCA/PRA<br>📊 <strong>Data & IA</strong> : Data Mesh, MLOps, RAG<br>💼 <strong>Workplace</strong> : Modernisation digitale<br>🔍 <strong>Qualité</strong> : Audit logicielle<br><br>Décrivez votre problématique, je vous oriente vers l'offre adaptée !";
             }
 
             async function sendMessage() {
@@ -1208,7 +1346,7 @@
                     const resp = await getBotResponse(text);
                     // Remplacer le message de chargement par la réponse
                     chatMessages.removeChild(loadingDiv);
-                    appendMessage(resp, 'bot', true);
+                    appendMessage(resp, 'bot');
                 } catch (error) {
                     // Remplacer le message de chargement par un message d'erreur
                     chatMessages.removeChild(loadingDiv);
