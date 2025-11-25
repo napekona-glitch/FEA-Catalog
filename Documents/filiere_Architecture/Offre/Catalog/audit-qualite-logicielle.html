@@ -178,8 +178,8 @@
         </footer>
     </div>
 
-    <!-- Chatbot Widget -->
-    <div class="chatbot-container" id="chatbotContainer">
+    <!-- Chatbot Widget temporairement désactivé - utilisez le chatbot du catalogue principal -->
+    <!-- <div class="chatbot-container" id="chatbotContainer">
         <div class="chatbot-header">
             <h4>Assistant Qualité Logicielle</h4>
             <button class="chatbot-close" id="chatbotClose">×</button>
@@ -195,7 +195,7 @@
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
-    </div>
+    </div> -->
 
     <script>
         // Gestion du chatbot
@@ -233,8 +233,8 @@
                 
                 // Réponse du bot (simplifiée)
                 setTimeout(() => {
-                    const response = getBotResponse(message);
-                    appendMessage(response, 'bot');
+                    const botResponse = getBotResponse(message);
+                    appendMessage(botResponse, 'bot');
                 }, 500);
             }
             
@@ -260,13 +260,13 @@
             function getBotResponse(message) {
                 const lowerMessage = message.toLowerCase();
                 
-                if (lowerMessage.includes('bonjour') || lowerMessage.includes('salut')) {
+                if (lowerMessage.includes('bonjour') || lowerMessage.includes('salut') || lowerMessage.includes('coucou')) {
                     return 'Bonjour ! Comment puis-je vous aider concernant notre service d\'audit de qualité logicielle ?';
                 } else if (lowerMessage.includes('coût') || lowerMessage.includes('prix')) {
                     return 'Le coût de l\'audit dépend de la taille du projet et de sa complexité. Nous proposons des forfaits adaptés à chaque besoin. Souhaitez-vous que je vous mette en relation avec un expert pour une évaluation personnalisée ?';
                 } else if (lowerMessage.includes('durée') || lowerMessage.includes('temps')) {
-                    return 'Un audit complet prend généralement entre 2 et 4 semaines, selon la taille du codebase et l\'étendue de l\'analyse. Nous pouvons adapter la durée en fonction de vos besoins spécifiques.';
-                } else if (lowerMessage.includes('outils') || lowerMessage.includes('technologies')) {
+                    return 'La durée d\'un audit varie généralement entre 2 et 4 semaines selon la taille et la complexité de votre applicatif.';
+                } else if (lowerMessage.includes('outils') || lowerMessage.includes('méthode')) {
                     return 'Nous utilisons une combinaison d\'outils d\'analyse statique (SonarQube, ESLint, Pylint, etc.), d\'analyse de dépendances (OWASP Dependency-Check, Snyk) et de tests automatisés pour évaluer la qualité de votre code.';
                 } else if (lowerMessage.includes('contact') || lowerMessage.includes('parler')) {
                     return 'Je peux vous mettre en relation avec un expert en qualité logicielle. Souhaitez-vous que je vous redirige vers notre formulaire de contact ?';

@@ -175,8 +175,8 @@
         </footer>
     </div>
 
-    <!-- Chatbot Widget -->
-    <div class="chatbot-container" id="chatbotContainer">
+    <!-- Chatbot Widget temporairement désactivé - utilisez le chatbot du catalogue principal -->
+    <!-- <div class="chatbot-container" id="chatbotContainer">
         <div class="chatbot-header">
             <h4>Assistant Migration Cloud</h4>
             <button class="chatbot-close" id="chatbotClose">×</button>
@@ -271,33 +271,8 @@
                     return "Je ne suis pas sûr de bien comprendre votre question. Pourriez-vous la reformuler ? Je peux vous aider avec des informations sur la migration, les avantages du cloud hybride, ou vous mettre en relation avec un expert.";
                 }
             }
-            
-            // Gestion de l'icône flottante
-            const icon = document.createElement('div');
-            icon.className = 'icon-card';
-            icon.innerHTML = '<i class="fas fa-arrow-up"></i>';
-            document.body.appendChild(icon);
-            
-            // Faire défiler vers le haut au clic sur l'icône
-            icon.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-            
-            // Afficher/masquer l'icône au défilement
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    icon.style.opacity = '1';
-                    icon.style.visibility = 'visible';
-                } else {
-                    icon.style.opacity = '0';
-                    icon.style.visibility = 'hidden';
-                }
-            });
         });
-    </script>
+    </script> -->
 </body>
 </html>
 
