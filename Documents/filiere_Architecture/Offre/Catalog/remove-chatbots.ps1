@@ -1,3 +1,4 @@
+# Architecte : Napé Kona
 # Script pour désactiver les chatbots dans toutes les fiches de service
 # Garde seulement le chatbot principal du catalogue
 

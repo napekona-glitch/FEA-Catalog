@@ -1,3 +1,4 @@
+// Architecte : Napé Kona
 // Configuration pour l'intégration Groq
 // Créez un compte sur https://groq.com/ pour obtenir votre clé API
 

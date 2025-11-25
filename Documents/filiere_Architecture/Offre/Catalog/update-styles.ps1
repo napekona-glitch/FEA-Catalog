@@ -1,8 +1,9 @@
+# Architecte : Napé Kona
 # Script pour mettre à jour les fichiers HTML avec le nouveau style
 $excludedFile = "FEA-catalogue_services.html"
-$cssLink = "<link rel=\"stylesheet\" href=\"css/catalog-style.css\">"
-$fontAwesomeLink = "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\">"
-$googleFontLink = "<link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">"
+$cssLink = '<link rel="stylesheet" href="css/catalog-style.css">'
+$fontAwesomeLink = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">'
+$googleFontLink = '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">'
 
 # Liste des fichiers HTML à mettre à jour
 $htmlFiles = Get-ChildItem -Path . -Filter "*.html" -File | Where-Object { $_.Name -ne $excludedFile }
@@ -42,7 +43,7 @@ foreach ($file in $htmlFiles) {
             </div>
             <a href="index.html" class="back-link">
                 <i class="fas fa-arrow-left"></i>
-                Retour à l\'accueil
+                Retour à l''accueil
             </a>
         </header>
         

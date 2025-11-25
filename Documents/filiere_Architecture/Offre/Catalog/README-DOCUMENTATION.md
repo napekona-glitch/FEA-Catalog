@@ -1,3 +1,4 @@
+<!-- Architecte : Napé Kona -->
 # Documentation Complète - Catalogue de Services Architecture & Transformation
 
 ## 📋 Table des Matières

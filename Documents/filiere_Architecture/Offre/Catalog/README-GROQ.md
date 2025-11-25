@@ -1,3 +1,4 @@
+<!-- Architecte : Napé Kona -->
 # Intégration Groq - Chatbot du Catalogue Architecture
 
 ## Configuration
