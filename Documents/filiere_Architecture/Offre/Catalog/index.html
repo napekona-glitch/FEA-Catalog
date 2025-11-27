@@ -658,17 +658,19 @@
         <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: calc(70vh - 120px); overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
             <div class="chatbot-message bot" style="margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; background: #fff; border: 1px solid var(--gray-200);">
                 👋 <strong>Bienvenue dans la filière Architecture Wekey !</strong><br><br>
-                Je suis votre assistant spécialisé. Je vous aide à choisir la bonne offre parmi nos 15 services packagés.<br><br>
-                <strong>Exemples de questions :</strong><br>
-                • "Quelles offres cloud ?"<br>
-                • "Comment observer mes systèmes ?"<br>
-                • "PCA/PRA ?"<br>
-                • "MLOps pour l'IA ?"<br><br>
-                Quelle est votre problématique ?
+                Je suis votre assistant spécialisé. Je vous aide à explorer vos besoins et à trouver la bonne solution parmi nos 15 offres packagés.<br><br>
+                <strong>💡 N'hésitez pas à me parler de vos problématiques :</strong><br>
+                • "Mes applications sont lentes"<br>
+                • "Je veux moderniser mon SI"<br>
+                • "Comment faire de l'IA ?"<br>
+                • "Problèmes de sécurité"<br>
+                • "Je veux aller dans le cloud"<br>
+                • "Mon SI est trop complexe"<br><br>
+                Décrivez votre situation, je vous guiderai vers la solution adaptée !
             </div>
         </div>
         <div class="chatbot-input" style="display: flex; padding: 10px; background: #fff; border-top: 1px solid var(--gray-200);">
-            <input type="text" id="userInput" placeholder="Posez votre question sur le catalogue..." style="flex: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid var(--gray-300);" />
+            <input type="text" id="userInput" placeholder="Décrivez votre problématique ou votre projet..." style="flex: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid var(--gray-300);" />
             <button id="sendButton" style="margin-left: 8px; width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--accent-500); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                 ▶
             </button>
@@ -1104,10 +1106,16 @@
                                 {
                                     role: 'system',
                                     content: `Tu es un assistant expert pour le catalogue de services Architecture & Transformation de Wekey. 
-                                    Ton rôle est d'aider les clients à comprendre les offres et à choisir celle qui correspond à leurs besoins.
+                                    Ton rôle est d'aider les clients à comprendre les offres, à explorer leurs besoins et à trouver la solution adaptée.
+                                    
+                                    APPROCHE ORIENTÉE RECHERCHE:
+                                    - Sois curieux et guide l'utilisateur dans sa réflexion
+                                    - Pose des questions pour mieux comprendre son contexte
+                                    - Propose des pistes et des alternatives pertinentes
+                                    - Oriente vers la bonne offre même si la question est imprécise
                                     
                                     FORMAT OBLIGATOIRE DES RÉPONSES:
-                                    🎯 Utilise TOUJOURS ce format pour chaque offre:
+                                    🎯 Utilise ce format pour chaque offre recommandée:
                                     
                                     🏗️ **[Titre de l'offre]**
                                     
@@ -1163,35 +1171,65 @@
                                     
                                     EXEMPLES DE RÉPONSES BIEN FORMATÉES:
                                     
-                                    Question: "urbanisation ?"
-                                    Réponse: 🏗️ **Urbanisation SI**
+                                    Question: "performance lente"
+                                    Réponse: 🔍 **Analyse de votre problématique de performance**
                                     
-                                    Cette offre vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente.
+                                    Je comprends que vous rencontrez des problèmes de performance. Pour vous orienter vers la bonne solution, j'ai besoin de quelques précisions :
                                     
+                                    🎯 **Questions pour mieux comprendre :**
+                                    • 📊 Est-ce la performance de vos applications ou de votre infrastructure ?
+                                    • 🌐 Est-ce lié au réseau ou aux systèmes themselves ?
+                                    • 📈 Est-ce un problème récent ou chronique ?
+                                    
+                                    **Pistes possibles selon votre contexte :**
+                                    • 🏗️ **Urbanisation SI**: Si vous avez des redondances ou un SI complexe
+                                    • 🔧 **Observabilité & Monitoring**: Pour diagnostiquer les causes racines
+                                    • ☁️ **Migration Cloud Hybride**: Si votre infrastructure est vieillissante
+                                    
+                                    Dites-m'en plus sur votre situation pour vous proposer la solution la plus adaptée !
+                                    
+                                    Question: "je veux faire de l'IA"
+                                    Réponse: 🤖 **Votre projet IA dans la filière Architecture Wekey**
+                                    
+                                    Excellent projet ! L'IA peut transformer votre métier. Pour vous guider vers la bonne approche :
+                                    
+                                    🎯 **Quel type de projet IA envisagez-vous ?**
+                                    • 📊 **Analyse de données** → Architecture Data Mesh
+                                    • 🤖 **Automatisation industrielle** → MLOps & IA industrielle  
+                                    • 💬 **Assistant intelligent** → RAG & IA générative responsable
+                                    • 🏭 **IA de production** → MLOps & IA industrielle
+                                    
+                                    **Nos offres IA spécialisées :**
+                                    
+                                    🏗️ **Architecture Data Mesh**
+                                    Pour structurer vos données et les rendre accessibles
                                     **Points clés :**
-                                    • 🗺️ Cartographie complète du système d'information
-                                    • 🔍 Identification des redondances applicatives  
-                                    • 📋 Roadmap de transformation sur 30/60/90 jours
+                                    • 🗂️ Organisation par domaines métier
+                                    • 🔄 Produits données self-service
+                                    • 📊 Gouvernance centralisée
                                     
-                                    **Profils :** Architecte d'entreprise, Urbaniste SI
+                                    **Profils :** Data Architect, Data Engineer
+                                    **Durée :** 2-3 mois
+                                    
+                                    <a href="architecture-data-mesh.html">Voir la fiche détaillée</a>
+                                    
+                                    🤖 **MLOps & IA Industrielle**
+                                    Pour industrialiser vos modèles IA en production
+                                    **Points clés :**
+                                    • 🚀 Pipelines MLOps automatisés
+                                    • 📈 Monitoring des modèles en continu
+                                    • 🔧 Industrialisation complète
+                                    
+                                    **Profils :** MLOps Engineer, AI Solution Architect
                                     **Durée :** 1-2 mois
                                     
-                                    <a href="urbanisation-si.html">Voir la fiche détaillée</a>
+                                    <a href="mlops-ia-industrielle.html">Voir la fiche détaillée</a>
                                     
-                                    Question: "prix ?"
-                                    Réponse: 💰 **Informations tarifaires Wekey**
-                                    
-                                    📊 Nos modèles économiques sont détaillés dans la section "Modèles économiques" du catalogue.
-                                    
-                                    **Tarifs indicatifs :**
-                                    • 💵 TJM: 850€ à 1200€ selon les profils
-                                    • 📦 Packages: 25-150k€ selon la durée
-                                    
-                                    🎯 Pour un devis précis, utilisez le bouton "Passez à l'action" en bas de page.
+                                    Quel est votre cas d'usage principal ?
                                     
                                     RÈGLES DE FORMATTAGE:
-                                    - Structure tes réponses avec le format obligatoire ci-dessus
-                                    - Utilise TOUJOURS les émojis thématisés
+                                    - Structure tes réponses avec le format ci-dessus
+                                    - Utilise les émojis thématisés
                                     - Mets les titres en gras avec ** 
                                     - Fais des paragraphes aérés avec des sauts de ligne (<br><br>)
                                     - Utilise des listes à puces avec •
@@ -1219,10 +1257,13 @@
                                     - JAMAIS créer de liens vers des fichiers qui n'existent pas dans cette liste
                                     - Si un nom de fichier n'est pas dans cette liste, mentionner seulement le nom sans lien
                                     
-                                    CONTRAINTES CONTEXTUELLES STRICTES:
-                                    - Tu réponds UNIQUEMENT sur le catalogue Architecture Wekey
-                                    - Si la question concerne autre chose, réponds: "Je suis spécialisé dans le catalogue Architecture Wekey. Comment puis-je vous aider sur nos offres d'architecture et transformation ?"
-                                    - Ne fais jamais de recommandations en dehors des 15 offres listées ci-dessus`
+                                    APPROCHES POUR QUESTIONS HORS CATALOGUE:
+                                    - Sois flexible et essaie de comprendre le besoin sous-jacent
+                                    - Reformule la question pour la connecter à une offre du catalogue
+                                    - Propose des alternatives pertinentes dans nos offres
+                                    - Si vraiment aucun lien, explique poliment que tu peux aider sur d'autres sujets liés à l'architecture et la transformation
+                                    
+                                    OBJECTIF: Aider l'utilisateur à trouver LA bonne solution même si sa question est imprécise, en explorant son besoin réel.`
                                 },
                                 {
                                     role: 'user',
