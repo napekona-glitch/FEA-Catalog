@@ -678,15 +678,38 @@
     <script>
         // Chatbot catalogue
         document.addEventListener('DOMContentLoaded', function() {
+            // Liste blanche des fichiers existants dans le catalogue
+            const existingFiles = [
+                'urbanisation-si.html',
+                'zero-trust-iam.html',
+                'monolithe-microservices.html',
+                'api-management-integration.html',
+                'migration-cloud-hybride.html',
+                'infrastructure-as-code.html',
+                'sd-wan-sase.html',
+                'ci-cd-industrialisation.html',
+                'observabilite-monitoring.html',
+                'pca-pra-continuite.html',
+                'architecture-data-mesh.html',
+                'mlops-ia-industrielle.html',
+                'rag-ia-generative-responsable.html',
+                'modernisation-digital-workplace.html',
+                'audit-qualite-logicielle.html'
+            ];
+
             // Fonction de nettoyage centralisée pour les liens
             function cleanLinksAndArtifacts(content) {
                 return content
-                    // Remplacer les patterns "FICHIER: nom-fichier.html" par des vrais liens
-                    .replace(/FICHIER:\s*([a-zA-Z0-9\-_]+\.html)/g, '<a href="$1">$1</a>')
+                    // Remplacer les patterns "FICHIER: nom-fichier.html" par des vrais liens SEULEMENT si le fichier existe
+                    .replace(/FICHIER:\s*([a-zA-Z0-9\-_]+\.html)/g, (match, filename) => {
+                        return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
+                    })
                     // Nettoyer les liens déjà existants mais mal formatés
                     .replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"')
-                    // Remplacer les noms de fichiers seuls par des liens cliquables (mais pas ceux déjà dans des balises <a>)
-                    .replace(/\b([a-zA-Z0-9\-_]+\.html)\b(?![^<]*<\/a>)/g, '<a href="$1">$1</a>')
+                    // Remplacer les noms de fichiers seuls par des liens cliquables SEULEMENT si le fichier existe et n'est pas déjà dans une balise <a>
+                    .replace(/\b([a-zA-Z0-9\-_]+\.html)\b(?![^<]*<\/a>)/g, (match, filename) => {
+                        return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
+                    })
                     // Nettoyer les "FICHIER:" restants
                     .replace(/FICHIER:\s*/g, '')
                     // Nettoyer les espaces multiples mais préserver les <br>
@@ -964,17 +987,22 @@
                 }
             ];
 
-            // Fonction pour charger et indexer toutes les fiches HTML
+            // Fonction pour charger et indexer toutes les fiches existantes
             async function loadAllSheets() {
-                const sheets = catalogueIndex.map(entry => entry.file);
                 const fullTextIndex = {};
+                
+                // Uniquement les fichiers qui existent vraiment
+                const sheets = existingFiles;
                 
                 for (const sheet of sheets) {
                     try {
                         const response = await fetch(sheet);
-                        const html = await response.text();
+                        if (!response.ok) {
+                            console.warn(`Fichier ${sheet} non trouvé ou inaccessible`);
+                            continue;
+                        }
                         
-                        // Extraction du contenu textuel simple
+                        const html = await response.text();
                         const tempDiv = document.createElement('div');
                         tempDiv.innerHTML = html;
                         
@@ -1170,6 +1198,26 @@
                                     - Inclus TOUJOURS les liens vers les fiches détaillées au format HTML exact: <a href="nom-fichier.html">Voir la fiche détaillée</a>
                                     - Mentionne "Wekey" ou "filière Architecture Wekey" dans tes réponses
                                     - N'utilise JAMAIS "FICHIER:" dans tes réponses finales
+                                    
+                                    CONTRAINTE CRUCIALE SUR LES LIENS:
+                                    - TOUS les liens doivent pointer EXCLUSIVEMENT vers les 15 fichiers existants suivants:
+                                    * urbanisation-si.html
+                                    * zero-trust-iam.html
+                                    * monolithe-microservices.html
+                                    * api-management-integration.html
+                                    * migration-cloud-hybride.html
+                                    * infrastructure-as-code.html
+                                    * sd-wan-sase.html
+                                    * ci-cd-industrialisation.html
+                                    * observabilite-monitoring.html
+                                    * pca-pra-continuite.html
+                                    * architecture-data-mesh.html
+                                    * mlops-ia-industrielle.html
+                                    * rag-ia-generative-responsable.html
+                                    * modernisation-digital-workplace.html
+                                    * audit-qualite-logicielle.html
+                                    - JAMAIS créer de liens vers des fichiers qui n'existent pas dans cette liste
+                                    - Si un nom de fichier n'est pas dans cette liste, mentionner seulement le nom sans lien
                                     
                                     CONTRAINTES CONTEXTUELLES STRICTES:
                                     - Tu réponds UNIQUEMENT sur le catalogue Architecture Wekey
