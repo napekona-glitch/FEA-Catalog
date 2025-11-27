@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Génération PDF - Proposition Observabilité & Monitoring</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .pdf-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 0 auto 20px;
+            padding: 20mm;
+            box-sizing: border-box;
+            page-break-after: always;
+            position: relative;
+        }
+
+        .pdf-page:last-child {
+            page-break-after: auto;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .pdf-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                max-width: none;
+            }
+            
+            .pdf-page {
+                box-shadow: none;
+                margin: 0;
+                page-break-after: always;
+            }
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .pdf-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .pdf-header .subtitle {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .pdf-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .value-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .value-card h3 {
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .value-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .value-card li {
+            padding: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.9rem;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table .highlight {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tech-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tech-tag.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .pricing-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .pricing-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .pricing-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .pricing-stat {
+            text-align: center;
+        }
+
+        .pricing-stat .number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .pricing-stat .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .cta-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .contact-info strong {
+            color: #2c3e50;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .pdf-container {
+                padding: 20px;
+            }
+            
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container" id="pdfContent">
+        <!-- Page 1: En-tête et Valeur -->
+        <div class="pdf-page">
+            <!-- En-tête -->
+            <div class="pdf-header">
+                <h1>Proposition Commerciale</h1>
+                <div class="subtitle">Observabilité & Monitoring - Vision Complète du SI</div>
+                <div class="pdf-meta">
+                    <div>Wekey - Architecture & Transformation</div>
+                    <div>Référence : OBS-2025-001</div>
+                    <div>Novembre 2025</div>
+                </div>
+            </div>
+
+            <!-- Section Valeur -->
+            <div class="section">
+                <h2 class="section-title">Valeur & Bénéfices pour votre entreprise</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Visibilité & Contrôle</h3>
+                        <ul>
+                            <li><strong>Vision 360°</strong> de votre infrastructure</li>
+                            <li><strong>Détection proactive</strong> des anomalies</li>
+                            <li><strong>Alertes intelligentes</strong> et pertinentes</li>
+                            <li><strong>Tableaux de bord</strong> personnalisés</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Performance & Fiabilité</h3>
+                        <ul>
+                            <li><strong>Réduction de 70%</strong> incidents majeurs</li>
+                            <li><strong>MTTR réduit</strong> de 60%</li>
+                            <li><strong>Disponibilité</strong> améliorée de 25%</li>
+                            <li><strong>Performance</strong> applications optimisée</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Efficacité Opérationnelle</h3>
+                        <ul>
+                            <li><strong>Réduction de 40%</strong> temps de diagnostic</li>
+                            <li><strong>Automatisation</strong> des corrélations</li>
+                            <li><strong>Root cause analysis</strong> accélérée</li>
+                            <li><strong>Prédictibilité</strong> des pannes</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>ROI Mesurable</h3>
+                        <ul>
+                            <li><strong>ROI atteint</strong> en 8-12 mois</li>
+                            <li><strong>Économies annuelles</strong> : 45 000 €+</li>
+                            <li><strong>Réduction coûts</strong> : 30%</li>
+                            <li><strong>Gain productivité</strong> : 35%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Approche et Définition -->
+        <div class="pdf-page">
+            <!-- Section Définition -->
+            <div class="section">
+                <h2 class="section-title">Définition du Service</h2>
+                <p style="margin-bottom: 20px; line-height: 1.6;">
+                    L'observabilité et le monitoring est une approche holistique qui fournit une visibilité complète sur votre système d'information, permettant de comprendre, diagnostiquer et optimiser les performances en temps réel.
+                </p>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Piliers de l'Observabilité</h3>
+                        <ul>
+                            <li><strong>Métriques</strong> : Indicateurs quantitatifs</li>
+                            <li><strong>Logs</strong> : Événements détaillés</li>
+                            <li><strong>Traces</strong> : Transactions distribuées</li>
+                            <li><strong>Events</strong> : Changements d'état</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Capacités Avancées</h3>
+                        <ul>
+                            <li><strong>ML/AI</strong> pour anomalies</li>
+                            <li><strong>Corrélation automatique</strong></li>
+                            <li><strong>Business intelligence</strong></li>
+                            <li><strong>Prédictive analytics</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Approche -->
+            <div class="section">
+                <h2 class="section-title">Notre Approche Méthodologique</h2>
+                <blockquote style="font-style: italic; color: #667eea; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #667eea; border-radius: 8px;">
+                    « Nous construisons une observabilité complète qui transforme vos données en insights actionnables pour une performance optimale. »
+                </blockquote>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 1: Audit & Cartographie (2 semaines)</div>
+                        <div class="timeline-content">
+                            Analyse existant, identification sources, cartographie flux, définition KPI, évaluation maturité.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 2: Architecture & Design (2-3 semaines)</div>
+                        <div class="timeline-content">
+                            Conception plateforme, sélection outils, définition stratégies, design dashboards, plan de collecte.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 3: Implémentation & Intégration (3-4 semaines)</div>
+                        <div class="timeline-content">
+                            Déploiement outils, configuration agents, intégration sources, création dashboards, tests validation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 4: Optimisation & Formation (1-2 semaines)</div>
+                        <div class="timeline-content">
+                            Optimisation performances, alerting intelligent, formation équipes, support technique, documentation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Livrables et Équipe -->
+        <div class="pdf-page">
+            <!-- Section Livrables -->
+            <div class="section">
+                <h2 class="section-title">Livrables & Résultats Attendus</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Livrables Techniques</h3>
+                        <ul>
+                            <li>Plateforme monitoring complète</li>
+                            <li>Tableaux de bord personnalisés</li>
+                            <li>Système d'alerting intelligent</li>
+                            <li>Corrélateur d'événements</li>
+                            <li>Documentation complète</li>
+                            <li>Playbooks de diagnostic</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Transfert de Compétences</h3>
+                        <ul>
+                            <li>Formation équipes monitoring</li>
+                            <li>Ateliers dashboards</li>
+                            <li>Guide bonnes pratiques</li>
+                            <li>Mentoring technique</li>
+                            <li>Support post-projet</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Équipe -->
+            <div class="section">
+                <h2 class="section-title">Équipe d'Experts Mobilisés</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Profil</th>
+                            <th>Expertise</th>
+                            <th>Jours</th>
+                            <th>Rôle Principal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Monitoring Architect</strong></td>
+                            <td>Observability, Metrics, Logs, Traces</td>
+                            <td>16 jours</td>
+                            <td>Conception architecture & stratégies</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Engineer</strong></td>
+                            <td>ELK Stack, Prometheus, Grafana, Timeseries</td>
+                            <td>18 jours</td>
+                            <td>Déploiement & configuration</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DevOps Engineer</strong></td>
+                            <td>Kubernetes, Automation, Scripting, Cloud</td>
+                            <td>12 jours</td>
+                            <td>Intégration & automatisation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chef de projet</strong></td>
+                            <td>Monitoring, Transformation, Coordination</td>
+                            <td>5 jours</td>
+                            <td>Gestion de projet & livraison</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Total</strong></td>
+                            <td></td>
+                            <td><strong>51 jours</strong></td>
+                            <td><strong>2-3 mois de mission</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page 4: Technologies et Tarification -->
+        <div class="pdf-page">
+            <!-- Section Technologies -->
+            <div class="section">
+                <h2 class="section-title">Stack Technologique & Solutions</h2>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Monitoring & Observability</h3>
+                    <div class="tech-tags">
+                        <div class="tech-tag primary">Prometheus</div>
+                        <div class="tech-tag primary">Grafana</div>
+                        <div class="tech-tag primary">ELK Stack</div>
+                        <div class="tech-tag primary">Datadog</div>
+                        <div class="tech-tag primary">New Relic</div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">APM & Tracing</h3>
+                    <div class="tech-tags">
+                        <div class="tech-tag">Jaeger</div>
+                        <div class="tech-tag">Zipkin</div>
+                        <div class="tech-tag">OpenTelemetry</div>
+                        <div class="tech-tag">AppDynamics</div>
+                        <div class="tech-tag">Dynatrace</div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Log Management</h3>
+                    <div class="tech-tags">
+                        <div class="tech-tag">Elasticsearch</div>
+                        <div class="tech-tag">Logstash</div>
+                        <div class="tech-tag">Fluentd</div>
+                        <div class="tech-tag">Splunk</div>
+                        <div class="tech-tag">Graylog</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Alerting & Automation</h3>
+                    <div class="tech-tags">
+                        <div class="tech-tag">AlertManager</div>
+                        <div class="tech-tag">PagerDuty</div>
+                        <div class="tech-tag">OpsGenie</div>
+                        <div class="tech-tag">VictorOps</div>
+                        <div class="tech-tag">Camunda</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Tarification -->
+            <div class="section">
+                <h2 class="section-title">Investissement & ROI</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Modèle de Tarification</h3>
+                        <ul>
+                            <li><strong>Forfait fixe</strong> : 60 000 € HT</li>
+                            <li>Basé sur 51 jours d'expertise</li>
+                            <li>TJM moyen : 1 176 € HT/jour</li>
+                            <li>Garantie de disponibilité 99.9%</li>
+                            <li>Support post-projet inclus</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Retour sur Investissement</h3>
+                        <ul>
+                            <li><strong>Économies annuelles</strong> : 45 000 €+</li>
+                            <li><strong>ROI atteint</strong> : 8-12 mois</li>
+                            <li><strong>Réduction incidents</strong> : 70%</li>
+                            <li><strong>Gain productivité</strong> : 35%</li>
+                            <li><strong>MTTR réduit</strong> : 60%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pricing-box">
+                    <h3>Investissement Total : 60 000 € HT</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">Soit 1 176 € HT par jour d'expertise senior</p>
+                    <div class="pricing-stats">
+                        <div class="pricing-stat">
+                            <span class="number">8-12</span>
+                            <span class="label">mois pour ROI</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">45k€+</span>
+                            <span class="label">économies/an</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">99.9%</span>
+                            <span class="label">disponibilité</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Calendrier et Contact -->
+        <div class="pdf-page">
+            <!-- Section Calendrier -->
+            <div class="section">
+                <h2 class="section-title">Calendrier de Déploiement</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 1-2: Audit & Cartographie</div>
+                        <div class="timeline-content">
+                            Analyse existant, identification sources, cartographie flux, définition KPI, évaluation maturité.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 3-5: Architecture & Design</div>
+                        <div class="timeline-content">
+                            Conception plateforme, sélection outils, définition stratégies, design dashboards, plan de collecte.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 6-9: Implémentation & Intégration</div>
+                        <div class="timeline-content">
+                            Déploiement outils, configuration agents, intégration sources, création dashboards, tests validation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 10-11: Optimisation & Formation</div>
+                        <div class="timeline-content">
+                            Optimisation performances, alerting intelligent, formation équipes, support technique, documentation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section KPI -->
+            <div class="section">
+                <h2 class="section-title">Indicateurs de Performance Clés</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>KPI Techniques</h3>
+                        <ul>
+                            <li><strong>MTTR</strong> (Mean Time To Repair)</li>
+                            <li><strong>MTBF</strong> (Mean Time Between Failures)</li>
+                            <li><strong>Taux incidents</strong> critiques</li>
+                            <li><strong>Couverture monitoring</strong> applications</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>KPI Métier</h3>
+                        <ul>
+                            <li><strong>Satisfaction utilisateurs</strong></li>
+                            <li><strong>Impact business</strong> incidents</li>
+                            <li><strong>Coût incidents</strong> réduction</li>
+                            <li><strong>Prédictibilité</strong> pannes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section CTA -->
+            <div class="cta-section">
+                <h2>Prêt à transformer votre monitoring en observabilité ?</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Contactez-nous dès aujourd'hui pour démarrer votre projet d'observabilité 
+                    et bénéficier d'un audit gratuit de votre maturité monitoring.
+                </p>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <p><strong>Wekey - Architecture & Transformation</strong></p>
+                <p>Email : <strong>contact@wekey.fr</strong> | Téléphone : <strong>+33 1 23 45 67 89</strong></p>
+                <p>Web : <strong>www.wekey.fr</strong> | LinkedIn : <strong>linkedin.com/company/wekey</strong></p>
+                <p><strong>Référence proposition :</strong> OBS-2025-001</p>
+                <p><strong>Date d'émission :</strong> Novembre 2025</p>
+                <p><strong>Validité de l'offre :</strong> 3 mois</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>Cette proposition commerciale est confidentielle et destinée uniquement au destinataire.</p>
+                <p>Tous nos services sont soumis à nos conditions générales de vente disponibles sur demande.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de génération PDF -->
+    <div class="button-container">
+        <button class="btn" id="generatePdf" onclick="generatePDF()">
+            <i class="fas fa-file-pdf"></i>
+            Télécharger la proposition commerciale (PDF)
+        </button>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p>Génération du PDF en cours...</p>
+    </div>
+
+    <script>
+        // Initialiser jsPDF
+        const { jsPDF } = window.jspdf;
+
+        async function generatePDF() {
+            const button = document.getElementById('generatePdf');
+            const loading = document.getElementById('loading');
+            const pages = document.querySelectorAll('.pdf-page');
+            
+            // Désactiver le bouton et afficher le chargement
+            button.disabled = true;
+            loading.style.display = 'block';
+            
+            try {
+                // Configuration pour le PDF
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 20;
+                const contentWidth = pageWidth - (margin * 2);
+                const contentHeight = pageHeight - (margin * 2);
+                
+                // Ajouter des métadonnées
+                pdf.setProperties({
+                    title: 'Proposition Commerciale - Observabilité & Monitoring',
+                    subject: 'Wekey - Architecture & Transformation',
+                    author: 'Wekey',
+                    keywords: 'Observability, Monitoring, Metrics, Logs, Traces',
+                    creator: 'Wekey - Architecture & Transformation'
+                });
+                
+                // Traiter chaque page séparément
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    
+                    // Convertir chaque page en canvas
+                    const canvas = await html2canvas(page, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff',
+                        width: page.offsetWidth,
+                        height: page.offsetHeight
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // Calculer les dimensions pour s'adapter à la page PDF
+                    const imgWidth = contentWidth;
+                    const imgHeight = (canvas.height * contentWidth) / canvas.width;
+                    
+                    // Si ce n'est pas la première page, ajouter une nouvelle page
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    // Ajouter l'image de la page
+                    pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+                    
+                    // Ajouter un numéro de page en bas
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(128, 128, 128);
+                    pdf.text(`Page ${i + 1} / ${pages.length}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                }
+                
+                // Générer le nom de fichier avec date
+                const date = new Date().toISOString().split('T')[0];
+                const fileName = `proposition-observabilite-monitoring-${date}.pdf`;
+                
+                // Télécharger le PDF
+                pdf.save(fileName);
+                
+                // Afficher un message de succès
+                showSuccessMessage();
+                
+            } catch (error) {
+                console.error('Erreur lors de la génération du PDF:', error);
+                showErrorMessage();
+            } finally {
+                // Réactiver le bouton et masquer le chargement
+                button.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+        
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-check-circle"></i> PDF généré avec succès !';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        function showErrorMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #dc3545;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erreur lors de la génération du PDF';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        // Fonction alternative pour les navigateurs qui ne supportent pas html2canvas
+        function fallbackPDF() {
+            window.print();
+        }
+        
+        // Vérifier si les bibliothèques sont chargées
+        window.addEventListener('load', function() {
+            if (typeof html2canvas === 'undefined' || typeof jsPDF === 'undefined') {
+                console.warn('Bibliothèques PDF non chargées, utilisation de l impression native');
+                document.getElementById('generatePdf').onclick = fallbackPDF;
+                document.getElementById('generatePdf').innerHTML = '<i class="fas fa-print"></i> Imprimer la proposition commerciale';
+            }
+        });
+    </script>
+</body>
+</html>

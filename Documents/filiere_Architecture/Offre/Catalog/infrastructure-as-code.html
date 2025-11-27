@@ -10,6 +10,185 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="CSS/service-detail.css">
+    
+    <!-- Styles d'impression pour proposition commerciale -->
+    <style media="print">
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-size: 12pt;
+            line-height: 1.4;
+            color: #333;
+            background: white !important;
+        }
+        
+        .page {
+            background: white !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .shape-large, .shape-dot, .icon-card, .chatbot-container, .chatbot-icon {
+            display: none !important;
+        }
+        
+        .header {
+            background: white !important;
+            color: #333 !important;
+            padding: 20px 0 !important;
+            border-bottom: 3px solid var(--accent-500) !important;
+            margin-bottom: 30px !important;
+        }
+        
+        .header h1 {
+            color: #333 !important;
+            font-size: 24pt !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .family-section {
+            background: #f8f9fa !important;
+            padding: 15px !important;
+            border-left: 4px solid var(--accent-500) !important;
+            margin: 15px 0 !important;
+        }
+        
+        .content {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+        
+        .facts {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+        }
+        
+        .fact-card {
+            background: white !important;
+            border: 1px solid #ddd !important;
+            padding: 20px !important;
+            margin-bottom: 20px !important;
+            page-break-inside: avoid !important;
+            box-shadow: none !important;
+        }
+        
+        .fact-card h2 {
+            color: var(--accent-500) !important;
+            font-size: 16pt !important;
+            border-bottom: 2px solid #eee !important;
+            padding-bottom: 10px !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .fact-card h3 {
+            color: #333 !important;
+            font-size: 14pt !important;
+            margin: 15px 0 10px 0 !important;
+        }
+        
+        .benefits li {
+            margin: 8px 0 !important;
+            line-height: 1.4 !important;
+        }
+        
+        .tech-sections {
+            display: block !important;
+        }
+        
+        .tech-sections .fact-card {
+            border: 2px solid var(--accent-500) !important;
+            background: #f8f9fa !important;
+        }
+        
+        .tech-tag {
+            background: var(--accent-200) !important;
+            color: var(--accent-700) !important;
+            padding: 4px 8px !important;
+            margin: 2px !important;
+            border-radius: 12px !important;
+            font-size: 10pt !important;
+            display: inline-block !important;
+        }
+        
+        .back-link, .print-button {
+            display: none !important;
+        }
+        
+        .footer {
+            background: white !important;
+            color: #333 !important;
+            border-top: 2px solid #eee !important;
+            margin-top: 40px !important;
+            padding: 20px 0 !important;
+            text-align: center !important;
+        }
+        
+        /* En-tête de proposition commerciale */
+        .header::before {
+            content: "PROPOSITION COMMERCIALE";
+            display: block;
+            font-size: 28pt;
+            font-weight: bold;
+            color: var(--accent-500);
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .header::after {
+            content: "Wekey - Filière Architecture & Transformation";
+            display: block;
+            font-size: 14pt;
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+        }
+        
+        /* Pied de page commercial */
+        .footer::before {
+            content: "Pour toute information : contact@wekey.fr | www.wekey.fr";
+            display: block;
+            font-size: 11pt;
+            margin-bottom: 10px;
+        }
+        
+        /* Mise en évidence des éléments clés */
+        .value-item strong {
+            color: var(--accent-500) !important;
+            font-weight: bold !important;
+        }
+        
+        /* Numérotation des sections */
+        .facts {
+            counter-reset: section-counter;
+        }
+        
+        .fact-card::before {
+            counter-increment: section-counter;
+            content: counter(section-counter);
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent-500);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14pt;
+        }
+        
+        .fact-card {
+            position: relative !important;
+        }
+    </style>
 </head>
 <body>
     <div class="page" role="main">
@@ -208,10 +387,13 @@
                 </div>
             </div>
             
-            <!-- Bouton de retour -->
-            <div style="text-align: center; margin-top: 2rem; width: 100%;">
-                <a href="index.html" class="back-link">
+            <!-- Boutons d'action -->
+            <div style="text-align: center; margin-top: 2rem; width: 100%; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="index.html" class="back-link" style="text-decoration: none;">
                     <i class="fas fa-arrow-left"></i> Retour au catalogue
+                </a>
+                <a href="pdf-infrastructure-as-code.html" target="_blank" class="print-button" style="background: linear-gradient(135deg, var(--accent-500), #e67e00); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(245, 166, 35, 0.4)'; this.style.background='linear-gradient(135deg, #e67e00, var(--accent-500))';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 166, 35, 0.3)'; this.style.background='linear-gradient(135deg, var(--accent-500), #e67e00)';">
+                    <i class="fas fa-file-pdf"></i> Télécharger la proposition commerciale (PDF)
                 </a>
             </div>
             
@@ -253,6 +435,19 @@
             const userInput = document.getElementById('userInput');
             const sendButton = document.getElementById('sendButton');
             const closeButton = document.getElementById('chatbotClose');
+            
+            // Fonction d'impression améliorée
+            window.imprimerProposition = function() {
+                // Afficher une confirmation
+                const confirmation = confirm('Préparer la proposition commerciale pour impression ?\n\nLe document sera formaté professionnellement avec en-tête et pied de page commerciaux.');
+                
+                if (confirmation) {
+                    // Petit délai pour l'effet visuel
+                    setTimeout(() => {
+                        window.print();
+                    }, 300);
+                }
+            };
             
             // Afficher/masquer le chat
             const chatIcon = document.createElement('div');
