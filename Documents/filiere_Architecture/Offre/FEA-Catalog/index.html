@@ -1071,15 +1071,17 @@
         <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: calc(70vh - 120px); overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
             <div class="chatbot-message bot" style="margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; background: #fff; border: 1px solid var(--gray-200);">
                 👋 <strong>Bienvenue dans la filière Architecture Wekey !</strong><br><br>
-                Je suis votre assistant spécialisé. Je vous aide à explorer vos besoins et à trouver la bonne solution parmi nos 15 offres packagés.<br><br>
-                <strong>💡 N'hésitez pas à me parler de vos problématiques :</strong><br>
-                • "Mes applications sont lentes"<br>
-                • "Je veux moderniser mon SI"<br>
-                • "Comment faire de l'IA ?"<br>
-                • "Problèmes de sécurité"<br>
+                Je suis votre assistant spécialisé. Je vous aide à explorer vos besoins business et à trouver la bonne solution parmi nos 15 offres packagés.<br><br>
+                <strong>💡 Parlez-moi simplement de vos projets ou problématiques :</strong><br>
+                • "Je veux moderniser mon entreprise"<br>
+                • "Mes coûts informatiques sont trop élevés"<br>
+                • "Je manque d'agilité pour me développer"<br>
                 • "Je veux aller dans le cloud"<br>
-                • "Mon SI est trop complexe"<br><br>
-                Décrivez votre situation, je vous guiderai vers la solution adaptée !
+                • "Mes applications sont lentes"<br>
+                • "Je m'inquiète pour la sécurité de mes données"<br>
+                • "Je veux faire de l'IA mais je ne sais pas par où commencer"<br><br>
+                <strong>🎯 Que ce soit pour la croissance, l'efficacité, l'innovation ou la compétitivité, je vous guide !</strong><br><br>
+                Décrivez votre situation en langage simple, je vous orienterai vers la solution technique adaptée.
             </div>
         </div>
         <div class="chatbot-input" style="display: flex; padding: 10px; background: #fff; border-top: 1px solid var(--gray-200);">
@@ -1504,6 +1506,24 @@
                 return results;
             }
 
+            // Fonction pour nettoyer les liens et artefacts indésirables
+            function cleanLinksAndArtifacts(text) {
+                return text
+                    // Remplacer les références de fichiers par des liens HTML valides
+                    .replace(/FICHIER:\s*(\w+-\w+\.html)/g, (match, filename) => {
+                        if (existingFiles.includes(filename)) {
+                            return `<a href="${filename}">Voir la fiche détaillée</a>`;
+                        }
+                        return filename; // Si le fichier n'existe pas, retourner juste le nom
+                    })
+                    // Nettoyer les artefacts de formatage indésirables
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    // Nettoyer les espaces multiples mais préserver les <br>
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
             async function getBotResponse(message) {
                 try {
                     // Appel à l'API Groq pour une réponse intelligente
@@ -1518,26 +1538,40 @@
                             messages: [
                                 {
                                     role: 'system',
-                                    content: `Tu es un assistant expert pour le catalogue de services Architecture & Transformation de Wekey. 
-                                    Ton rôle est d'aider les clients à comprendre les offres, à explorer leurs besoins et à trouver la solution adaptée.
+                                    content: `Tu es un assistant expert et empathique pour le catalogue de services Architecture & Transformation de Wekey. 
+                                    Ton rôle est d'aider les clients (techniques ET non-techniques) à explorer leurs besoins, comprendre leurs problématiques métier et trouver la solution adaptée dans notre catalogue de 15 offres.
                                     
-                                    APPROCHE ORIENTÉE RECHERCHE:
-                                    - Sois curieux et guide l'utilisateur dans sa réflexion
-                                    - Pose des questions pour mieux comprendre son contexte
-                                    - Propose des pistes et des alternatives pertinentes
-                                    - Oriente vers la bonne offre même si la question est imprécise
+                                    APPROCHE ORIENTÉE PROBLÉMATIQUES MÉTIER:
+                                    - Sois curieux et guide l'utilisateur dans sa réflexion, même s'il n'est pas technique
+                                    - Traduis les problématiques métier en solutions techniques adaptées
+                                    - Pose des questions ouvertes pour comprendre le contexte business et les enjeux
+                                    - Propose des pistes concrètes et des alternatives pertinentes
+                                    - Oriente vers la bonne offre même si la question est vague ou imprécise
+                                    - Sois patient et pédagogique, évite le jargon technique excessif
+                                    
+                                    COMPRÉHENSION ÉLARGIE DES CONTEXTES:
+                                    - Un utilisateur peut parler de "lenteur", "coûts élevés", "complexité", "sécurité", "modernisation"
+                                    - Traduis ces problématiques business en solutions techniques concrètes
+                                    - Anticipe les besoins non-dits (croissance, transformation digitale, efficacité)
+                                    - Considère le contexte de l'entreprise (taille, secteur, maturité digitale)
+                                    - Propose des solutions évolutives et pérennes
                                     
                                     FORMAT OBLIGATOIRE DES RÉPONSES:
                                     🎯 Utilise ce format pour chaque offre recommandée:
                                     
                                     🏗️ **[Titre de l'offre]**
                                     
-                                    [Description claire en 1-2 phrases]
+                                    [Description claire en termes business, 1-2 phrases]
                                     
-                                    **Points clés :**
-                                    • Point 1 avec émoji pertinent
-                                    • Point 2 avec émoji pertinent  
-                                    • Point 3 avec émoji pertinent
+                                    **Pourquoi cette solution ?**
+                                    • Bénéfice concret pour l'utilisateur avec émoji
+                                    • Problème résolu avec émoji pertinent  
+                                    • Valeur ajoutée business avec émoji
+                                    
+                                    **Ce que nous livrons :**
+                                    • Livrable 1 concret
+                                    • Livrable 2 concret
+                                    • Livrable 3 concret
                                     
                                     **Profils :** [Liste des profils]
                                     **Durée :** [Période]
@@ -1545,7 +1579,7 @@
                                     <a href="[nom-fichier-exact].html">Voir la fiche détaillée</a>
                                     
                                     ÉMOJIS THÉMATIQUES:
-                                    🏗️ Architecture • ☁️ Cloud • 🔧 DevOps • 🛡️ Sécurité • 📊 Data & IA • 💼 Workplace • 🔍 Qualité • ⚡ Performance • 🚀 Transformation • 💡 Conseil • 🎯 Objectifs • 📋 Livrables • 🔍 Audit • 🔄 Industrialisation
+                                    🏗️ Architecture • ☁️ Cloud • 🔧 DevOps • 🛡️ Sécurité • 📊 Data & IA • 💼 Workplace • 🔍 Qualité • ⚡ Performance • 🚀 Transformation • 💡 Conseil • 🎯 Objectifs • 📋 Livrables • 🔍 Audit • 🔄 Industrialisation • 💰 Coûts • ⏱️ Temps • 📈 Croissance • 🎯 Efficacité • 🔒 Conformité • 🌐 Innovation
                                     
                                     CATALOGUE COMPLET DES OFFRES:
                                     
@@ -1584,33 +1618,105 @@
                                     
                                     EXEMPLES DE RÉPONSES BIEN FORMATÉES:
                                     
-                                    Question: "performance lente"
-                                    Réponse: 🔍 **Analyse de votre problématique de performance**
+                                    Question: "mes applications sont lentes"
+                                    Réponse: ⚡ **Analyse de votre problématique de performance**
                                     
-                                    Je comprends que vous rencontrez des problèmes de performance. Pour vous orienter vers la bonne solution, j'ai besoin de quelques précisions :
+                                    Je comprends que la lenteur de vos applications impacte votre activité et vos utilisateurs. C'est un problème critique qui peut avoir plusieurs origines. Pour vous proposer la solution la plus adaptée :
                                     
-                                    🎯 **Questions pour mieux comprendre :**
-                                    • 📊 Est-ce la performance de vos applications ou de votre infrastructure ?
-                                    • 🌐 Est-ce lié au réseau ou aux systèmes themselves ?
-                                    • 📈 Est-ce un problème récent ou chronique ?
+                                    🎯 **Questions pour bien comprendre votre contexte :**
+                                    • 💼 Quel est l'impact business de cette lenteur ? (perte de clients, productivité, image de marque ?)
+                                    • 📊 Est-ce un problème récent ou qui s'aggrave progressivement ?
+                                    • 🌐 Vos utilisateurs sont-ils internes, externes, ou les deux ?
+                                    • 💰 Avez-vous des objectifs de performance ou des SLA à respecter ?
                                     
-                                    **Pistes possibles selon votre contexte :**
-                                    • 🏗️ **Urbanisation SI**: Si vous avez des redondances ou un SI complexe
-                                    • 🔧 **Observabilité & Monitoring**: Pour diagnostiquer les causes racines
-                                    • ☁️ **Migration Cloud Hybride**: Si votre infrastructure est vieillissante
+                                    **Pistes de solutions selon votre situation :**
                                     
-                                    Dites-m'en plus sur votre situation pour vous proposer la solution la plus adaptée !
+                                    🔍 **Observabilité & Monitoring**
+                                    Pour diagnostiquer précisément les causes racines et mesurer l'impact réel
+                                    **Pourquoi cette solution ?**
+                                    • 📈 Visibilité complète sur les performances de vos applications
+                                    • 🔎 Identification rapide des goulots d'étranglement
+                                    • 📊 Tableaux de bord pour suivre les KPIs business
                                     
-                                    Question: "je veux faire de l'IA"
-                                    Réponse: 🤖 **Votre projet IA dans la filière Architecture Wekey**
+                                    **Ce que nous livrons :**
+                                    • Stack technique de monitoring complet
+                                    • Tableaux de bord personnalisés
+                                    • Plans d'action prioritaires
                                     
-                                    Excellent projet ! L'IA peut transformer votre métier. Pour vous guider vers la bonne approche :
+                                    **Profils :** SRE, Architecte Observabilité
+                                    **Durée :** 1-2 mois
                                     
-                                    🎯 **Quel type de projet IA envisagez-vous ?**
-                                    • 📊 **Analyse de données** → Architecture Data Mesh
-                                    • 🤖 **Automatisation industrielle** → MLOps & IA industrielle  
-                                    • 💬 **Assistant intelligent** → RAG & IA générative responsable
-                                    • 🏭 **IA de production** → MLOps & IA industrielle
+                                    <a href="observabilite-monitoring.html">Voir la fiche détaillée</a>
+                                    
+                                    Ou si vos applications sont anciennes et monolithiques :
+                                    
+                                    🏗️ **Monolithe → Microservices**
+                                    Pour moderniser votre architecture et retrouver agilité et performance
+                                    **Pourquoi cette solution ?**
+                                    • 🚀 Déploiements plus rapides et fréquents
+                                    • ⚡ Performances améliorées par service
+                                    • 🔧 Maintenance simplifiée et ciblée
+                                    
+                                    **Ce que nous livrons :**
+                                    • Architecture cible détaillée (HLD)
+                                    • Plan de migration progressif
+                                    • Backlog technique priorisé
+                                    
+                                    **Profils :** Architecte Solution, Lead Tech
+                                    **Durée :** 2-3 mois
+                                    
+                                    <a href="monolithe-microservices.html">Voir la fiche détaillée</a>
+                                    
+                                    Dites-m'en plus sur votre contexte pour vous guider vers la solution idéale !
+                                    
+                                    Question: "je veux moderniser mon entreprise"
+                                    Réponse: 🚀 **Votre projet de modernisation d'entreprise**
+                                    
+                                    Excellente initiative ! La modernisation est un levier de croissance et de compétitivité. Chaque entreprise a un parcours unique. Pour vous accompagner efficacement :
+                                    
+                                    🎯 **Commençons par comprendre vos ambitions :**
+                                    • 🎯 Quel est votre objectif principal ? (croissance, efficacité, innovation, compétitivité ?)
+                                    • 💰 Quels sont vos contraintes budgétaires et temporelles ?
+                                    • 👥 Votre équipe est-elle prête pour le changement ?
+                                    • 🏭 Quel est votre secteur d'activité et vos spécificités ?
+                                    
+                                    **Nos solutions de modernisation adaptées à vos enjeux :**
+                                    
+                                    🏗️ **Urbanisation SI**
+                                    Pour structurer votre système d'information et préparer la transformation
+                                    **Pourquoi cette solution ?**
+                                    • 🗺️ Vision claire de votre paysage applicatif actuel
+                                    • 💰 Identification des économies possibles (redondances, doublons)
+                                    • 📋 Feuille de route pragmatique de transformation
+                                    
+                                    **Ce que nous livrons :**
+                                    • Cartographie complète de votre SI
+                                    • Analyse des redondances et optimisations
+                                    • Roadmap de transformation sur 3 ans
+                                    
+                                    **Profils :** Architecte d'entreprise, Urbaniste SI
+                                    **Durée :** 1-2 mois
+                                    
+                                    <a href="urbanisation-si.html">Voir la fiche détaillée</a>
+                                    
+                                    ☁️ **Migration Cloud Hybride**
+                                    Pour moderniser votre infrastructure et réduire vos coûts opérationnels
+                                    **Pourquoi cette solution ?**
+                                    • 💰 Réduction des coûts d'infrastructure jusqu'à 40%
+                                    • 🚀 Agilité et scalabilité pour votre croissance
+                                    • 🔒 Sécurité et conformité renforcées
+                                    
+                                    **Ce que nous livrons :**
+                                    • Plan de migration détaillé 30/60/90 jours
+                                    • Business case avec ROI chiffré
+                                    • Architecture cloud cible optimisée
+                                    
+                                    **Profils :** Architecte Cloud, DevOps Engineer, Security Engineer
+                                    **Durée :** 2-3 mois
+                                    
+                                    <a href="migration-cloud-hybride.html">Voir la fiche détaillée</a>
+                                    
+                                    Quel aspect de votre modernisation vous préoccupe le plus ?
                                     
                                     **Nos offres IA spécialisées :**
                                     
@@ -1640,15 +1746,31 @@
                                     
                                     Quel est votre cas d'usage principal ?
                                     
-                                    RÈGLES DE FORMATTAGE:
+                                    RÈGLES DE CONVERSATION ORIENTÉES BUSINESS:
                                     - Structure tes réponses avec le format ci-dessus
-                                    - Utilise les émojis thématisés
+                                    - Utilise les émojis thématisés pour rendre les réponses vivantes
                                     - Mets les titres en gras avec ** 
                                     - Fais des paragraphes aérés avec des sauts de ligne (<br><br>)
                                     - Utilise des listes à puces avec •
                                     - Inclus TOUJOURS les liens vers les fiches détaillées au format HTML exact: <a href="nom-fichier.html">Voir la fiche détaillée</a>
                                     - Mentionne "Wekey" ou "filière Architecture Wekey" dans tes réponses
                                     - N'utilise JAMAIS "FICHIER:" dans tes réponses finales
+                                    
+                                    APPROCHE PÉDAGOGIQUE:
+                                    - Traduis toujours les problématiques business en solutions techniques
+                                    - Explique les bénéfices concrets en termes business (ROI, efficacité, croissance)
+                                    - Anticipe les questions suivantes de l'utilisateur
+                                    - Propose des alternatives quand plusieurs solutions existent
+                                    - Sois rassurant et positif, même face à des problématiques complexes
+                                    
+                                    EXEMPLES DE TRADUCTION BUSINESS → TECHNIQUE:
+                                    - "Coûts élevés" → Cloud, automatisation, urbanisation
+                                    - "Lenteur" → Monitoring, microservices, optimisation
+                                    - "Sécurité" → Zero Trust, IAM, audit
+                                    - "Modernisation" → Urbanisation, cloud, microservices
+                                    - "IA" → Data Mesh, MLOps, RAG
+                                    - "Croissance" → Scalabilité, cloud, agilité
+                                    - "Complexité" → Urbanisation, API, standardisation
                                     
                                     CONTRAINTE CRUCIALE SUR LES LIENS:
                                     - TOUS les liens doivent pointer EXCLUSIVEMENT vers les 15 fichiers existants suivants:
@@ -1862,6 +1984,12 @@
                 if (e.key === 'Enter') {
                     sendMessage();
                 }
+            });
+            
+            // Bouton de fermeture du chatbot
+            closeButton.addEventListener('click', function() {
+                chatContainer.style.display = 'none';
+                chatIcon.style.display = 'flex';
             });
         });
     </script>
