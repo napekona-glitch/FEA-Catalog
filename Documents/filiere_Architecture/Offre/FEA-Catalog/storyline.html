@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storyline - Wekey Catalogue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-500: #f5a623;
+            --accent-400: #ffd27a;
+            --accent-200: #fff3cf;
+            --gray-050: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #6b7280;
+            --gray-700: #4b5563;
+            --gray-800: #374151;
+            --gray-900: #111827;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, var(--gray-050) 0%, var(--white) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #f0a320 0%, #e67e00 50%, #2c3e50 100%);
+            color: var(--white);
+            border-radius: 15px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; right: -50px;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -100px; left: -100px;
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            transform: rotate(-30deg);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-500);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(240, 163, 32, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 163, 32, 0.4);
+        }
+
+        .story-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--accent-500);
+            transition: transform 0.3s ease;
+        }
+
+        .story-section:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .story-section h2 {
+            color: var(--accent-500);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .story-section h3 {
+            color: var(--gray-800);
+            font-size: 1.3rem;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        .story-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .character {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .dialogue {
+            background: var(--gray-050);
+            border-left: 3px solid var(--accent-400);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        .ia-response {
+            background: linear-gradient(135deg, var(--accent-200) 0%, var(--white) 100%);
+            border-left: 3px solid var(--accent-500);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .highlight {
+            background: var(--accent-200);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent-500), var(--accent-400));
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(240, 163, 32, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(240, 163, 32, 0.4);
+        }
+
+        .final-message {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: var(--white);
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .final-message h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .final-message p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .story-section {
+                padding: 20px;
+            }
+            
+            .story-section:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">
+        ← Retour au catalogue
+    </a>
+
+    <div class="container">
+        <header>
+            <h1>🎬 Wekey Catalogue - La Transformation Digitale Intelligente</h1>
+            <p>Découvrez comment Alex a transformé son SI avec notre catalogue intelligent</p>
+        </header>
+
+        <section class="story-section">
+            <h2>🎯 Scène 1 : Le Défi - Le Chaos Digital</h2>
+            <p><span class="character">Alex</span>, Directeur Digital, est dans son bureau, entouré de schémas complexes, l'air frustré.</p>
+            <div class="dialogue">
+                "Mon SI est un labyrinthe... Mes applications sont lentes, mes équipes perdent du temps, et je ne sais pas par où commencer la transformation. J'ai besoin d'un guide, d'une feuille de route claire..."
+            </div>
+            <p>Alex ouvre son ordinateur, recherche "transformation digitale expert". Il découvre le catalogue Wekey...</p>
+        </section>
+
+        <section class="story-section">
+            <h2>✨ Scène 2 : La Découverte - Le Catalogue Intelligent</h2>
+            <p><span class="character">Alex</span> est impressionné par le design moderne et épuré du catalogue.</p>
+            <div class="dialogue">
+                "Woah... C'est différent ! Design moderne, 15 offres spécialisées... Et cet assistant IA ?"
+            </div>
+            <p>Alex clique sur l'icône 💬 du chatbot...</p>
+            <div class="ia-response">
+                <strong>👋 IA Wekey :</strong> "Bienvenue dans la filière Architecture Wekey ! Je suis votre assistant spécialisé. Je vous aide à explorer vos besoins et à trouver la bonne solution parmi nos 15 offres packagées."
+            </div>
+            <p><span class="character">Alex</span>, curieux : "Mes applications sont lentes, je veux moderniser mon SI..."</p>
+        </section>
+
+        <section class="story-section">
+            <h2>🧠 Scène 3 : La Magie - L'IA Comprend Vraiment</h2>
+            <p>L'IA analyse la problématique d'Alex avec intelligence.</p>
+            <div class="ia-response">
+                <strong>🔍 IA Wekey :</strong> "Analyse de votre problématique de performance<br><br>
+                Je comprends que vous rencontrez des problèmes de performance. Pour vous orienter précisément :<br><br>
+                • 📊 Est-ce la performance de vos applications ou de votre infrastructure ?<br>
+                • 🌐 Est-ce lié au réseau ou aux systèmes eux-mêmes ?<br>
+                • 📈 Est-ce un problème récent ou chronique ?<br><br>
+                <strong>🏗️ Urbanisation SI</strong><br>
+                Cartographie complète SI et roadmap transformation sur 1-2 mois<br>
+                • 📋 Cartographie des redondances<br>
+                • 🎯 Feuille de route transformation<br>
+                • 📊 Indicateurs de maturité<br><br>
+                <a href="urbanisation-si.html" style="color: var(--accent-500);">Voir la fiche détaillée</a>"
+            </div>
+        </section>
+
+        <section class="story-section">
+            <h2>🔍 Scène 4 : L'Exploration - Les Fiches Détaillées</h2>
+            <p><span class="character">Alex</span> clique sur "Urbanisation SI", découvre une fiche riche et structurée.</p>
+            <div class="dialogue">
+                "Incroyable ! La valeur métier est claire, l'approche méthodologique précise... Et cet autre chatbot spécialisé ?"
+            </div>
+            <div class="ia-response">
+                <strong>🏗️ Chatbot Spécialisé Urbanisation SI :</strong> "Expert Urbanisation SI à votre service ! Je peux vous détailler les prérequis, les profils mobilisés, les livrables concrets et les KPIs de succès."
+            </div>
+        </section>
+
+        <section class="story-section">
+            <h2>🖨️ Scène 5 : La Synthèse - Le Flyer Marketing</h2>
+            <p><span class="character">Alex</span> explore le catalogue, puis remarque le bouton d'impression.</p>
+            <div class="dialogue">
+                "🖨️ Imprimer le flyer ? Voyons voir..."
+            </div>
+            <p>Alex clique, l'aperçu impression s'ouvre - <span class="highlight">5 pages magnifiques</span> !</p>
+            <div class="dialogue">
+                "Wow ! C'est un véritable support marketing ! Header spectaculaire, design créatif, codes couleur par catégorie... Et 5 pages bien organisées !"
+            </div>
+            <p><strong>Page 1 :</strong> Header Wekey + offres Architecture<br>
+            <strong>Page 2 :</strong> Cloud & Infrastructure<br>
+            <strong>Page 3 :</strong> DevOps & Sécurité<br>
+            <strong>Page 4 :</strong> Data & Workplace<br>
+            <strong>Page 5 :</strong> Qualité + contact</p>
+        </section>
+
+        <section class="story-section">
+            <h2>🚀 Scène 6 : La Décision - L'Action</h2>
+            <p><span class="character">Alex</span>, convaincu, prend son téléphone.</p>
+            <div class="dialogue">
+                "Bonjour, j'ai découvert votre catalogue Wekey. C'est exactement ce qu'il me faut ! L'IA m'a guidé vers les bonnes solutions, les fiches sont claires, et j'ai imprimé le flyer pour ma direction."
+            </div>
+            <p>Pause, écoute...</p>
+            <div class="dialogue">
+                "Oui, je veux démarrer avec l'Urbanisation SI. Comment pouvons-nous organiser un workshop de découverte ?"
+            </div>
+        </section>
+
+        <section class="story-section">
+            <h2>🌟 Scène 7 : Le Résultat - La Transformation</h2>
+            <p><strong>6 mois plus tard</strong> - Alex dans son bureau, mais cette fois souriant et détendu.</p>
+            <div class="dialogue">
+                "Quel changement ! Notre SI est cartographié, la feuille de route est claire, les équipes sont motivées... Et tout a commencé avec ce catalogue intelligent."
+            </div>
+            <p>Alex regarde le flyer Wekey sur son bureau.</p>
+            <div class="dialogue">
+                "Merci Wekey... Vous n'avez pas juste vendu des services, vous avez compris mes vrais besoins et guidé ma transformation."
+            </div>
+        </section>
+
+        <section class="story-section">
+            <h2>🔄 Scène 8 : L'Épilogue - L'Écosystème</h2>
+            <p>Aujourd'hui, des centaines d'entreprises font confiance au catalogue Wekey...</p>
+            <p><strong>CTO</strong> explorant les offres Cloud<br>
+            <strong>DSI</strong> découvrant les solutions DevOps<br>
+            <strong>Directeur Data</strong> étudiant l'IA et MLOps<br>
+            <strong>RSSI</strong> analysant les offres Sécurité</p>
+            <p>Chaque parcours est unique, chaque problématique est différente... Mais la solution commence toujours ici.</p>
+            <div class="ia-response">
+                <strong>🎯 IA Wekey (message final) :</strong><br>
+                "Je suis spécialisé dans nos 15 offres packagées :<br>
+                🏗️ Architecture : Urbanisation SI, Microservices, API<br>
+                ☁️ Cloud & Infra : Migration, IaC, SD-WAN<br>
+                🔧 DevOps & SRE : CI/CD, Observabilité<br>
+                🛡️ Sécurité : Zero Trust, PCA/PRA<br>
+                📊 Data & IA : Data Mesh, MLOps, RAG<br>
+                💼 Workplace : Modernisation digitale<br>
+                🔍 Qualité : Audit logicielle<br><br>
+                <strong>Décrivez votre problématique, je vous oriente vers l'offre adaptée !</strong>"
+            </div>
+        </section>
+
+        <div class="final-message">
+            <h2>🎯 Votre Transformation Commence Ici</h2>
+            <p>Comme Alex, des centaines de dirigeants ont trouvé leur solution avec notre catalogue intelligent.</p>
+            <a href="index.html" class="cta-button">🚀 Explorer le Catalogue Wekey</a>
+            <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">
+                Ou contactez-nous directement : <a href="mailto:contact@wekey.fr" style="color: var(--accent-400);">contact@wekey.fr</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Animation smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.story-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

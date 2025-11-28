@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Génération PDF - Proposition MLOps & IA Industrielle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .pdf-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 0 auto 20px;
+            padding: 20mm;
+            box-sizing: border-box;
+            page-break-after: always;
+            position: relative;
+        }
+
+        .pdf-page:last-child {
+            page-break-after: auto;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .pdf-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                max-width: none;
+            }
+            
+            .pdf-page {
+                box-shadow: none;
+                margin: 0;
+                page-break-after: always;
+            }
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border-radius: 12px 12px 0 0;
+            padding: 30px;
+        }
+
+        .pdf-header h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .pdf-header .subtitle {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .pdf-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            padding-left: 20px;
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .value-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .value-card h3 {
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .value-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .value-card li {
+            padding: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.9rem;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table .highlight {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tech-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tech-tag.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .pricing-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .pricing-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .pricing-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .pricing-stat {
+            text-align: center;
+        }
+
+        .pricing-stat .number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .pricing-stat .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .cta-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .contact-info strong {
+            color: #2c3e50;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .pdf-container {
+                padding: 20px;
+            }
+            
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container" id="pdfContent">
+        <!-- Page 1: En-tête et Valeur -->
+        <div class="pdf-page">
+            <!-- En-tête -->
+            <div class="pdf-header">
+                <h1>Proposition Commerciale</h1>
+                <div class="subtitle">MLOps & IA Industrielle - Intelligence Artificielle Opérationnelle</div>
+                <div class="pdf-meta">
+                    <div>Wekey - Architecture & Transformation</div>
+                    <div>Référence : MLO-2025-001</div>
+                    <div>Novembre 2025</div>
+                </div>
+            </div>
+
+            <!-- Section Valeur -->
+            <div class="section">
+                <h2 class="section-title">Valeur & Bénéfices pour votre entreprise</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Performance IA</h3>
+                        <ul>
+                            <li><strong>Accuracy améliorée</strong> de 35%</li>
+                            <li><strong>Déploiement modèles</strong> 10x plus rapide</li>
+                            <li><strong>Monitoring continu</strong> performance</li>
+                            <li><strong>A/B testing</strong> automatisé</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Efficacité Opérationnelle</h3>
+                        <ul>
+                            <li><strong>Réduction de 70%</strong> temps de maintenance</li>
+                            <li><strong>Automatisation</strong> du cycle MLOps</li>
+                            <li><strong>Productivité data scientists</strong> : +50%</li>
+                            <li><strong>Coûts opérationnels</strong> réduits de 40%</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Fiabilité & Scalabilité</h3>
+                        <ul>
+                            <li><strong>Disponibilité 99.9%</strong> modèles en production</li>
+                            <li><strong>Scalabilité automatique</strong> des ressources</li>
+                            <li><strong>Gestion versioning</strong> des modèles</li>
+                            <li><strong>Rollback instantané</strong> en cas d'erreur</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>ROI Mesurable</h3>
+                        <ul>
+                            <li><strong>ROI atteint</strong> en 8-12 mois</li>
+                            <li><strong>Économies annuelles</strong> : 95 000 €+</li>
+                            <li><strong>Réduction coûts</strong> : 40%</li>
+                            <li><strong>Gain productivité</strong> : 50%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Approche et Définition -->
+        <div class="pdf-page">
+            <!-- Section Définition -->
+            <div class="section">
+                <h2 class="section-title">Définition du Service</h2>
+                <p style="margin-bottom: 20px; line-height: 1.6;">
+                    Le MLOps & IA Industrielle est une approche qui industrialise le cycle de vie des modèles d'intelligence artificielle, de l'entraînement au déploiement en production, pour des performances optimales et une maintenance simplifiée.
+                </p>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Piliers MLOps</h3>
+                        <ul>
+                            <li><strong>Data Management</strong> : Versioning & Qualité</li>
+                            <li><strong>Model Training</strong> : Automatisation & Reproductibilité</li>
+                            <li><strong>Deployment</strong> : CI/CD pour modèles IA</li>
+                            <li><strong>Monitoring</strong> : Performance & Drift</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Capacités IA Industrielle</h3>
+                        <ul>
+                            <li><strong>Computer Vision</strong> pour production</li>
+                            <li><strong>Predictive Maintenance</strong> équipements</li>
+                            <li><strong>Quality Control</strong> automatisé</li>
+                            <li><strong>Process Optimization</strong> intelligent</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Approche -->
+            <div class="section">
+                <h2 class="section-title">Notre Approche Méthodologique</h2>
+                <blockquote style="font-style: italic; color: #667eea; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #667eea; border-radius: 8px;">
+                    « Nous industrialisons votre intelligence artificielle pour transformer vos données en décisions intelligentes et actions automatisées. »
+                </blockquote>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 1: Audit & Stratégie (2-3 semaines)</div>
+                        <div class="timeline-content">
+                            Analyse cas d'usage, évaluation maturité IA, identification données, définition objectifs, sélection technologies.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 2: Architecture MLOps (3-4 semaines)</div>
+                        <div class="timeline-content">
+                            Conception pipeline MLOps, architecture plateforme, définition processus, sélection outils, plan déploiement.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 3: Implémentation & Industrialisation (4-6 semaines)</div>
+                        <div class="timeline-content">
+                            Déploiement plateforme, développement pipelines, intégration IA, automatisation processus, tests validation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 4: Optimisation & Formation (2-3 semaines)</div>
+                        <div class="timeline-content">
+                            Optimisation modèles, monitoring avancé, formation équipes, support continu, documentation complète.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Livrables et Équipe -->
+        <div class="pdf-page">
+            <!-- Section Livrables -->
+            <div class="section">
+                <h2 class="section-title">Livrables & Résultats Attendus</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Livrables Techniques</h3>
+                        <ul>
+                            <li>Plateforme MLOps complète</li>
+                            <li>Pipelines CI/CD pour modèles IA</li>
+                            <li>Infrastructure monitoring IA</li>
+                            <li>Modèles déployés en production</li>
+                            <li>API d'inférence optimisées</li>
+                            <li>Documentation MLOps complète</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Transfert de Compétences</h3>
+                        <ul>
+                            <li>Formation équipes MLOps</li>
+                            <li>Ateliers IA industrielle</li>
+                            <li>Guide bonnes pratiques</li>
+                            <li>Mentoring data scientists</li>
+                            <li>Support post-projet</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Équipe -->
+            <div class="section">
+                <h2 class="section-title">Équipe d'Experts Mobilisés</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Profil</th>
+                            <th>Expertise</th>
+                            <th>Jours</th>
+                            <th>Rôle Principal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ML Architect</strong></td>
+                            <td>MLOps, Deep Learning, Computer Vision, Cloud</td>
+                            <td>24 jours</td>
+                            <td>Conception architecture & modèles</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MLOps Engineer</strong></td>
+                            <td>Kubernetes, CI/CD, MLflow, Kubeflow, DVC</td>
+                            <td>22 jours</td>
+                            <td>Déploiement & automatisation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Scientist</strong></td>
+                            <td>Python, TensorFlow, PyTorch, Scikit-learn</td>
+                            <td>18 jours</td>
+                            <td>Développement & optimisation modèles</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chef de projet</strong></td>
+                            <td>IA, Transformation, Coordination</td>
+                            <td>6 jours</td>
+                            <td>Gestion de projet & livraison</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Total</strong></td>
+                            <td></td>
+                            <td><strong>70 jours</strong></td>
+                            <td><strong>3-4 mois de mission</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page 4: Technologies et Tarification -->
+        <div class="pdf-page">
+            <!-- Section Technologies -->
+            <div class="section">
+                <h2 class="section-title">Stack Technologique & Solutions</h2>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">MLOps Platforms</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.kubeflow.org/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">Kubeflow</a>
+                        <a href="https://mlflow.org/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">MLflow</a>
+                        <a href="https://dvc.org/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">DVC</a>
+                        <a href="https://aws.amazon.com/sagemaker/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">SageMaker</a>
+                        <a href="https://cloud.google.com/vertex-ai" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">Vertex AI</a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Deep Learning Frameworks</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.tensorflow.org/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">TensorFlow</a>
+                        <a href="https://pytorch.org/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">PyTorch</a>
+                        <a href="https://keras.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Keras</a>
+                        <a href="https://scikit-learn.org/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Scikit-learn</a>
+                        <a href="https://xgboost.ai/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">XGBoost</a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Infrastructure & Orchestration</h3>
+                    <div class="tech-tags">
+                        <a href="https://kubernetes.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Kubernetes</a>
+                        <a href="https://www.docker.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Docker</a>
+                        <a href="https://argoproj.github.io/cd/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Argo CD</a>
+                        <a href="https://www.jenkins.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Jenkins</a>
+                        <a href="https://www.nvidia.com/data-center/gpu-cloud-computing/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">GPU Clusters</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Monitoring & Observability</h3>
+                    <div class="tech-tags">
+                        <a href="https://prometheus.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Prometheus</a>
+                        <a href="https://grafana.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Grafana</a>
+                        <a href="https://www.evidentlyai.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Evidently AI</a>
+                        <a href="https://whylabs.ai/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">WhyLabs</a>
+                        <a href="https://arize.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Arize AI</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Tarification -->
+            <div class="section">
+                <h2 class="section-title">Investissement & ROI</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Modèle de Tarification</h3>
+                        <ul>
+                            <li><strong>Forfait fixe</strong> : 95 000 € HT</li>
+                            <li>Basé sur 70 jours d'expertise</li>
+                            <li>TJM moyen : 1 357 € HT/jour</li>
+                            <li>Garantie de performance IA</li>
+                            <li>Support post-projet inclus</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Retour sur Investissement</h3>
+                        <ul>
+                            <li><strong>Économies annuelles</strong> : 95 000 €+</li>
+                            <li><strong>ROI atteint</strong> : 8-12 mois</li>
+                            <li><strong>Réduction coûts</strong> : 40%</li>
+                            <li><strong>Gain productivité</strong> : 50%</li>
+                            <li><strong>Accuracy IA</strong> : +35%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pricing-box">
+                    <h3>Investissement Total : 95 000 € HT</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">Soit 1 357 € HT par jour d'expertise senior</p>
+                    <div class="pricing-stats">
+                        <div class="pricing-stat">
+                            <span class="number">8-12</span>
+                            <span class="label">mois pour ROI</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">95k€+</span>
+                            <span class="label">économies/an</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">99.9%</span>
+                            <span class="label">disponibilité</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Calendrier et Contact -->
+        <div class="pdf-page">
+            <!-- Section Calendrier -->
+            <div class="section">
+                <h2 class="section-title">Calendrier d'Industrialisation IA</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 1-3: Audit & Stratégie</div>
+                        <div class="timeline-content">
+                            Analyse cas d'usage, évaluation maturité IA, identification données, définition objectifs, sélection technologies.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 4-7: Architecture MLOps</div>
+                        <div class="timeline-content">
+                            Conception pipeline MLOps, architecture plateforme, définition processus, sélection outils, plan déploiement.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 8-13: Implémentation & Industrialisation</div>
+                        <div class="timeline-content">
+                            Déploiement plateforme, développement pipelines, intégration IA, automatisation processus, tests validation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 14-15: Optimisation & Formation</div>
+                        <div class="timeline-content">
+                            Optimisation modèles, monitoring avancé, formation équipes, support continu, documentation finale.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section KPI -->
+            <div class="section">
+                <h2 class="section-title">Indicateurs de Performance Clés</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>KPI Techniques</h3>
+                        <ul>
+                            <li><strong>Accuracy modèles</strong> en production</li>
+                            <li><strong>Temps déploiement</strong> nouveaux modèles</li>
+                            <li><strong>Performance inference</strong> (latence)</li>
+                            <li><strong>Taux erreurs</strong> prédictions</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>KPI Métier</h3>
+                        <ul>
+                            <li><strong>ROI projets IA</strong></li>
+                            <li><strong>Impact business</strong> modèles</li>
+                            <li><strong>Satisfaction utilisateurs</strong></li>
+                            <li><strong>Adoption IA</strong> par métier</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section CTA -->
+            <div class="cta-section">
+                <h2>Prêt à industrialiser votre intelligence artificielle ?</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Contactez-nous dès aujourd'hui pour démarrer votre projet MLOps 
+                    et bénéficier d'un audit gratuit de votre maturité IA.
+                </p>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <p><strong>Wekey - Architecture & Transformation</strong></p>
+                <p>Email : <strong>contact@wekey.fr</strong> | Téléphone : <strong>+33 1 23 45 67 89</strong></p>
+                <p>Web : <strong>www.wekey.fr</strong> | LinkedIn : <strong>linkedin.com/company/wekey</strong></p>
+                <p><strong>Référence proposition :</strong> MLO-2025-001</p>
+                <p><strong>Date d'émission :</strong> Novembre 2025</p>
+                <p><strong>Validité de l'offre :</strong> 3 mois</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>Cette proposition commerciale est confidentielle et destinée uniquement au destinataire.</p>
+                <p>Tous nos services sont soumis à nos conditions générales de vente disponibles sur demande.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de génération PDF -->
+    <div class="button-container">
+        <button class="btn" id="generatePdf" onclick="generatePDF()">
+            <i class="fas fa-file-pdf"></i>
+            Télécharger la proposition commerciale (PDF)
+        </button>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p>Génération du PDF en cours...</p>
+    </div>
+
+    <script>
+        // Initialiser jsPDF
+        const { jsPDF } = window.jspdf;
+
+        async function generatePDF() {
+            const button = document.getElementById('generatePdf');
+            const loading = document.getElementById('loading');
+            const pages = document.querySelectorAll('.pdf-page');
+            
+            // Désactiver le bouton et afficher le chargement
+            button.disabled = true;
+            loading.style.display = 'block';
+            
+            try {
+                // Configuration pour le PDF
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 20;
+                const contentWidth = pageWidth - (margin * 2);
+                const contentHeight = pageHeight - (margin * 2);
+                
+                // Ajouter des métadonnées
+                pdf.setProperties({
+                    title: 'Proposition Commerciale - MLOps & IA Industrielle',
+                    subject: 'Wekey - Architecture & Transformation',
+                    author: 'Wekey',
+                    keywords: 'MLOps, IA, Machine Learning, Industrialisation, Deep Learning',
+                    creator: 'Wekey - Architecture & Transformation'
+                });
+                
+                // Traiter chaque page séparément
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    
+                    // Convertir chaque page en canvas
+                    const canvas = await html2canvas(page, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff',
+                        width: page.offsetWidth,
+                        height: page.offsetHeight
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // Calculer les dimensions pour s'adapter à la page PDF
+                    const imgWidth = contentWidth;
+                    const imgHeight = (canvas.height * contentWidth) / canvas.width;
+                    
+                    // Si ce n'est pas la première page, ajouter une nouvelle page
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    // Ajouter l'image de la page
+                    pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+                    
+                    // Ajouter un numéro de page en bas
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(128, 128, 128);
+                    pdf.text(`Page ${i + 1} / ${pages.length}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                }
+                
+                // Générer le nom de fichier avec date
+                const date = new Date().toISOString().split('T')[0];
+                const fileName = `proposition-mlops-ia-industrielle-${date}.pdf`;
+                
+                // Télécharger le PDF
+                pdf.save(fileName);
+                
+                // Afficher un message de succès
+                showSuccessMessage();
+                
+            } catch (error) {
+                console.error('Erreur lors de la génération du PDF:', error);
+                showErrorMessage();
+            } finally {
+                // Réactiver le bouton et masquer le chargement
+                button.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+        
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-check-circle"></i> PDF généré avec succès !';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        function showErrorMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #dc3545;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erreur lors de la génération du PDF';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        // Fonction alternative pour les navigateurs qui ne supportent pas html2canvas
+        function fallbackPDF() {
+            window.print();
+        }
+        
+        // Vérifier si les bibliothèques sont chargées
+        window.addEventListener('load', function() {
+            if (typeof html2canvas === 'undefined' || typeof jsPDF === 'undefined') {
+                console.warn('Bibliothèques PDF non chargées, utilisation de l impression native');
+                document.getElementById('generatePdf').onclick = fallbackPDF;
+                document.getElementById('generatePdf').innerHTML = '<i class="fas fa-print"></i> Imprimer la proposition commerciale';
+            }
+        });
+    </script>
+</body>
+</html>

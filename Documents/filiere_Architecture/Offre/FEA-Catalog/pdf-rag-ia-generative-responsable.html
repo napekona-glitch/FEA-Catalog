@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Génération PDF - Proposition RAG IA Générative Responsable</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .pdf-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 0 auto 20px;
+            padding: 20mm;
+            box-sizing: border-box;
+            page-break-after: always;
+            position: relative;
+        }
+
+        .pdf-page:last-child {
+            page-break-after: auto;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .pdf-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                max-width: none;
+            }
+            
+            .pdf-page {
+                box-shadow: none;
+                margin: 0;
+                page-break-after: always;
+            }
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .pdf-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .pdf-header .subtitle {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .pdf-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .value-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .value-card h3 {
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .value-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .value-card li {
+            padding: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.9rem;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table .highlight {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tech-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tech-tag.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .pricing-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .pricing-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .pricing-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .pricing-stat {
+            text-align: center;
+        }
+
+        .pricing-stat .number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .pricing-stat .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .cta-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .contact-info strong {
+            color: #2c3e50;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .pdf-container {
+                padding: 20px;
+            }
+            
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container" id="pdfContent">
+        <!-- Page 1: En-tête et Valeur -->
+        <div class="pdf-page">
+            <!-- En-tête -->
+            <div class="pdf-header">
+                <h1>Proposition Commerciale</h1>
+                <div class="subtitle">RAG IA Générative Responsable - Intelligence Conversationnelle Éthique</div>
+                <div class="pdf-meta">
+                    <div>Wekey - Architecture & Transformation</div>
+                    <div>Référence : RAG-2025-001</div>
+                    <div>Novembre 2025</div>
+                </div>
+            </div>
+
+            <!-- Section Valeur -->
+            <div class="section">
+                <h2 class="section-title">Valeur & Bénéfices pour votre entreprise</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Performance Conversationnelle</h3>
+                        <ul>
+                            <li><strong>Accuracy réponses</strong> : +45%</li>
+                            <li><strong>Réduction hallucinations</strong> : 80%</li>
+                            <li><strong>Contexte pertinent</strong> garanti</li>
+                            <li><strong>Personnalisation</strong> avancée</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Conformité & Éthique</h3>
+                        <ul>
+                            <li><strong>Conformité RGPD</strong> complète</li>
+                            <li><strong>Biais réduits</strong> de 70%</li>
+                            <li><strong>Transparence</strong> des décisions IA</li>
+                            <li><strong>Auditabilité</strong> totale</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Efficacité Opérationnelle</h3>
+                        <ul>
+                            <li><strong>Réduction de 60%</strong> temps de recherche</li>
+                            <li><strong>Automatisation</strong> support client</li>
+                            <li><strong>Productivité équipes</strong> : +40%</li>
+                            <li><strong>Coûts support</strong> réduits de 50%</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>ROI Mesurable</h3>
+                        <ul>
+                            <li><strong>ROI atteint</strong> en 10-14 mois</li>
+                            <li><strong>Économies annuelles</strong> : 80 000 €+</li>
+                            <li><strong>Réduction coûts</strong> : 50%</li>
+                            <li><strong>Satisfaction client</strong> : +35%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Approche et Définition -->
+        <div class="pdf-page">
+            <!-- Section Définition -->
+            <div class="section">
+                <h2 class="section-title">Définition du Service</h2>
+                <p style="margin-bottom: 20px; line-height: 1.6;">
+                    Le RAG IA Générative Responsable est une approche qui combine la génération augmentée par récupération avec des principes d'IA éthique pour des conversations intelligentes, contextuelles et responsables.
+                </p>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Architecture RAG</h3>
+                        <ul>
+                            <li><strong>Vector Database</strong> : Stockage sémantique</li>
+                            <li><strong>Embedding Models</strong> : Compréhension contexte</li>
+                            <li><strong>Retrieval Engine</strong> : Recherche pertinente</li>
+                            <li><strong>LLM Integration</strong> : Génération contrôlée</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>IA Responsable</h3>
+                        <ul>
+                            <li><strong>Fairness</strong> : Équité algorithmique</li>
+                            <li><strong>Transparency</strong> : Explicabilité décisions</li>
+                            <li><strong>Privacy</strong> : Protection données</li>
+                            <li><strong>Accountability</strong> : Responsabilité tracée</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Approche -->
+            <div class="section">
+                <h2 class="section-title">Notre Approche Méthodologique</h2>
+                <blockquote style="font-style: italic; color: #667eea; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #667eea; border-radius: 8px;">
+                    « Nous construisons une IA conversationnelle responsable qui transforme vos interactions en expériences intelligentes et éthiques. »
+                </blockquote>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 1: Audit & Conformité (2-3 semaines)</div>
+                        <div class="timeline-content">
+                            Analyse cas d'usage, audit conformité, identification données, évaluation risques, définition garde-fous.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 2: Architecture RAG (3-4 semaines)</div>
+                        <div class="timeline-content">
+                            Conception vector database, sélection embeddings, design retrieval, intégration LLM, sécurité IA.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 3: Développement & Intégration (4-5 semaines)</div>
+                        <div class="timeline-content">
+                            Développement pipeline RAG, intégration systèmes, interface conversationnelle, tests éthiques, validation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 4: Déploiement & Monitoring (2-3 semaines)</div>
+                        <div class="timeline-content">
+                            Déploiement production, monitoring IA éthique, formation équipes, support continu, documentation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Livrables et Équipe -->
+        <div class="pdf-page">
+            <!-- Section Livrables -->
+            <div class="section">
+                <h2 class="section-title">Livrables & Résultats Attendus</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Livrables Techniques</h3>
+                        <ul>
+                            <li>Plateforme RAG complète</li>
+                            <li>Vector database optimisée</li>
+                            <li>Interface conversationnelle</li>
+                            <li>Système monitoring IA éthique</li>
+                            <li>Dashboard conformité</li>
+                            <li>Documentation responsabilité</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Transfert de Compétences</h3>
+                        <ul>
+                            <li>Formation équipes IA éthique</li>
+                            <li>Ateliers RAG pratiques</li>
+                            <li>Guide conformité IA</li>
+                            <li>Mentoring technique</li>
+                            <li>Support post-projet</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Équipe -->
+            <div class="section">
+                <h2 class="section-title">Équipe d'Experts Mobilisés</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Profil</th>
+                            <th>Expertise</th>
+                            <th>Jours</th>
+                            <th>Rôle Principal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>AI Ethics Architect</strong></td>
+                            <td>RAG, LLM, Ethics, Compliance, Privacy</td>
+                            <td>22 jours</td>
+                            <td>Conception architecture & éthique</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ML Engineer</strong></td>
+                            <td>Vector DB, Embeddings, Retrieval, NLP</td>
+                            <td>20 jours</td>
+                            <td>Développement pipeline RAG</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compliance Specialist</strong></td>
+                            <td>RGPD, AI Act, Ethics, Risk Management</td>
+                            <td>14 jours</td>
+                            <td>Conformité & audit IA</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chef de projet</strong></td>
+                            <td>IA, Éthique, Transformation</td>
+                            <td>6 jours</td>
+                            <td>Gestion de projet & livraison</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Total</strong></td>
+                            <td></td>
+                            <td><strong>62 jours</strong></td>
+                            <td><strong>3-4 mois de mission</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page 4: Technologies et Tarification -->
+        <div class="pdf-page">
+            <!-- Section Technologies -->
+            <div class="section">
+                <h2 class="section-title">Stack Technologique & Solutions</h2>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Vector Databases</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.pinecone.io/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">Pinecone</a>
+                        <a href="https://weaviate.io/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">Weaviate</a>
+                        <a href="https://www.trychroma.com/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">Chroma</a>
+                        <a href="https://milvus.io/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">Milvus</a>
+                        <a href="https://faiss.ai/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">FAISS</a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">LLM & Generation</h3>
+                    <div class="tech-tags">
+                        <a href="https://openai.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">OpenAI GPT</a>
+                        <a href="https://www.anthropic.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Anthropic Claude</a>
+                        <a href="https://gemini.google.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Google Gemini</a>
+                        <a href="https://llama.meta.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Llama 2</a>
+                        <a href="https://mistral.ai/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Mistral</a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Embeddings & NLP</h3>
+                    <div class="tech-tags">
+                        <a href="https://huggingface.co/sentence-transformers/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Sentence Transformers</a>
+                        <a href="https://openai.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">OpenAI Embeddings</a>
+                        <a href="https://spacy.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">spaCy</a>
+                        <a href="https://www.nltk.org/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">NLTK</a>
+                        <a href="https://huggingface.co/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Hugging Face</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 10px;">AI Ethics & Monitoring</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.ibm.com/products/ai-fairness-360" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">IBM AI Fairness</a>
+                        <a href="https://pair.withgoogle.com/what-if-tool/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Google What-If Tool</a>
+                        <a href="https://fairlearn.org/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Microsoft Fairlearn</a>
+                        <a href="https://shap.readthedocs.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">SHAP</a>
+                        <a href="https://github.com/marcotcr/lime" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">LIME</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Tarification -->
+            <div class="section">
+                <h2 class="section-title">Investissement & ROI</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Modèle de Tarification</h3>
+                        <ul>
+                            <li><strong>Forfait fixe</strong> : 85 000 € HT</li>
+                            <li>Basé sur 62 jours d'expertise</li>
+                            <li>TJM moyen : 1 371 € HT/jour</li>
+                            <li>Garantie conformité RGPD</li>
+                            <li>Support post-projet inclus</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Retour sur Investissement</h3>
+                        <ul>
+                            <li><strong>Économies annuelles</strong> : 80 000 €+</li>
+                            <li><strong>ROI atteint</strong> : 10-14 mois</li>
+                            <li><strong>Réduction coûts</strong> : 50%</li>
+                            <li><strong>Satisfaction client</strong> : +35%</li>
+                            <li><strong>Accuracy IA</strong> : +45%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pricing-box">
+                    <h3>Investissement Total : 85 000 € HT</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">Soit 1 371 € HT par jour d'expertise senior</p>
+                    <div class="pricing-stats">
+                        <div class="pricing-stat">
+                            <span class="number">10-14</span>
+                            <span class="label">mois pour ROI</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">80k€+</span>
+                            <span class="label">économies/an</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">99.9%</span>
+                            <span class="label">conformité</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Calendrier et Contact -->
+        <div class="pdf-page">
+            <!-- Section Calendrier -->
+            <div class="section">
+                <h2 class="section-title">Calendrier de Déploiement RAG</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 1-3: Audit & Conformité</div>
+                        <div class="timeline-content">
+                            Analyse cas d'usage, audit conformité, identification données, évaluation risques, définition garde-fous.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 4-7: Architecture RAG</div>
+                        <div class="timeline-content">
+                            Conception vector database, sélection embeddings, design retrieval, intégration LLM, sécurité IA.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 8-12: Développement & Intégration</div>
+                        <div class="timeline-content">
+                            Développement pipeline RAG, intégration systèmes, interface conversationnelle, tests éthiques, validation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 13-14: Déploiement & Monitoring</div>
+                        <div class="timeline-content">
+                            Déploiement production, monitoring IA éthique, formation équipes, support continu, documentation finale.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section KPI -->
+            <div class="section">
+                <h2 class="section-title">Indicateurs de Performance Clés</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>KPI Techniques</h3>
+                        <ul>
+                            <li><strong>Accuracy réponses</strong> IA</li>
+                            <li><strong>Taux hallucinations</strong> réduit</li>
+                            <li><strong>Latence réponse</strong> conversationnelle</li>
+                            <li><strong>Couverture contexte</strong> pertinent</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>KPI Éthiques</h3>
+                        <ul>
+                            <li><strong>Score équité</strong> algorithmique</li>
+                            <li><strong>Taux conformité</strong> RGPD</li>
+                            <li><strong>Transparence</strong> décisions IA</li>
+                            <li><strong>Satisfaction utilisateurs</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section CTA -->
+            <div class="cta-section">
+                <h2>Prêt à déployer une IA conversationnelle responsable ?</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Contactez-nous dès aujourd'hui pour démarrer votre projet RAG IA Responsable 
+                    et bénéficier d'un audit gratuit de votre maturité IA éthique.
+                </p>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <p><strong>Wekey - Architecture & Transformation</strong></p>
+                <p>Email : <strong>contact@wekey.fr</strong> | Téléphone : <strong>+33 1 23 45 67 89</strong></p>
+                <p>Web : <strong>www.wekey.fr</strong> | LinkedIn : <strong>linkedin.com/company/wekey</strong></p>
+                <p><strong>Référence proposition :</strong> RAG-2025-001</p>
+                <p><strong>Date d'émission :</strong> Novembre 2025</p>
+                <p><strong>Validité de l'offre :</strong> 3 mois</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>Cette proposition commerciale est confidentielle et destinée uniquement au destinataire.</p>
+                <p>Tous nos services sont soumis à nos conditions générales de vente disponibles sur demande.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de génération PDF -->
+    <div class="button-container">
+        <button class="btn" id="generatePdf" onclick="generatePDF()">
+            <i class="fas fa-file-pdf"></i>
+            Télécharger la proposition commerciale (PDF)
+        </button>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p>Génération du PDF en cours...</p>
+    </div>
+
+    <script>
+        // Initialiser jsPDF
+        const { jsPDF } = window.jspdf;
+
+        async function generatePDF() {
+            const button = document.getElementById('generatePdf');
+            const loading = document.getElementById('loading');
+            const pages = document.querySelectorAll('.pdf-page');
+            
+            // Désactiver le bouton et afficher le chargement
+            button.disabled = true;
+            loading.style.display = 'block';
+            
+            try {
+                // Configuration pour le PDF
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 20;
+                const contentWidth = pageWidth - (margin * 2);
+                const contentHeight = pageHeight - (margin * 2);
+                
+                // Ajouter des métadonnées
+                pdf.setProperties({
+                    title: 'Proposition Commerciale - RAG IA Générative Responsable',
+                    subject: 'Wekey - Architecture & Transformation',
+                    author: 'Wekey',
+                    keywords: 'RAG, IA Générative, Ethics, Compliance, LLM, Vector Database',
+                    creator: 'Wekey - Architecture & Transformation'
+                });
+                
+                // Traiter chaque page séparément
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    
+                    // Convertir chaque page en canvas
+                    const canvas = await html2canvas(page, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff',
+                        width: page.offsetWidth,
+                        height: page.offsetHeight
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // Calculer les dimensions pour s'adapter à la page PDF
+                    const imgWidth = contentWidth;
+                    const imgHeight = (canvas.height * contentWidth) / canvas.width;
+                    
+                    // Si ce n'est pas la première page, ajouter une nouvelle page
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    // Ajouter l'image de la page
+                    pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+                    
+                    // Ajouter un numéro de page en bas
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(128, 128, 128);
+                    pdf.text(`Page ${i + 1} / ${pages.length}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                }
+                
+                // Générer le nom de fichier avec date
+                const date = new Date().toISOString().split('T')[0];
+                const fileName = `proposition-rag-ia-generative-responsable-${date}.pdf`;
+                
+                // Télécharger le PDF
+                pdf.save(fileName);
+                
+                // Afficher un message de succès
+                showSuccessMessage();
+                
+            } catch (error) {
+                console.error('Erreur lors de la génération du PDF:', error);
+                showErrorMessage();
+            } finally {
+                // Réactiver le bouton et masquer le chargement
+                button.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+        
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-check-circle"></i> PDF généré avec succès !';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        function showErrorMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #dc3545;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erreur lors de la génération du PDF';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        // Fonction alternative pour les navigateurs qui ne supportent pas html2canvas
+        function fallbackPDF() {
+            window.print();
+        }
+        
+        // Vérifier si les bibliothèques sont chargées
+        window.addEventListener('load', function() {
+            if (typeof html2canvas === 'undefined' || typeof jsPDF === 'undefined') {
+                console.warn('Bibliothèques PDF non chargées, utilisation de l impression native');
+                document.getElementById('generatePdf').onclick = fallbackPDF;
+                document.getElementById('generatePdf').innerHTML = '<i class="fas fa-print"></i> Imprimer la proposition commerciale';
+            }
+        });
+    </script>
+</body>
+</html>

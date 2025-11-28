@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+<!-- Architecte : Napé Kona -->
+<!-- FEA Wekey -->
+<!-- Date : 25/11/2025 -->
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catalogue de Services</title>
+    <style>
+        :root {
+            --accent-500: #f5a623;
+            --accent-400: #ffd27a;
+            --accent-200: #fff3cf;
+            --gray-050: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #6b7280;
+            --gray-900: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            color: var(--gray-900);
+            background: #fff;
+            line-height: 1.55;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px 56px;
+        }
+
+        header {
+            background: radial-gradient(circle at top left, #fff6dd, #ffe5b0 45%, #ffd27a 75%);
+            color: var(--gray-900);
+            padding: 36px 32px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.4rem;
+            color: var(--gray-900);
+        }
+
+        header p {
+            margin: 16px auto 0;
+            max-width: 560px;
+            font-size: 1rem;
+            color: rgba(47, 50, 58, 0.8);
+        }
+
+        .hero-cta {
+            margin: 24px auto 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gray-900);
+            color: #fff;
+            padding: 14px 26px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 12px 30px rgba(47, 50, 58, 0.3);
+        }
+
+        section {
+            background: #fff;
+            padding: 24px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 38px rgba(47, 50, 58, 0.08);
+        }
+
+        section h2 {
+            margin-top: 0;
+            font-size: 1.6rem;
+        }
+
+        .subtitle {
+            color: var(--gray-600);
+            margin-bottom: 24px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-100);
+            color: var(--accent-500);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            border-radius: 16px;
+            padding: 16px 16px 14px;
+            background: linear-gradient(135deg, #ffffff, #f9fafb);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .card a.more-link {
+            margin-top: 4px;
+            align-self: flex-start;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-500);
+            text-decoration: none;
+        }
+
+        .card a.more-link::after {
+            content: " →";
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: rgba(191, 184, 172, 0.12);
+            color: var(--accent-500);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        ul {
+            padding-left: 18px;
+            margin: 0;
+        }
+
+        ul li {
+            margin-bottom: 4px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .step {
+            border-left: 4px solid var(--accent-500);
+            padding: 10px 14px;
+            background: var(--gray-050);
+            border-radius: 12px;
+        }
+
+        .step span {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pricing {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .table-like {
+            border: 1px dashed var(--gray-300);
+            border-radius: 14px;
+            padding: 18px;
+            background: #ffffff;
+        }
+
+        blockquote {
+            margin: 0;
+            padding: 20px;
+            border-left: 4px solid var(--accent-500);
+            background: #ffffff;
+            border-radius: 12px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 28px;
+        }
+
+        footer a {
+            display: inline-block;
+            background: var(--accent-500);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 12px 30px rgba(240, 163, 32, 0.3);
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 32px 24px;
+            }
+
+            section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+			<h1>Wekey : Filiere d'excellence -Architecture</h1>
+            <h2>Catalogue de Services Architecture & Transformation</h2>
+            <p>
+                Des offres packagées, opérées par des experts multi-domaines, pour accélérer
+                vos trajectoires de modernisation, sécuriser vos SI et industrialiser vos usages data & IA.
+            </p>
+            <a href="#contact" class="hero-cta">Planifier un échange</a>
+        </header>
+
+        <section>
+            <div class="pill">Vision & différenciation</div>
+            <h2>Faire de l’architecture un levier d’impact mesurable</h2>
+            <p class="subtitle">
+                Des missions cadrées, industrialisées et pilotées par la valeur pour toutes les couches du SI.
+            </p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Expertise multi-domaines</h3>
+                    <ul>
+                        <li>Architecture d’entreprise, Applications, Cloud & Infrastructure</li>
+                        <li>Data & IA, Sécurité, Digital Workplace</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Méthodologie adaptable</h3>
+                    <ul>
+                        <li>Cadrage, diagnostic, conception, mise en œuvre, pilotage</li>
+                        <li>Standards ArchiMate, TOGAF, ITIL, COBIT, NIST, FinOps</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Expérience éprouvée</h3>
+                    <ul>
+                        <li>Assurance, Banque, Industrie, Secteur public</li>
+                        <li>13+ offres prêtes à déployer, du diagnostic à l’industrialisation</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Valeur mesurable</h3>
+                    <ul>
+                        <li>Dimensionnement sur variables d’entrée clés</li>
+                        <li>Pilotage par KPIs de sortie et engagements qualitatifs</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="pill">Approche générique</div>
+            <h2>Un parcours clair pour accélérer vos transformations</h2>
+            <div class="steps">
+                <div class="step">
+                    <span>01</span>
+                    <h3>Cadrer</h3>
+                    <p>Diagnostic flash, alignement sur les enjeux métier & SI.</p>
+                </div>
+                <div class="step">
+                    <span>02</span>
+                    <h3>Concevoir</h3>
+                    <p>Blueprint cible, roadmaps 30/60/90 jours, business case.</p>
+                </div>
+                <div class="step">
+                    <span>03</span>
+                    <h3>Industrialiser</h3>
+                    <p>Livrables exécutables, pipelines, documentation & runbooks.</p>
+                </div>
+                <div class="step">
+                    <span>04</span>
+                    <h3>Piloter</h3>
+                    <p>KPIs, gouvernance, plan de montée en compétences & relais.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="pill">Portefeuille d’offres</div>
+            <h2>Services packagés, dimensionnés sur vos enjeux</h2>
+            <p class="subtitle">
+                Chaque offre détaille profils mobilisés, livrables, durée, valeur business,
+                variables de dimensionnement et KPIs clés.
+            </p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Urbanisation SI</h3>
+                    <div class="tag-group">
+                        <span class="tag">Architecture d’entreprise</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Architecte d’entreprise, Urbaniste SI</li>
+                        <li><strong>Livrables :</strong> Cartographies complètes, roadmaps de transformation</li>
+                        <li><strong>KPIs :</strong> % couverture cartographique, % redondances identifiées</li>
+                    </ul>
+                    <a href="urbanisation-si.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>Monolithe → Microservices</h3>
+                    <div class="tag-group">
+                        <span class="tag">Architecture applicative</span>
+                        <span class="tag">2–3 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Architecte Solution, Lead Tech</li>
+                        <li><strong>Livrables :</strong> HLD, schémas microservices, backlog technique</li>
+                        <li><strong>KPIs :</strong> Vitesse de déploiement, Time-to-market</li>
+                    </ul>
+                    <a href="index.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>API Management & Intégration</h3>
+                    <div class="tag-group">
+                        <span class="tag">Architecture applicative</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Architecte Solution, Expert Middleware/API</li>
+                        <li><strong>Livrables :</strong> Catalogue API, gouvernance, schémas d’intégration</li>
+                        <li><strong>KPIs :</strong> % APIs inventoriées, latence d’intégration</li>
+                    </ul>
+                    <a href="api-management-integration.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>Migration Cloud Hybride</h3>
+                    <div class="tag-group">
+                        <span class="tag">Cloud & Infrastructure</span>
+                        <span class="tag">2–3 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Architecte Cloud, DevOps Engineer, Security Engineer</li>
+                        <li><strong>Livrables :</strong> HLD, plans de migration 30/60/90 jours, business case</li>
+                        <li><strong>KPIs :</strong> % workloads migrés, réduction des coûts infra</li>
+                    </ul>
+                    <a href="migration-cloud-hybride.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>Infrastructure as Code</h3>
+                    <div class="tag-group">
+                        <span class="tag">Cloud & Infra</span>
+                        <span class="tag">2–4 semaines</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> DevOps Engineer, Cloud Architect</li>
+                        <li><strong>Livrables :</strong> Templates Terraform/Ansible, documentation, runbooks</li>
+                        <li><strong>KPIs :</strong> Temps de provisionnement, % d’automatisation</li>
+                    </ul>
+                    <a href="infrastructure-as-code.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>CI/CD & Industrialisation</h3>
+                    <div class="tag-group">
+                        <span class="tag">DevOps & SRE</span>
+                        <span class="tag">2–4 semaines</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Architecte DevOps, SRE, Test Automation Engineer</li>
+                        <li><strong>Livrables :</strong> Pipelines CI/CD, documentation, formation</li>
+                        <li><strong>KPIs :</strong> Fréquence de déploiement, MTTR</li>
+                    </ul>
+                    <a href="ci-cd-industrialisation.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>Observabilité & Monitoring</h3>
+                    <div class="tag-group">
+                        <span class="tag">DevOps & SRE</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> SRE, Architecte Observabilité</li>
+                        <li><strong>Livrables :</strong> Stack logs/metrics/traces, dashboards, runbooks</li>
+                        <li><strong>KPIs :</strong> % couverture monitoring, disponibilité</li>
+                    </ul>
+                    <a href="observabilite-monitoring.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>Zero Trust & IAM</h3>
+                    <div class="tag-group">
+                        <span class="tag">Security & Governance</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Security Architect, IAM Specialist</li>
+                        <li><strong>Livrables :</strong> Modèle Zero Trust, plan IAM, gouvernance des accès</li>
+                        <li><strong>KPIs :</strong> % identités gérées, incidents liés aux accès</li>
+                    </ul>
+                    <a href="zero-trust-iam.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>PCA/PRA & Continuité</h3>
+                    <div class="tag-group">
+                        <span class="tag">Security & Governance</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Business Continuity Manager, Security Architect</li>
+                        <li><strong>Livrables :</strong> Plans PCA/PRA, tests de reprise, runbooks</li>
+                        <li><strong>KPIs :</strong> RTO/RPO atteints, taux de succès PRA</li>
+                    </ul>
+                    <a href="pca-pra-continuite.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>Architecture Data Mesh</h3>
+                    <div class="tag-group">
+                        <span class="tag">Data & AI</span>
+                        <span class="tag">2–3 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Data Architect, Data Engineer</li>
+                        <li><strong>Livrables :</strong> Modèles data domain, gouvernance data, POC</li>
+                        <li><strong>KPIs :</strong> Domaines autonomes, % datasets réutilisés</li>
+                    </ul>
+                    <a href="architecture-data-mesh.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>MLOps & IA industrielle</h3>
+                    <div class="tag-group">
+                        <span class="tag">Data & AI</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> MLOps Engineer, AI Solution Architect</li>
+                        <li><strong>Livrables :</strong> Pipelines MLOps, monitoring des modèles, gouvernance IA</li>
+                        <li><strong>KPIs :</strong> Temps de mise en production, % modèles monitorés</li>
+                    </ul>
+                    <a href="mlops-ia-industrielle.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>RAG & IA générative responsable</h3>
+                    <div class="tag-group">
+                        <span class="tag">Data & AI</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Data Architect, AI Solution Architect, MLOps Engineer</li>
+                        <li><strong>Livrables :</strong> Architecture RAG, intégration sources internes, pilote métier</li>
+                        <li><strong>KPIs :</strong> Taux de réponses correctes, adoption utilisateurs</li>
+                    </ul>
+                    <a href="rag-ia-generative-responsable.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>SD-WAN & SASE</h3>
+                    <div class="tag-group">
+                        <span class="tag">Network & Edge</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Network Architect, Cloud Network Engineer</li>
+                        <li><strong>Livrables :</strong> Architecture réseau cible, plan de migration SD-WAN</li>
+                        <li><strong>KPIs :</strong> % sites migrés, latence améliorée</li>
+                    </ul>
+                    <a href="sd-wan-sase.html" class="more-link">En savoir plus</a>
+                </div>
+                <div class="card">
+                    <h3>Modernisation Digital Workplace</h3>
+                    <div class="tag-group">
+                        <span class="tag">Digital Workplace</span>
+                        <span class="tag">1–2 mois</span>
+                    </div>
+                    <ul>
+                        <li><strong>Profils :</strong> Workplace Architect, IAM Engineer</li>
+                        <li><strong>Livrables :</strong> Schémas cibles workplace, intégrations M365/Google</li>
+                        <li><strong>KPIs :</strong> Taux d’adoption des outils, satisfaction utilisateurs</li>
+                    </ul>
+                    <a href="modernisation-digital-workplace.html" class="more-link">En savoir plus</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="pill">Modèles économiques</div>
+            <h2>Tarification transparente, pilotée par la valeur</h2>
+            <div class="pricing">
+                <div class="table-like">
+                    <h3>TJM indicatifs</h3>
+                    <ul>
+                        <li>Architecte d’Entreprise — 1 200 €</li>
+                        <li>Architecte Solution — 1 000 €</li>
+                        <li>Architecte Réseau & Cloud — 950 €</li>
+                        <li>DevOps / SRE — 850 €</li>
+                        <li>Data Architect / Engineer — 950 €</li>
+                        <li>Security Architect / IAM — 1 050 €</li>
+                        <li>AI Solution Architect (RAG/LLM) — 1 200 €</li>
+                        <li>MLOps Engineer — 1 000 €</li>
+                    </ul>
+                </div>
+                <div class="table-like">
+                    <h3>Packages forfaitaires</h3>
+                    <ul>
+                        <li>Mission courte (2–4 semaines) — 25 à 50 k€</li>
+                        <li>Mission moyenne (1–2 mois) — 50 à 90 k€</li>
+                        <li>Mission complexe (2–3 mois) — 90 à 150 k€</li>
+                        <li>Grand programme (&gt;3 mois) — sur devis</li>
+                    </ul>
+                    <p><strong>Options & valeur ajoutée :</strong> formation, gouvernance, support post-projet.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Temporairement masqué - section à activer quand des références seront disponibles -->
+        <!-- <section>
+            <div class="pill">Références & témoignages</div>
+            <h2>Des résultats tangibles sur plusieurs secteurs</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Assurance</h3>
+                    <p>Programme de rationalisation & gouvernance SI, réduction des redondances applicatives.</p>
+                </div>
+                <div class="card">
+                    <h3>Industrie</h3>
+                    <p>Mise en œuvre Data & IA pour booster la productivité et accélérer l'innovation.</p>
+                </div>
+                <div class="card">
+                    <h3>Services publics</h3>
+                    <p>Transformation digitale sécurisée, protection des données citoyennes et continuité de service.</p>
+                </div>
+            </div>
+            <blockquote>
+                « Grâce à la filière Architecture Wekey, nous avons accéléré notre transformation digitale et renforcé la résilience de notre SI. »
+            </blockquote>
+        </section> -->
+
+        <footer id="contact">
+            <a href="mailto:contact@wekey.fr?subject=Demande%20d'information%20Architecture">Passez à l’action</a>
+            <p style="margin-top:16px; color: var(--gray-600); font-size: 0.9rem;">
+                © Wekey - Napé Kona<br>FEA Wekey
+            </p>
+        </footer>
+    </div>
+
+    <!-- Chatbot global catalogue -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header" style="background: var(--accent-500); color: #fff; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 600;">
+            <h4 style="margin: 0; font-size: 0.95rem;">Assistant Catalogue Architecture</h4>
+            <button class="chatbot-close" id="chatbotClose" style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; line-height: 1; padding: 0 5px;">×</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages" style="padding: 15px; height: calc(70vh - 120px); overflow-y: auto; background: #f9f9f9; font-size: 0.9rem;">
+            <div class="chatbot-message bot" style="margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; background: #fff; border: 1px solid var(--gray-200);">
+                Bonjour ! Je suis l'assistant du catalogue de services Architecture. Je peux vous aider à choisir une offre et à comprendre rapidement ce qu’elle couvre (bénéfices, livrables, durée et profils mobilisés).
+                Par exemple, vous pouvez demander :
+                - « Quels services peuvent m'aider sur le cloud ? »
+                - « Quelle offre traite de l'observabilité et du monitoring ? »
+                - « Où trouver des informations sur PCA/PRA et la continuité d'activité ? »
+            </div>
+        </div>
+        <div class="chatbot-input" style="display: flex; padding: 10px; background: #fff; border-top: 1px solid var(--gray-200);">
+            <input type="text" id="userInput" placeholder="Posez votre question sur le catalogue..." style="flex: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid var(--gray-300);" />
+            <button id="sendButton" style="margin-left: 8px; width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--accent-500); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                ▶
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot catalogue
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatContainer = document.getElementById('chatbotContainer');
+            const chatMessages = document.getElementById('chatbotMessages');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            const closeButton = document.getElementById('chatbotClose');
+
+            // Icône flottante du chatbot
+            const chatIcon = document.createElement('div');
+            chatIcon.className = 'chatbot-icon';
+            chatIcon.style.position = 'fixed';
+            chatIcon.style.bottom = '20px';
+            chatIcon.style.right = '20px';
+            chatIcon.style.width = '56px';
+            chatIcon.style.height = '56px';
+            chatIcon.style.borderRadius = '50%';
+            chatIcon.style.background = 'var(--accent-500)';
+            chatIcon.style.color = '#fff';
+            chatIcon.style.display = 'flex';
+            chatIcon.style.alignItems = 'center';
+            chatIcon.style.justifyContent = 'center';
+            chatIcon.style.cursor = 'pointer';
+            chatIcon.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+            chatIcon.style.zIndex = '999';
+            chatIcon.textContent = '💬';
+            document.body.appendChild(chatIcon);
+
+            // Masquer le container au chargement
+            chatContainer.style.position = 'fixed';
+            chatContainer.style.bottom = '90px';
+            chatContainer.style.right = '20px';
+            chatContainer.style.width = '50vw';
+            chatContainer.style.maxWidth = '800px';
+            chatContainer.style.minWidth = '400px';
+            chatContainer.style.height = '70vh';
+            chatContainer.style.background = '#fff';
+            chatContainer.style.borderRadius = '10px';
+            chatContainer.style.boxShadow = '0 5px 15px rgba(0,0,0,0.15)';
+            chatContainer.style.display = 'none';
+            chatContainer.style.flexDirection = 'column';
+            chatContainer.style.zIndex = '1000';
+
+            chatIcon.addEventListener('click', function() {
+                chatContainer.style.display = 'flex';
+                chatIcon.style.display = 'none';
+            });
+
+            closeButton.addEventListener('click', function() {
+                chatContainer.style.display = 'none';
+                chatIcon.style.display = 'flex';
+            });
+
+            function appendMessage(content, sender, isHtml = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chatbot-message ' + sender;
+                messageDiv.style.marginBottom = '10px';
+                messageDiv.style.padding = '10px 15px';
+                messageDiv.style.borderRadius = '15px';
+                messageDiv.style.maxWidth = '85%';
+                messageDiv.style.fontSize = '0.9rem';
+
+                if (sender === 'user') {
+                    messageDiv.style.background = 'var(--accent-500)';
+                    messageDiv.style.color = '#fff';
+                    messageDiv.style.marginLeft = 'auto';
+                } else {
+                    messageDiv.style.background = '#fff';
+                    messageDiv.style.border = '1px solid var(--gray-200)';
+                    messageDiv.style.marginRight = 'auto';
+                }
+
+                if (isHtml && sender !== 'user') {
+                    messageDiv.innerHTML = content;
+                } else {
+                    messageDiv.textContent = content;
+                }
+
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Index simple des offres du catalogue pour le chatbot
+            const catalogueIndex = [
+                {
+                    id: 'urbanisation',
+                    title: "Urbanisation SI",
+                    keywords: ['urbanisation', 'cartographie', 'rationalisation', 'paysage applicatif'],
+                    answer: "L'offre <strong>Urbanisation SI</strong> vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente. Vous pouvez consulter la fiche détaillée en cliquant sur <a href=\"urbanisation-si.html\">Urbanisation SI</a>.",
+                    examples: [
+                        "Comment rationaliser mon SI ?",
+                        "Qu'est-ce que l'urbanisation du SI ?"
+                    ]
+                },
+                {
+                    id: 'cloud',
+                    title: "Cloud & Infrastructure",
+                    keywords: ['cloud', 'migration', 'infra', 'infrastructure', 'iac', 'infrastructure as code', 'sd-wan', 'sase'],
+                    answer: "Pour vos enjeux <strong>Cloud & Infrastructure</strong>, regardez les offres <a href=\"migration-cloud-hybride.html\">Migration Cloud Hybride</a>, <a href=\"infrastructure-as-code.html\">Infrastructure as Code</a> et <a href=\"sd-wan-sase.html\">SD-WAN &amp; SASE</a>. Elles décrivent profils, livrables, durée et KPIs attendus.",
+                    examples: [
+                        "Quelle offre pour migrer vers le cloud ?",
+                        "Comment industrialiser mon infrastructure ?"
+                    ]
+                },
+                {
+                    id: 'devops',
+                    title: "DevOps, CI/CD & Observabilité",
+                    keywords: ['ci/cd', 'cicd', 'pipeline', 'devops', 'observabilité', 'monitoring', 'logs', 'metrics', 'traces'],
+                    answer: "Pour industrialiser vos déploiements et mieux superviser vos systèmes, consultez <a href=\"ci-cd-industrialisation.html\">CI/CD &amp; Industrialisation</a> et <a href=\"observabilite-monitoring.html\">Observabilité &amp; Monitoring</a>. Vous y trouverez les profils mobilisés, les livrables et les indicateurs de performance.",
+                    examples: [
+                        "Comment mettre en place une chaîne CI/CD ?",
+                        "Quelle offre couvre l'observabilité ?"
+                    ]
+                },
+                {
+                    id: 'security',
+                    title: "Sécurité & Continuité (Zero Trust, IAM, PCA/PRA)",
+                    keywords: ['sécurité', 'zero trust', 'iam', 'identité', 'pca', 'pra', 'continuité', 'résilience'],
+                    answer: "Pour la <strong>sécurité</strong> et la <strong>résilience</strong>, vous pouvez consulter <a href=\"zero-trust-iam.html\">Zero Trust &amp; IAM</a> et <a href=\"pca-pra-continuite.html\">PCA/PRA &amp; Continuité</a>. Elles couvrent les identités, les accès, ainsi que la continuité d'activité et la reprise après sinistre.",
+                    examples: [
+                        "Quelle offre pour le Zero Trust ?",
+                        "Avez-vous une offre sur le PCA/PRA ?"
+                    ]
+                },
+                {
+                    id: 'data-ai',
+                    title: "Data & IA (Data Mesh, MLOps, RAG)",
+                    keywords: ['data', 'données', 'ia', 'mlops', 'rag', 'générative', 'génératif', 'intelligence artificielle', 'data mesh'],
+                    answer: "Côté <strong>Data &amp; IA</strong>, vous disposez des offres <a href=\"architecture-data-mesh.html\">Architecture Data Mesh</a>, <a href=\"mlops-ia-industrielle.html\">MLOps &amp; IA industrielle</a> et <a href=\"rag-ia-generative-responsable.html\">RAG &amp; IA générative responsable</a>. Chaque fiche détaille les cas d'usage, les livrables et les bénéfices.",
+                    examples: [
+                        "Quelle offre couvre le RAG ?",
+                        "Comment industrialiser mes modèles d'IA ?"
+                    ]
+                },
+                {
+                    id: 'workplace',
+                    title: "Digital Workplace",
+                    keywords: ['digital workplace', 'workplace', 'collaborateur', 'm365', 'google workspace'],
+                    answer: "L'offre <a href=\"modernisation-digital-workplace.html\">Modernisation Digital Workplace</a> vise à moderniser l'environnement utilisateur (collaboration, sécurité, expérience employé).",
+                    examples: [
+                        "Quelle offre pour moderniser mon Digital Workplace ?",
+                        "Avez-vous une offre autour de Microsoft 365 ?"
+                    ]
+                }
+            ];
+
+            function getBotResponse(message) {
+                const m = message.toLowerCase();
+
+                // Salutations
+                if (m.includes('bonjour') || m.includes('salut') || m.includes('bonsoir')) {
+                    return "Bonjour ! Je suis l'assistant du catalogue de services Architecture. Je peux vous aider à choisir une offre et à comprendre rapidement ce qu’elle couvre (bénéfices, livrables, durée et profils mobilisés). Vous pouvez par exemple demander : 'Quelle offre pour la sécurité ?', 'Quels services autour du cloud ?' ou 'Quelle offre pour la data & l'IA ?'.";
+                }
+
+                // Questions sur les prix / modèles économiques
+                if (m.includes('prix') || m.includes('tarif') || m.includes('coût') || m.includes('budget')) {
+                    return "Les ordres de grandeur de prix et modèles économiques sont présentés dans la section 'Modèles économiques' du catalogue (TJM, packages). Pour un devis précis, utilisez le bouton 'Passez à l'action' en bas de page.";
+                }
+
+                // Recherche dans l'index des offres
+                let bestScore = 0;
+                let bestEntry = null;
+
+                catalogueIndex.forEach(entry => {
+                    let score = 0;
+                    entry.keywords.forEach(kw => {
+                        if (m.includes(kw)) {
+                            score++;
+                        }
+                    });
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestEntry = entry;
+                    }
+                });
+
+                if (bestEntry && bestScore > 0) {
+                    const examplesText = bestEntry.examples && bestEntry.examples.length
+                        ? "<br/><br/><em>Par exemple, vous pouvez demander :</em> " + bestEntry.examples.map(e => `"${e}"`).join(', ') + '.'
+                        : '';
+                    return bestEntry.answer + examplesText;
+                }
+
+                // Réponse générique enrichie
+                return "Je peux vous aider à comprendre les différentes offres du catalogue et à vous orienter vers la fiche la plus adaptée. Vous pouvez par exemple demander : 'Quels services proposent de l'observabilité ?', 'Quelle offre traite de la continuité d'activité (PCA/PRA) ?' ou 'Quelles sont vos offres Data & IA ?'.";
+            }
+
+            function sendMessage() {
+                const text = userInput.value.trim();
+                if (!text) return;
+                appendMessage(text, 'user');
+                userInput.value = '';
+
+                setTimeout(() => {
+                    const resp = getBotResponse(text);
+                    appendMessage(resp, 'bot', true);
+                }, 400);
+            }
+
+            sendButton.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

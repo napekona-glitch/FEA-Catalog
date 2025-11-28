@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<!-- Architecte : Napé Kona -->
+<!-- FEA Wekey -->
+<!-- Date : 25/11/2025 -->
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infrastructure as Code – Fiche service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/service-detail.css">
+    
+    <!-- Styles d'impression pour proposition commerciale -->
+    <style media="print">
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-size: 12pt;
+            line-height: 1.4;
+            color: #333;
+            background: white !important;
+        }
+        
+        .page {
+            background: white !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .shape-large, .shape-dot, .icon-card, .chatbot-container, .chatbot-icon {
+            display: none !important;
+        }
+        
+        .header {
+            background: white !important;
+            color: #333 !important;
+            padding: 20px 0 !important;
+            border-bottom: 3px solid var(--accent-500) !important;
+            margin-bottom: 30px !important;
+        }
+        
+        .header h1 {
+            color: #333 !important;
+            font-size: 24pt !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .family-section {
+            background: #f8f9fa !important;
+            padding: 15px !important;
+            border-left: 4px solid var(--accent-500) !important;
+            margin: 15px 0 !important;
+        }
+        
+        .content {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+        
+        .facts {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+        }
+        
+        .fact-card {
+            background: white !important;
+            border: 1px solid #ddd !important;
+            padding: 20px !important;
+            margin-bottom: 20px !important;
+            page-break-inside: avoid !important;
+            box-shadow: none !important;
+        }
+        
+        .fact-card h2 {
+            color: var(--accent-500) !important;
+            font-size: 16pt !important;
+            border-bottom: 2px solid #eee !important;
+            padding-bottom: 10px !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .fact-card h3 {
+            color: #333 !important;
+            font-size: 14pt !important;
+            margin: 15px 0 10px 0 !important;
+        }
+        
+        .benefits li {
+            margin: 8px 0 !important;
+            line-height: 1.4 !important;
+        }
+        
+        .tech-sections {
+            display: block !important;
+        }
+        
+        .tech-sections .fact-card {
+            border: 2px solid var(--accent-500) !important;
+            background: #f8f9fa !important;
+        }
+        
+        .tech-tag {
+            background: var(--accent-200) !important;
+            color: var(--accent-700) !important;
+            padding: 4px 8px !important;
+            margin: 2px !important;
+            border-radius: 12px !important;
+            font-size: 10pt !important;
+            display: inline-block !important;
+        }
+        
+        .back-link, .print-button {
+            display: none !important;
+        }
+        
+        .footer {
+            background: white !important;
+            color: #333 !important;
+            border-top: 2px solid #eee !important;
+            margin-top: 40px !important;
+            padding: 20px 0 !important;
+            text-align: center !important;
+        }
+        
+        /* En-tête de proposition commerciale */
+        .header::before {
+            content: "PROPOSITION COMMERCIALE";
+            display: block;
+            font-size: 28pt;
+            font-weight: bold;
+            color: var(--accent-500);
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .header::after {
+            content: "Wekey - Filière Architecture & Transformation";
+            display: block;
+            font-size: 14pt;
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+        }
+        
+        /* Pied de page commercial */
+        .footer::before {
+            content: "Pour toute information : contact@wekey.fr | www.wekey.fr";
+            display: block;
+            font-size: 11pt;
+            margin-bottom: 10px;
+        }
+        
+        /* Mise en évidence des éléments clés */
+        .value-item strong {
+            color: var(--accent-500) !important;
+            font-weight: bold !important;
+        }
+        
+        /* Numérotation des sections */
+        .facts {
+            counter-reset: section-counter;
+        }
+        
+        .fact-card::before {
+            counter-increment: section-counter;
+            content: counter(section-counter);
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent-500);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14pt;
+        }
+        
+        .fact-card {
+            position: relative !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="page" role="main">
+        <div class="shape-large" aria-hidden="true"></div>
+        <div class="shape-dot" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <header class="header">
+            <div class="title-block">
+                <h1>Infrastructure as Code</h1>
+                <div class="family-section">
+                    <div class="family-info">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Famille : <strong>DevOps & Cloud</strong></span>
+                    </div>
+                    <div class="family-description">
+                        Générez et gérez votre infrastructure de manière reproductible et évolutive grâce à la programmation
+                    </div>
+                </div>
+            </div>
+            <a class="back-link" href="index.html">
+                <i class="fas fa-arrow-left"></i> Retour au catalogue
+            </a>
+        </header>
+
+        <div class="content">
+            <div class="facts">
+                <!-- Section 1. Valeur -->
+                <div class="fact-card">
+                    <h2><i class="fas fa-trophy"></i> Valeur</h2>
+                    <div class="value-item">
+                        <h3>Pour votre entreprise</h3>
+                        <ul class="benefits">
+                            <li><strong>Réduction jusqu'à 70%</strong> du temps de provisionnement de l'infrastructure</li>
+                            <li><strong>Diminution de 60%</strong> des erreurs de configuration</li>
+                            <li><strong>Gains d'efficacité</strong> grâce à l'automatisation des déploiements</li>
+                            <li><strong>Réduction des coûts</strong> d'exploitation et de maintenance</li>
+                            <li><strong>Meilleure gouvernance</strong> et conformité</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 2. Définition du service -->
+                <div class="fact-card">
+                    <h2><i class="fas fa-book"></i> Définition du service</h2>
+                    <div class="value-item">
+                        <p>L'Infrastructure as Code (IaC) est une approche de gestion de l'infrastructure qui utilise des fichiers de configuration pour automatiser la fourniture et la gestion des ressources informatiques, en appliquant les bonnes pratiques du développement logiciel à l'infrastructure.</p>
+                        <h4>Principes fondamentaux :</h4>
+                        <ul class="benefits">
+                            <li><strong>Déclaration</strong> : Définition de l'état souhaité de l'infrastructure</li>
+                            <li><strong>Idempotence</strong> : Application sécurisée et répétable des configurations</li>
+                            <li><strong>Versionnement</strong> : Suivi des modifications dans un système de contrôle de version</li>
+                            <li><strong>Documentation</strong> : Configuration auto-documentée par le code</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 3. Approche -->
+                <div class="fact-card">
+                    <h2><i class="fas fa-project-diagram"></i> Notre approche</h2>
+                    <div class="value-item">
+                        <blockquote>« Nous transformons votre infrastructure en code pour une gestion plus agile, prévisible et évolutive, en nous appuyant sur les meilleurs outils du marché. »</blockquote>
+                        <h3>Méthodologie en 4 étapes</h3>
+                        <ol class="benefits">
+                            <li><strong>Audit</strong> de l'existant et des processus actuels</li>
+                            <li><strong>Conception</strong> de l'architecture cible et des templates</li>
+                            <li><strong>Implémentation</strong> avec les outils appropriés (Terraform, Ansible, etc.)</li>
+                            <li><strong>Formation</strong> et transfert de compétences</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Section 4. Livrables -->
+                <div class="fact-card">
+                    <h2><i class="fas fa-clipboard-check"></i> Livrables</h2>
+                    <div class="value-item">
+                        <ul class="benefits">
+                            <li>Code source versionné de l'infrastructure</li>
+                            <li>Pipelines CI/CD pour le déploiement automatisé</li>
+                            <li>Documentation technique complète</li>
+                            <li>Environnements de test et de préproduction</li>
+                            <li>Manuel d'utilisation et bonnes pratiques</li>
+                            <li>Formation des équipes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 5. Profils mobilisés -->
+                <div class="fact-card">
+                    <h2><i class="fas fa-users"></i> Profils mobilisés</h2>
+                    <div class="value-item">
+                        <ul class="benefits">
+                            <li><strong>1 Architecte Cloud</strong> (6 jours) : Conception de l'architecture</li>
+                            <li><strong>1 Ingénieur DevOps</strong> (12 jours) : Développement et automatisation</li>
+                            <li><strong>1 Expert Sécurité</strong> (3 jours) : Revue des bonnes pratiques</li>
+                            <li><strong>1 Chef de projet</strong> (4 jours) : Coordination et suivi</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 6. Durée typique -->
+                <div class="fact-card">
+                    <h2><i class="far fa-clock"></i> Durée typique</h2>
+                    <div class="value-item">
+                        <ul class="benefits">
+                            <li><strong>Durée totale</strong> : 4 à 8 semaines</li>
+                            <li><strong>Phase d'audit</strong> : 1 semaine</li>
+                            <li><strong>Conception</strong> : 1-2 semaines</li>
+                            <li><strong>Implémentation</strong> : 2-4 semaines</li>
+                            <li><strong>Formation</strong> : 2-3 jours</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 7. Variables de dimensionnement -->
+                <div class="fact-card">
+                    <h2><i class="fas fa-ruler-combined"></i> Variables de dimensionnement</h2>
+                    <div class="value-item">
+                        <ul class="benefits">
+                            <li><strong>Complexité</strong> de l'infrastructure existante</li>
+                            <li><strong>Nombre d'environnements</strong> à gérer (dev, test, préprod, prod)</li>
+                            <li><strong>Technologies</strong> utilisées (cloud, on-premise, hybride)</li>
+                            <li><strong>Niveau d'automatisation</strong> actuel</li>
+                            <li><strong>Exigences de conformité</strong> et de sécurité</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 8. KPI clés -->
+                <div class="fact-card">
+                    <h2><i class="fas fa-chart-pie"></i> KPI clés</h2>
+                    <div class="value-item">
+                        <ul class="benefits">
+                            <li><strong>Temps de provisionnement</strong> de l'infrastructure</li>
+                            <li><strong>Taux d'échec</strong> des déploiements</li>
+                            <li><strong>Temps de reprise</strong> après incident</li>
+                            <li><strong>Couverture</strong> de l'automatisation</li>
+                            <li><strong>Économies réalisées</strong> sur les coûts d'infrastructure</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sections Technologies -->
+            <div class="tech-sections" style="margin-top: 3rem; width: 100%;">
+                <!-- Technologies Legacy -->
+                <div class="fact-card" style="margin-bottom: 2rem;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <i class="fas fa-history" style="font-size: 1.5rem; color: var(--gray-600); margin-right: 1rem;"></i>
+                        <h2 style="margin: 0; color: var(--gray-800); font-size: 1.5rem;">Technologies Legacy</h2>
+                    </div>
+                    <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid var(--gray-400);">
+                        <div class="tech-tags" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
+                            <a href="https://en.wikipedia.org/wiki/Manual_configuration" target="_blank" class="tech-tag" style="background: var(--gray-200); color: var(--gray-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--gray-300)'; this.style.borderColor='var(--gray-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--gray-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#ConfigurationManuelle</a>
+                            <a href="https://en.wikipedia.org/wiki/Shell_script" target="_blank" class="tech-tag" style="background: var(--gray-200); color: var(--gray-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--gray-300)'; this.style.borderColor='var(--gray-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--gray-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#ScriptsShell</a>
+                            <a href="https://en.wikipedia.org/wiki/Snapshot_(computer_storage)" target="_blank" class="tech-tag" style="background: var(--gray-200); color: var(--gray-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--gray-300)'; this.style.borderColor='var(--gray-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--gray-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#SnapshotsManuels</a>
+                            <a href="https://en.wikipedia.org/wiki/Change_management" target="_blank" class="tech-tag" style="background: var(--gray-200); color: var(--gray-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--gray-300)'; this.style.borderColor='var(--gray-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--gray-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#GestionManuelle</a>
+                            <a href="https://en.wikipedia.org/wiki/Technical_debt" target="_blank" class="tech-tag" style="background: var(--gray-200); color: var(--gray-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--gray-300)'; this.style.borderColor='var(--gray-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--gray-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#DetteTechnique</a>
+                        </div>
+                        <div style="display: flex; align-items: center; padding: 1rem; background: white; border-radius: 0.5rem; border: 1px solid var(--gray-200);">
+                            <i class="fas fa-info-circle" style="color: var(--gray-500); margin-right: 1rem; font-size: 1.2rem;"></i>
+                            <p style="margin: 0; color: var(--gray-700); line-height: 1.6;">
+                                Nous automatisons ces processus manuels pour une infrastructure fiable et reproductible.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Technologies Tendance -->
+                <div class="fact-card">
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <i class="fas fa-rocket" style="font-size: 1.5rem; color: var(--accent-500); margin-right: 1rem;"></i>
+                        <h2 style="margin: 0; color: var(--gray-800); font-size: 1.5rem;">Technologies Tendance</h2>
+                    </div>
+                    <div style="background: var(--accent-50); padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid var(--accent-400);">
+                        <div class="tech-tags" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
+                            <a href="https://www.terraform.io/" target="_blank" class="tech-tag" style="background: var(--accent-200); color: var(--accent-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-300)'; this.style.borderColor='var(--accent-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#Terraform</a>
+                            <a href="https://www.ansible.com/" target="_blank" class="tech-tag" style="background: var(--accent-200); color: var(--accent-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-300)'; this.style.borderColor='var(--accent-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#Ansible</a>
+                            <a href="https://kubernetes.io/" target="_blank" class="tech-tag" style="background: var(--accent-200); color: var(--accent-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-300)'; this.style.borderColor='var(--accent-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#Kubernetes</a>
+                            <a href="https://www.jenkins.io/" target="_blank" class="tech-tag" style="background: var(--accent-200); color: var(--accent-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-300)'; this.style.borderColor='var(--accent-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#Jenkins</a>
+                            <a href="https://github.com/features/actions" target="_blank" class="tech-tag" style="background: var(--accent-200); color: var(--accent-700); padding: 0.5rem 1rem; border-radius: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-300)'; this.style.borderColor='var(--accent-500)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent-200)'; this.style.borderColor='transparent'; this.style.boxShadow='none';">#GitHubActions</a>
+                        </div>
+                        <div style="display: flex; align-items: center; padding: 1rem; background: white; border-radius: 0.5rem; border: 1px solid var(--accent-200);">
+                            <i class="fas fa-lightbulb" style="color: var(--accent-500); margin-right: 1rem; font-size: 1.2rem;"></i>
+                            <p style="margin: 0; color: var(--gray-700); line-height: 1.6;">
+                                Nous implémentons les meilleures pratiques d'IaC pour une infrastructure agile et sécurisée.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Boutons d'action -->
+            <div style="text-align: center; margin-top: 2rem; width: 100%; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="index.html" class="back-link" style="text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Retour au catalogue
+                </a>
+                <a href="pdf-infrastructure-as-code.html" target="_blank" class="print-button" style="background: linear-gradient(135deg, var(--accent-500), #e67e00); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(245, 166, 35, 0.4)'; this.style.background='linear-gradient(135deg, #e67e00, var(--accent-500))';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 166, 35, 0.3)'; this.style.background='linear-gradient(135deg, var(--accent-500), #e67e00)';">
+                    <i class="fas fa-file-pdf"></i> Télécharger la proposition commerciale (PDF)
+                </a>
+            </div>
+            
+            <div class="icon-card" aria-hidden="true">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <span>WK — DevOps & Cloud</span>
+            <small>Dernière mise à jour : novembre 2025</small>
+        </footer>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <h4>Assistant Infrastructure as Code</h4>
+            <button class="chatbot-close" id="chatbotClose">×</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message bot">
+                Bonjour ! Je suis là pour répondre à vos questions sur l'Infrastructure as Code et son implémentation.
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="userInput" placeholder="Posez votre question..." />
+            <button id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Gestion du chatbot
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatContainer = document.getElementById('chatbotContainer');
+            const chatMessages = document.getElementById('chatbotMessages');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            const closeButton = document.getElementById('chatbotClose');
+            
+            // Fonction d'impression améliorée
+            window.imprimerProposition = function() {
+                // Afficher une confirmation
+                const confirmation = confirm('Préparer la proposition commerciale pour impression ?\n\nLe document sera formaté professionnellement avec en-tête et pied de page commerciaux.');
+                
+                if (confirmation) {
+                    // Petit délai pour l'effet visuel
+                    setTimeout(() => {
+                        window.print();
+                    }, 300);
+                }
+            };
+            
+            // Afficher/masquer le chat
+            const chatIcon = document.createElement('div');
+            chatIcon.className = 'chatbot-icon';
+            chatIcon.innerHTML = '<i class="fas fa-comments"></i>';
+            document.body.appendChild(chatIcon);
+            
+            chatIcon.addEventListener('click', function() {
+                chatContainer.classList.add('visible');
+                chatIcon.style.display = 'none';
+            });
+            
+            closeButton.addEventListener('click', function() {
+                chatContainer.classList.remove('visible');
+                chatIcon.style.display = 'flex';
+            });
+            
+            // Envoyer un message
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '') return;
+                
+                // Ajouter le message de l'utilisateur
+                appendMessage(message, 'user');
+                userInput.value = '';
+                
+                // Réponse du bot (simplifiée)
+                setTimeout(() => {
+                    const botResponse = getBotResponse(message);
+                    appendMessage(botResponse, 'bot');
+                }, 500);
+            }
+            
+            // Gestion de la touche Entrée
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Fonction pour ajouter un message au chat
+            function appendMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chatbot-message ${sender}`;
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Obtenir une réponse du bot (simplifiée)
+            function getBotResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                if (lowerMessage.includes('bonjour') || lowerMessage.includes('salut') || lowerMessage.includes('coucou')) {
+                    return "Bonjour ! Comment puis-je vous aider avec l'Infrastructure as Code aujourd'hui ?";
+                } else if (lowerMessage.includes('outil') || lowerMessage.includes('technologie')) {
+                    return "Nous travaillons avec les principaux outils d'Infrastructure as Code comme Terraform, Ansible, AWS CloudFormation, Azure Resource Manager et Google Cloud Deployment Manager. Le choix dépendra de votre environnement et de vos besoins spécifiques.";
+                } else if (lowerMessage.includes('avantage') || lowerMessage.includes('bénéfice')) {
+                    return "Les avantages de l'Infrastructure as Code incluent une meilleure reproductibilité, une réduction des erreurs, une documentation vivante de l'infrastructure, et une accélération des déploiements.";
+                } else if (lowerMessage.includes('contact') || lowerMessage.includes('contacter') || lowerMessage.includes('email')) {
+                    return "Vous pouvez nous contacter à contact@wekey-architecture.com ou au 01 23 45 67 89 pour discuter de votre projet d'Infrastructure as Code.";
+                } else if (lowerMessage.includes('temps') || lowerMessage.includes('délai') || lowerMessage.includes('durée')) {
+                    return "La mise en place d'une infrastructure en tant que code dépend de la complexité de votre environnement actuel. En moyenne, les premiers résultats concrets sont visibles en 4 à 8 semaines.";
+                } else {
+                    return "Je ne suis pas sûr de bien comprendre votre question. Pourriez-vous la reformuler ? Je peux vous aider avec des informations sur les outils, les avantages, ou vous mettre en relation avec un expert en Infrastructure as Code.";
+                }
+            }
+            
+            // Gestion de l'icône flottante
+            const icon = document.createElement('div');
+            icon.className = 'icon-card';
+            icon.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            document.body.appendChild(icon);
+            
+            // Faire défiler vers le haut au clic sur l'icône
+            icon.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Afficher/masquer l'icône au défilement
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    icon.style.opacity = '1';
+                    icon.style.visibility = 'visible';
+                } else {
+                    icon.style.opacity = '0';
+                    icon.style.visibility = 'hidden';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

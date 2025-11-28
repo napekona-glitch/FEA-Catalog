@@ -1,0 +1,675 @@
+/* Architecte : Napé Kona */
+/* Variables de couleurs */
+:root {
+    /* Couleurs de la charte FEA */
+    --accent-500: #f5a623;
+    --accent-400: #ffd27a;
+    --accent-200: #fff3cf;
+    --gray-050: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --white: #ffffff;
+    
+    /* Alias pour la cohérence */
+    --primary: var(--accent-500);
+    --primary-light: var(--accent-400);
+    --primary-lighter: var(--accent-200);
+    --dark: var(--gray-900);
+    --light: var(--gray-050);
+    --accent: var(--accent-500);
+}
+
+/* Reset et styles de base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--white);
+    color: var(--gray-900);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Layout et structure */
+.page {
+    height: 100vh;
+    padding: 1rem 2%;
+    position: relative;
+    overflow: auto;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-top: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.title-block h1 {
+    font-size: 2.25rem;
+    color: var(--gray-900);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.title-block p {
+    color: var(--gray-600);
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Styles pour la section Famille */
+.family-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 0.5rem auto 0;
+    max-width: 800px;
+    flex-wrap: wrap;
+}
+
+.family-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: var(--gray-700);
+    background: var(--gray-050);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--gray-200);
+}
+
+.family-info i {
+    color: var(--accent-500);
+    font-size: 1.1em;
+}
+
+.family-info strong {
+    color: var(--accent-500);
+    font-weight: 600;
+}
+
+.family-description {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    position: relative;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Grille de cartes */
+.facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Cartes */
+.fact-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--gray-200);
+    position: relative;
+    overflow: hidden;
+}
+
+.fact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent-500);
+}
+
+.fact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.fact-card h3 {
+    color: var(--accent-500);
+    margin: 0 0 1.25rem 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.fact-card h3 i {
+    color: var(--accent-500);
+    font-size: 1.1em;
+}
+
+/* Éléments de valeur */
+.value-item {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background: var(--gray-050);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-500);
+    transition: all 0.2s ease;
+}
+
+.value-item:last-child {
+    margin-bottom: 0;
+}
+
+.value-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.value-item h4 {
+    color: var(--accent-500);
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.value-item blockquote {
+    margin: 0.5rem 0 0 0;
+    padding: 0.75rem 1rem;
+    background: var(--white);
+    border-radius: 6px;
+    font-style: italic;
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    border-left: 2px solid var(--accent-400);
+}
+
+.value-item ul, .value-item ol {
+    margin: 0.5rem 0 0 1.25rem;
+    padding: 0;
+    color: var(--gray-700);
+}
+
+.value-item li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Liens et boutons */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent-500);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent-200);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+}
+
+.back-link:hover {
+    background: var(--accent-400);
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+.back-link i {
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.back-link:hover i {
+    transform: translateX(-3px);
+}
+
+/* Pied de page */
+.footer {
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: auto;
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--gray-200);
+    position: relative;
+    z-index: 2;
+}
+
+/* Éléments décoratifs */
+.shape-large {
+    position: fixed;
+    top: -50%;
+    left: -25%;
+    width: 150%;
+    height: 200%;
+    background: var(--accent-200);
+    opacity: 0.1;
+    border-radius: 60% 40% 70% 30% / 60% 30% 70% 40%;
+    animation: morph 20s ease-in-out infinite;
+    z-index: 0;
+}
+
+.shape-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.shape-dot span {
+    position: absolute;
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-400);
+    border-radius: 50%;
+    opacity: 0.3;
+    /* animation: float 15s linear infinite; */ /* Désactivé */
+    bottom: -150px;
+}
+
+.shape-dot span:nth-child(1) {
+    left: 25%;
+    width: 8px;
+    height: 8px;
+    /* animation-delay: 0s; */ /* Désactivé */
+    /* animation-duration: 15s; */ /* Désactivé */
+}
+
+.shape-dot span:nth-child(2) {
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    /* animation-delay: 2s; */ /* Désactivé */
+    /* animation-duration: 18s; */ /* Désactivé */
+}
+
+.shape-dot span:nth-child(3) {
+    left: 10%;
+    width: 12px;
+    height: 12px;
+    /* animation-delay: 4s; */ /* Désactivé */
+    /* animation-duration: 20s; */ /* Désactivé */
+}
+
+/* Icône flottante */
+.icon-card {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background: var(--accent-500);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 100;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+}
+
+.icon-card:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Icône flottante du chatbot (créée dynamiquement dans les fiches) */
+.chatbot-icon {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent-500);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1200;
+    font-size: 1.3rem;
+}
+
+.chatbot-icon:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+/* Styles spécifiques pour la liste à puces */
+.benefits {
+    margin-top: 0.75rem;
+    padding-left: 0;
+    list-style: none;
+}
+
+.benefits li {
+    margin-bottom: 0.4rem;
+    position: relative;
+    padding-left: 1.3rem;
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.benefits li:before {
+    content: "•";
+    color: var(--accent-500);
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    font-weight: bold;
+}
+
+.benefits li strong {
+    color: var(--accent-500);
+}
+
+/* Chatbot styles */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50vw;
+    height: 70vh;
+    max-width: 800px;
+    min-width: 400px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.chatbot-container.visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.chatbot-header {
+    background: var(--accent-500);
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 5px;
+}
+
+.chatbot-messages {
+    padding: 15px;
+    height: calc(70vh - 120px);
+    overflow-y: auto;
+    background: #f9f9f9;
+    flex-grow: 1;
+}
+
+.chatbot-message {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 80%;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.chatbot-message.bot {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-top-left-radius: 5px;
+    margin-right: auto;
+}
+
+.chatbot-message.user {
+    background: var(--accent-500);
+    color: white;
+    margin-left: auto;
+    border-top-right-radius: 5px;
+}
+
+.chatbot-input {
+    display: flex;
+    padding: 10px;
+    background: white;
+    border-top: 1px solid var(--gray-200);
+}
+
+.chatbot-input input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--gray-300);
+    border-radius: 20px;
+}
+
+/* Styles spécifiques pour la page de migration monolithe vers microservices */
+/* (Réutilise la même base .benefits pour garder la cohérence globale) */
+
+.chatbot-input input {
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9em;
+}
+
+.chatbot-input button {
+    background: var(--accent-500);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.chatbot-input button:hover {
+    background: var(--accent-600);
+}
+
+.chatbot-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent-500);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 768px) {
+    .chatbot-container {
+        width: 90vw;
+        height: 80vh;
+        bottom: 10px;
+        right: 5vw;
+        left: 5vw;
+        border-radius: 10px;
+    }
+    
+    .chatbot-messages {
+        height: calc(80vh - 120px);
+    }
+}
+
+/* Animations */
+@keyframes morph {
+    0% {
+        border-radius: 60% 40% 70% 30% / 60% 30% 70% 40%;
+    }
+    50% {
+        border-radius: 30% 60% 40% 60% / 50% 60% 40% 70%;
+    }
+    100% {
+        border-radius: 60% 40% 70% 30% / 60% 30% 70% 40%;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Styles responsifs */
+@media (max-width: 1024px) {
+    .page {
+        padding: 1rem;
+    }
+    
+    .title-block h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 0.75rem;
+    }
+    
+    .title-block h1 {
+        font-size: 1.75rem;
+    }
+    
+    .title-block p {
+        font-size: 1rem;
+    }
+    
+    .facts {
+        grid-template-columns: 1fr;
+    }
+    
+    .fact-card {
+        padding: 1.5rem;
+    }
+    
+    .value-item {
+        padding: 1rem;
+    }
+    
+    .icon-card {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+        bottom: 1rem;
+        right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-block h1 {
+        font-size: 1.5rem;
+    }
+    
+    .title-block p {
+        font-size: 0.95rem;
+    }
+    
+    .fact-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .value-item h4 {
+        font-size: 0.95rem;
+    }
+    
+    .value-item blockquote, 
+    .value-item li {
+        font-size: 0.9rem;
+    }
+}

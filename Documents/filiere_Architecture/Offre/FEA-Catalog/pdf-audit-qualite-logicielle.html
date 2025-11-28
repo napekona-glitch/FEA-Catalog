@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Génération PDF - Proposition Audit Qualité Logicielle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .pdf-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 0 auto 20px;
+            padding: 20mm;
+            box-sizing: border-box;
+            page-break-after: always;
+            position: relative;
+        }
+
+        .pdf-page:last-child {
+            page-break-after: auto;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .pdf-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                max-width: none;
+            }
+            
+            .pdf-page {
+                box-shadow: none;
+                margin: 0;
+                page-break-after: always;
+            }
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border-radius: 12px 12px 0 0;
+            padding: 30px;
+        }
+
+        .pdf-header h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .pdf-header .subtitle {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .pdf-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            padding-left: 20px;
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .value-grid-full {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .value-card-centered {
+            width: 100%;
+            margin: 0;
+            background: linear-gradient(145deg, #f8f9ff, #ffffff);
+            border-left: 5px solid #667eea;
+            border-right: 5px solid #667eea;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+            padding: 35px;
+            text-align: center;
+        }
+
+        .value-card-centered h3 {
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .value-card-centered ul {
+            text-align: left;
+            display: inline-block;
+        }
+
+        .value-card {
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .value-card h3 {
+            color: #667eea;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .value-card h3::before {
+            content: '▸';
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .value-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .value-card li {
+            padding: 8px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .value-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .value-card li:hover {
+            background: rgba(102, 126, 234, 0.05);
+            padding-left: 10px;
+        }
+
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .table tbody tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table .highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .table .highlight td {
+            padding: 18px 15px;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tech-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+        
+        .tech-tag:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .tech-tag.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .tech-tag.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .pricing-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .pricing-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .pricing-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .pricing-stat {
+            text-align: center;
+        }
+
+        .pricing-stat .number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .pricing-stat .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #f8f9ff, #ffffff);
+            padding: 35px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #667eea;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+        }
+
+        .cta-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .contact-info strong {
+            color: #2c3e50;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .pdf-container {
+                padding: 15px;
+            }
+            
+            .value-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .pricing-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .pdf-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .btn {
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
+            
+            .tech-tag {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container" id="pdfContent">
+        <!-- Page 1: En-tête et Valeur -->
+        <div class="pdf-page">
+            <!-- En-tête -->
+            <div class="pdf-header">
+                <h1>Proposition Commerciale</h1>
+                <div class="subtitle">Audit Qualité Logicielle - Excellence & Performance</div>
+                <div class="pdf-meta">
+                    <div>Wekey - Architecture & Transformation</div>
+                    <div>Référence : AQL-2025-001</div>
+                    <div>Novembre 2025</div>
+                </div>
+            </div>
+
+            <!-- Section Valeur -->
+            <div class="section">
+                <h2 class="section-title">Valeur & Bénéfices pour votre entreprise</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Qualité & Fiabilité</h3>
+                        <ul>
+                            <li><strong>Réduction de 75%</strong> bugs critiques</li>
+                            <li><strong>Couverture test</strong> : +60%</li>
+                            <li><strong>Stabilité</strong> applications garantie</li>
+                            <li><strong>Performance</strong> optimisée</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Sécurité & Conformité</h3>
+                        <ul>
+                            <li><strong>Vulnérabilités</strong> réduites de 80%</li>
+                            <li><strong>Conformité</strong> standards qualité</li>
+                            <li><strong>Audit sécurité</strong> complet</li>
+                            <li><strong>Certifications</strong> ISO 9001/27001</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Efficacité Développement</h3>
+                        <ul>
+                            <li><strong>Temps de développement</strong> : -40%</li>
+                            <li><strong>Technical debt</strong> réduit de 50%</li>
+                            <li><strong>Productivité équipes</strong> : +45%</li>
+                            <li><strong>CI/CD optimisé</strong> et sécurisé</li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Approche et Définition -->
+        <div class="pdf-page">
+            <!-- Section Définition -->
+            <div class="section">
+                <h2 class="section-title">Définition du Service</h2>
+                <p style="margin-bottom: 20px; line-height: 1.6;">
+                    L'Audit Qualité Logicielle est une évaluation complète de vos applications et processus pour identifier les risques, optimiser la performance et garantir l'excellence opérationnelle.
+                </p>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Piliers Qualité</h3>
+                        <ul>
+                            <li><strong>Code Quality</strong> : Clean Code & Standards</li>
+                            <li><strong>Testing Strategy</strong> : Automatisation & Couverture</li>
+                            <li><strong>Security Audit</strong> : Vulnérabilités & Hardening</li>
+                            <li><strong>Performance Review</strong> : Optimisation & Scalabilité</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Méthodologies Audit</h3>
+                        <ul>
+                            <li><strong>Static Analysis</strong> : Code & Architecture</li>
+                            <li><strong>Dynamic Testing</strong> : Runtime & Security</li>
+                            <li><strong>Compliance Check</strong> : Standards & Normes</li>
+                            <li><strong>Best Practices</strong> : Industry Standards</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Approche -->
+            <div class="section">
+                <h2 class="section-title">Notre Approche Méthodologique</h2>
+                <blockquote style="font-style: italic; color: #667eea; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #667eea; border-radius: 8px;">
+                    « Nous auditons votre qualité logicielle pour transformer vos défis techniques en opportunités d'excellence et de performance. »
+                </blockquote>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 1: Audit Complet (2-3 semaines)</div>
+                        <div class="timeline-content">
+                            Analyse code base, revue architecture, tests sécurité, évaluation performance, identification risques.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 2: Plan d'Action (1-2 semaines)</div>
+                        <div class="timeline-content">
+                            Priorisation actions, roadmap amélioration, définition standards, allocation ressources, planification.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 3: Mise en Œuvre (3-4 semaines)</div>
+                        <div class="timeline-content">
+                            Refactoring code, implémentation tests, corrections sécurité, optimisation performance, automatisation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Phase 4: Validation & Transfert (1-2 semaines)</div>
+                        <div class="timeline-content">
+                            Tests validation, formation équipes, documentation, monitoring continu, support post-audit.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Livrables et Équipe -->
+        <div class="pdf-page">
+            <!-- Section Livrables -->
+            <div class="section">
+                <h2 class="section-title">Livrables & Résultats Attendus</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Livrables Techniques</h3>
+                        <ul>
+                            <li>Rapport d'audit complet</li>
+                            <li>Plan d'action priorisé</li>
+                            <li>Code refactored optimisé</li>
+                            <li>Suite de tests automatisés</li>
+                            <li>Dashboard monitoring qualité</li>
+                            <li>Documentation standards</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Transfert de Compétences</h3>
+                        <ul>
+                            <li>Formation équipes développement</li>
+                            <li>Ateliers bonnes pratiques</li>
+                            <li>Guide qualité logicielle</li>
+                            <li>Mentoring technique</li>
+                            <li>Support post-projet</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Équipe -->
+            <div class="section">
+                <h2 class="section-title">Équipe d'Experts Mobilisés</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Profil</th>
+                            <th>Expertise</th>
+                            <th>Jours</th>
+                            <th>Rôle Principal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Quality Architect</strong></td>
+                            <td>Code Review, Architecture, Testing, Security, Performance</td>
+                            <td>16 jours</td>
+                            <td>Conception audit & stratégie</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Senior Developer</strong></td>
+                            <td>Refactoring, Clean Code, CI/CD, Automation</td>
+                            <td>18 jours</td>
+                            <td>Optimisation & implémentation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security Expert</strong></td>
+                            <td>Security Audit, Penetration Testing, Compliance</td>
+                            <td>12 jours</td>
+                            <td>Audit sécurité & vulnérabilités</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chef de projet</strong></td>
+                            <td>Qualité, Transformation, Coordination</td>
+                            <td>4 jours</td>
+                            <td>Gestion de projet & livraison</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Total</strong></td>
+                            <td></td>
+                            <td><strong>50 jours</strong></td>
+                            <td><strong>2-3 mois de mission</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page 4: Technologies et Tarification -->
+        <div class="pdf-page">
+            <!-- Section Technologies -->
+            <div class="section">
+                <h2 class="section-title">Outils & Solutions d'Audit</h2>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Static Analysis</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.sonarqube.org/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">SonarQube</a>
+                        <a href="https://codeclimate.com/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">CodeClimate</a>
+                        <a href="https://eslint.org/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">ESLint</a>
+                        <a href="https://pmd.github.io/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">PMD</a>
+                        <a href="https://checkstyle.sourceforge.io/" target="_blank" class="tech-tag primary" style="background: #667eea; color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">Checkstyle</a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Security Testing</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.zaproxy.org/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">OWASP ZAP</a>
+                        <a href="https://portswigger.net/burp" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Burp Suite</a>
+                        <a href="https://www.veracode.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Veracode</a>
+                        <a href="https://www.microfocus.com/en-us/products/fortify" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Fortify</a>
+                        <a href="https://snyk.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Snyk</a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Performance Testing</h3>
+                    <div class="tech-tags">
+                        <a href="https://jmeter.apache.org/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">JMeter</a>
+                        <a href="https://www.microfocus.com/en-us/products/loadrunner-load-testing" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">LoadRunner</a>
+                        <a href="https://k6.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">K6</a>
+                        <a href="https://gatling.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Gatling</a>
+                        <a href="https://artillery.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Artillery</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 10px;">CI/CD & Automation</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.jenkins.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Jenkins</a>
+                        <a href="https://docs.gitlab.com/ee/ci/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">GitLab CI</a>
+                        <a href="https://github.com/features/actions" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">GitHub Actions</a>
+                        <a href="https://azure.microsoft.com/fr-fr/products/devops/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Azure DevOps</a>
+                        <a href="https://circleci.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#dee2e6';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">CircleCI</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Tarification -->
+            <div class="section">
+                <h2 class="section-title">Investissement & ROI</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>Modèle de Tarification</h3>
+                        <ul>
+                            <li><strong>Forfait fixe</strong> : 55 000 € HT</li>
+                            <li>Basé sur 50 jours d'expertise</li>
+                            <li>TJM moyen : 1 100 € HT/jour</li>
+                            <li>Garantie qualité 95%</li>
+                            <li>Support post-projet inclus</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>Retour sur Investissement</h3>
+                        <ul>
+                            <li><strong>Économies annuelles</strong> : 55 000 €+</li>
+                            <li><strong>ROI atteint</strong> : 6-10 mois</li>
+                            <li><strong>Réduction coûts</strong> : 35%</li>
+                            <li><strong>Satisfaction clients</strong> : +40%</li>
+                            <li><strong>Bugs critiques</strong> : -75%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="pricing-box">
+                    <h3>Investissement Total : 55 000 € HT</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">Soit 1 100 € HT par jour d'expertise senior</p>
+                    <div class="pricing-stats">
+                        <div class="pricing-stat">
+                            <span class="number">6-10</span>
+                            <span class="label">mois pour ROI</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">55k€+</span>
+                            <span class="label">économies/an</span>
+                        </div>
+                        <div class="pricing-stat">
+                            <span class="number">95%</span>
+                            <span class="label">qualité garantie</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Calendrier et Contact -->
+        <div class="pdf-page">
+            <!-- Section Calendrier -->
+            <div class="section">
+                <h2 class="section-title">Calendrier d'Audit Qualité</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 1-3: Audit Complet</div>
+                        <div class="timeline-content">
+                            Analyse code base, revue architecture, tests sécurité, évaluation performance, identification risques.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 4-5: Plan d'Action</div>
+                        <div class="timeline-content">
+                            Priorisation actions, roadmap amélioration, définition standards, allocation ressources, planification.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 6-9: Mise en Œuvre</div>
+                        <div class="timeline-content">
+                            Refactoring code, implémentation tests, corrections sécurité, optimisation performance, automatisation.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Semaines 10-11: Validation & Transfert</div>
+                        <div class="timeline-content">
+                            Tests validation, formation équipes, documentation, monitoring continu, support final.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section KPI -->
+            <div class="section">
+                <h2 class="section-title">Indicateurs de Performance Clés</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <h3>KPI Techniques</h3>
+                        <ul>
+                            <li><strong>Taux couverture</strong> tests</li>
+                            <li><strong>Nombre bugs</strong> critiques</li>
+                            <li><strong>Score qualité</strong> code</li>
+                            <li><strong>Performance</strong> applications</li>
+                        </ul>
+                    </div>
+                    <div class="value-card">
+                        <h3>KPI Métier</h3>
+                        <ul>
+                            <li><strong>Satisfaction clients</strong></li>
+                            <li><strong>Temps résolution</strong> incidents</li>
+                            <li><strong>Coût maintenance</strong> réduit</li>
+                            <li><strong>Productivité équipes</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section CTA -->
+            <div class="cta-section">
+                <h2>Prêt à garantir l'excellence de votre qualité logicielle ?</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Contactez-nous dès aujourd'hui pour démarrer votre audit qualité 
+                    et bénéficier d'une évaluation gratuite de votre maturité logicielle.
+                </p>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <p><strong>Wekey - Architecture & Transformation</strong></p>
+                <p>Email : <strong>contact@wekey.fr</strong> | Téléphone : <strong>+33 1 23 45 67 89</strong></p>
+                <p>Web : <strong>www.wekey.fr</strong> | LinkedIn : <strong>linkedin.com/company/wekey</strong></p>
+                <p><strong>Référence proposition :</strong> AQL-2025-001</p>
+                <p><strong>Date d'émission :</strong> Novembre 2025</p>
+                <p><strong>Validité de l'offre :</strong> 3 mois</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>Cette proposition commerciale est confidentielle et destinée uniquement au destinataire.</p>
+                <p>Tous nos services sont soumis à nos conditions générales de vente disponibles sur demande.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de génération PDF -->
+    <div class="button-container">
+        <button class="btn" id="generatePdf" onclick="generatePDF()">
+            <i class="fas fa-file-pdf"></i>
+            Télécharger la proposition commerciale (PDF)
+        </button>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p>Génération du PDF en cours...</p>
+    </div>
+
+    <script>
+        // Initialiser jsPDF
+        const { jsPDF } = window.jspdf;
+
+        async function generatePDF() {
+            const button = document.getElementById('generatePdf');
+            const loading = document.getElementById('loading');
+            const pages = document.querySelectorAll('.pdf-page');
+            
+            // Désactiver le bouton et afficher le chargement
+            button.disabled = true;
+            loading.style.display = 'block';
+            
+            try {
+                // Configuration pour le PDF
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 20;
+                const contentWidth = pageWidth - (margin * 2);
+                const contentHeight = pageHeight - (margin * 2);
+                
+                // Ajouter des métadonnées
+                pdf.setProperties({
+                    title: 'Proposition Commerciale - Audit Qualité Logicielle',
+                    subject: 'Wekey - Architecture & Transformation',
+                    author: 'Wekey',
+                    keywords: 'Audit Qualité, Code Review, Security, Performance, Testing',
+                    creator: 'Wekey - Architecture & Transformation'
+                });
+                
+                // Traiter chaque page séparément
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    
+                    // Convertir chaque page en canvas
+                    const canvas = await html2canvas(page, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff',
+                        width: page.offsetWidth,
+                        height: page.offsetHeight
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // Calculer les dimensions pour s'adapter à la page PDF
+                    const imgWidth = contentWidth;
+                    const imgHeight = (canvas.height * contentWidth) / canvas.width;
+                    
+                    // Si ce n'est pas la première page, ajouter une nouvelle page
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    // Ajouter l'image de la page
+                    pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+                    
+                    // Ajouter un numéro de page en bas
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(128, 128, 128);
+                    pdf.text(`Page ${i + 1} / ${pages.length}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                }
+                
+                // Générer le nom de fichier avec date
+                const date = new Date().toISOString().split('T')[0];
+                const fileName = `proposition-audit-qualite-logicielle-${date}.pdf`;
+                
+                // Télécharger le PDF
+                pdf.save(fileName);
+                
+                // Afficher un message de succès
+                showSuccessMessage();
+                
+            } catch (error) {
+                console.error('Erreur lors de la génération du PDF:', error);
+                showErrorMessage();
+            } finally {
+                // Réactiver le bouton et masquer le chargement
+                button.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+        
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-check-circle"></i> PDF généré avec succès !';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        function showErrorMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #dc3545;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            message.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erreur lors de la génération du PDF';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+        
+        // Fonction alternative pour les navigateurs qui ne supportent pas html2canvas
+        function fallbackPDF() {
+            window.print();
+        }
+        
+        // Vérifier si les bibliothèques sont chargées
+        window.addEventListener('load', function() {
+            if (typeof html2canvas === 'undefined' || typeof jsPDF === 'undefined') {
+                console.warn('Bibliothèques PDF non chargées, utilisation de l impression native');
+                document.getElementById('generatePdf').onclick = fallbackPDF;
+                document.getElementById('generatePdf').innerHTML = '<i class="fas fa-print"></i> Imprimer la proposition commerciale';
+            }
+        });
+    </script>
+</body>
+</html>
