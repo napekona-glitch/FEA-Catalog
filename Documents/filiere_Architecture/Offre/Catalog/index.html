@@ -301,6 +301,411 @@
         .chatbot-messages {
             scroll-behavior: smooth !important;
         }
+
+        /* Styles créatifs pour le flyer marketing onepager */
+        @media print {
+            /* Masquer tous les éléments non nécessaires */
+            .chatbot-container,
+            .hero-cta,
+            .gcse-search,
+            .more-link,
+            .filter-pills,
+            .print-btn,
+            nav,
+            .table-like,
+            blockquote {
+                display: none !important;
+            }
+
+            /* Styles créatifs pour le flyer marketing multi-pages */
+        @media print {
+            /* Masquer tous les éléments non nécessaires */
+            .chatbot-container,
+            .hero-cta,
+            .gcse-search,
+            .more-link,
+            .filter-pills,
+            .print-btn,
+            nav,
+            .table-like,
+            blockquote {
+                display: none !important;
+            }
+
+            /* Reset créatif pour le flyer */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            body, html {
+                font-size: 11pt !important;
+                line-height: 1.4 !important;
+                color: #000 !important;
+                background: #fff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                font-family: 'Inter', Arial, sans-serif !important;
+            }
+
+            .page {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 15mm !important;
+                box-shadow: none !important;
+                background: #fff !important;
+                page-break-after: auto !important;
+                page-break-before: auto !important;
+                position: relative !important;
+            }
+
+            .page:not(:last-child) {
+                page-break-after: always !important;
+            }
+
+            /* Header créatif avec bande diagonale */
+            header {
+                background: linear-gradient(135deg, #f0a320 0%, #e67e00 50%, #2c3e50 100%) !important;
+                color: #fff !important;
+                padding: 25mm 20mm !important;
+                text-align: center !important;
+                margin: -15mm -15mm 20mm -15mm !important;
+                border-radius: 0 0 15px 15px !important;
+                position: relative !important;
+                overflow: hidden !important;
+            }
+
+            header::before {
+                content: '' !important;
+                position: absolute !important;
+                top: 0 !important;
+                right: -50px !important;
+                width: 200px !important;
+                height: 200px !important;
+                background: rgba(255,255,255,0.1) !important;
+                border-radius: 50% !important;
+                transform: rotate(45deg) !important;
+            }
+
+            header::after {
+                content: '' !important;
+                position: absolute !important;
+                bottom: -100px !important;
+                left: -100px !important;
+                width: 300px !important;
+                height: 300px !important;
+                background: rgba(255,255,255,0.05) !important;
+                border-radius: 50% !important;
+                transform: rotate(-30deg) !important;
+            }
+
+            header h1 {
+                font-size: 32pt !important;
+                font-weight: 900 !important;
+                margin-bottom: 8pt !important;
+                position: relative !important;
+                z-index: 2 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 2px !important;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+            }
+
+            header h2 {
+                font-size: 16pt !important;
+                font-weight: 300 !important;
+                margin-bottom: 10pt !important;
+                opacity: 0.95 !important;
+                position: relative !important;
+                z-index: 2 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
+            }
+
+            header p {
+                font-size: 12pt !important;
+                max-width: 500px !important;
+                margin: 0 auto !important;
+                line-height: 1.4 !important;
+                position: relative !important;
+                z-index: 2 !important;
+                font-weight: 500 !important;
+                opacity: 0.9 !important;
+            }
+
+            /* Section principale avec design créatif */
+            section {
+                padding: 0 !important;
+                page-break-inside: avoid !important;
+                background: linear-gradient(to bottom, #fff 0%, #f8f9fa 100%) !important;
+            }
+
+            h2 {
+                font-size: 18pt !important;
+                color: #2c3e50 !important;
+                margin-bottom: 15pt !important;
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
+                text-align: center !important;
+                font-weight: 800 !important;
+                position: relative !important;
+                padding-bottom: 8pt !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
+            }
+
+            h2::before {
+                content: '⚡' !important;
+                position: absolute !important;
+                left: -30px !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+                font-size: 20pt !important;
+                color: #f0a320 !important;
+            }
+
+            h2::after {
+                content: '' !important;
+                position: absolute !important;
+                bottom: 0 !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                width: 80px !important;
+                height: 3px !important;
+                background: linear-gradient(to right, #f0a320, #e67e00) !important;
+                border-radius: 2px !important;
+            }
+
+            /* Grid créative avec design moderne - 3x5 par page */
+            .cards {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 12px !important;
+                margin-bottom: 20pt !important;
+                page-break-inside: avoid !important;
+            }
+
+            .card {
+                border: none !important;
+                border-radius: 12px !important;
+                padding: 12px !important;
+                background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%) !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                position: relative !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+                height: auto !important;
+                transition: all 0.3s ease !important;
+                overflow: hidden !important;
+            }
+
+            .card::before {
+                content: '' !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 4px !important;
+                height: 100% !important;
+                background: linear-gradient(to bottom, #f0a320, #e67e00) !important;
+                border-radius: 12px 0 0 12px !important;
+            }
+
+            .card:hover {
+                transform: translateY(-3px) !important;
+                box-shadow: 0 8px 25px rgba(240, 163, 32, 0.2) !important;
+            }
+
+            .card h3 {
+                font-size: 11pt !important;
+                color: #2c3e50 !important;
+                margin-bottom: 8px !important;
+                font-weight: 700 !important;
+                line-height: 1.2 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
+            }
+
+            .card ul {
+                font-size: 9pt !important;
+                margin: 8px 0 !important;
+                padding-left: 15px !important;
+                list-style-type: none !important;
+            }
+
+            .card li {
+                margin: 4px 0 !important;
+                position: relative !important;
+                padding-left: 12px !important;
+                font-weight: 500 !important;
+                color: #555 !important;
+            }
+
+            .card li::before {
+                content: '▸' !important;
+                position: absolute !important;
+                left: 0 !important;
+                color: #f0a320 !important;
+                font-weight: bold !important;
+            }
+
+            .tag-group {
+                margin-bottom: 8px !important;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 3px !important;
+            }
+
+            .tag {
+                background: linear-gradient(135deg, #f0a320, #e67e00) !important;
+                color: #fff !important;
+                padding: 2px 6px !important;
+                border-radius: 20px !important;
+                font-size: 7pt !important;
+                font-weight: 600 !important;
+                white-space: nowrap !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
+                box-shadow: 0 2px 4px rgba(240, 163, 32, 0.3) !important;
+            }
+
+            /* Footer créatif moderne */
+            footer {
+                margin-top: 25pt !important;
+                padding: 15mm !important;
+                text-align: center !important;
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+                color: #fff !important;
+                page-break-inside: avoid !important;
+                position: relative !important;
+                overflow: hidden !important;
+            }
+
+            footer::before {
+                content: '' !important;
+                position: absolute !important;
+                top: -50px !important;
+                right: -50px !important;
+                width: 150px !important;
+                height: 150px !important;
+                background: rgba(255,255,255,0.05) !important;
+                border-radius: 50% !important;
+            }
+
+            footer::after {
+                content: '' !important;
+                position: absolute !important;
+                bottom: -30px !important;
+                left: -30px !important;
+                width: 100px !important;
+                height: 100px !important;
+                background: rgba(255,255,255,0.03) !important;
+                border-radius: 50% !important;
+            }
+
+            footer a {
+                background: linear-gradient(135deg, #f0a320, #e67e00) !important;
+                color: #fff !important;
+                padding: 10px 25px !important;
+                border-radius: 30px !important;
+                text-decoration: none !important;
+                font-weight: 700 !important;
+                font-size: 11pt !important;
+                display: inline-block !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
+                box-shadow: 0 4px 15px rgba(240, 163, 32, 0.4) !important;
+                position: relative !important;
+                z-index: 2 !important;
+                transition: all 0.3s ease !important;
+            }
+
+            footer a:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 20px rgba(240, 163, 32, 0.5) !important;
+            }
+
+            footer p {
+                margin-top: 12pt !important;
+                font-size: 9pt !important;
+                color: rgba(255,255,255,0.7) !important;
+                font-weight: 500 !important;
+                position: relative !important;
+                z-index: 2 !important;
+                letter-spacing: 0.5px !important;
+            }
+
+            /* Catégories avec codes couleur créatifs */
+            .card:nth-child(1)::before { background: linear-gradient(to bottom, #3498db, #2980b9) !important; }
+            .card:nth-child(2)::before,
+            .card:nth-child(3)::before { background: linear-gradient(to bottom, #3498db, #2980b9) !important; }
+            .card:nth-child(4)::before,
+            .card:nth-child(5)::before,
+            .card:nth-child(6)::before { background: linear-gradient(to bottom, #2ecc71, #27ae60) !important; }
+            .card:nth-child(7)::before,
+            .card:nth-child(8)::before { background: linear-gradient(to bottom, #e74c3c, #c0392b) !important; }
+            .card:nth-child(9)::before,
+            .card:nth-child(10)::before { background: linear-gradient(to bottom, #9b59b6, #8e44ad) !important; }
+            .card:nth-child(11)::before,
+            .card:nth-child(12)::before,
+            .card:nth-child(13)::before { background: linear-gradient(to bottom, #f39c12, #e67e00) !important; }
+            .card:nth-child(14)::before { background: linear-gradient(to bottom, #1abc9c, #16a085) !important; }
+            .card:nth-child(15)::before { background: linear-gradient(to bottom, #34495e, #2c3e50) !important; }
+
+            /* Badges créatifs pour les offres récentes */
+            .card:nth-child(n+13)::after {
+                content: 'NOUVEAU' !important;
+                position: absolute !important;
+                top: 8px !important;
+                right: 8px !important;
+                background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+                color: #fff !important;
+                padding: 3px 8px !important;
+                border-radius: 15px !important;
+                font-size: 6pt !important;
+                font-weight: 700 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
+                box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4) !important;
+                z-index: 3 !important;
+                animation: pulse 2s infinite !important;
+            }
+
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+
+            /* Configuration pour 5 pages A4 */
+            @page {
+                size: A4 !important;
+                margin: 15mm !important;
+                size: A4 portrait !important;
+            }
+
+            /* Éviter les coupures de page sur les éléments importants */
+            .card,
+            h2,
+            header,
+            footer {
+                page-break-inside: avoid !important;
+            }
+
+            /* Masquer les sauts de ligne */
+            br {
+                display: none !important;
+            }
+        }
+
+        /* Animation pour le bouton d'impression */
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(240, 163, 32, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -642,7 +1047,12 @@
         </section> -->
 
         <footer id="contact">
-            <a href="mailto:contact@wekey.fr?subject=Demande%20d'information%20Architecture">Passez à l’action</a>
+            <div style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <button onclick="window.print()" class="print-btn" style="background: var(--accent-500); color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-weight: 600; border: none; box-shadow: 0 12px 30px rgba(240, 163, 32, 0.3); cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 1rem;">
+                    🖨️ Imprimer le flyer
+                </button>
+                <a href="mailto:contact@wekey.fr?subject=Demande%20d'information%20Architecture" style="background: #2c3e50; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-weight: 600; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); display: inline-block;">Passez à l'action</a>
+            </div>
             <p style="margin-top:16px; color: var(--gray-600); font-size: 0.9rem;">
                 © Wekey - Napé Kona<br>FEA Wekey
             </p>
@@ -1443,6 +1853,7 @@
                 }
             }
 
+            // Initialisation du chatbot
             sendButton.addEventListener('click', sendMessage);
             userInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
