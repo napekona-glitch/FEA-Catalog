@@ -7,15 +7,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="../CSS/offre-commercial.css">
     <link rel="stylesheet" href="../CSS/offre-commercial.css">
 </head>
 <body>
     <div class="pdf-container" id="pdfContent">
         <!-- Page 1: En-tête et Valeur -->
-        <div class="pdf-page">
-            <!-- En-tête -->
-            <div class="pdf-header">
+        <main class="pdf-page" role="main">
+            <header class="pdf-header">
                 <h1>Proposition Commerciale</h1>
                 <div class="subtitle">Infrastructure as Code - Modernisation & Automatisation</div>
                 <div class="pdf-meta">
@@ -23,13 +22,12 @@
                     <div>Référence : IAC-2025-001</div>
                     <div>Novembre 2025</div>
                 </div>
-            </div>
+            </header>
 
-            <!-- Section Valeur -->
-            <div class="section">
+            <section class="section">
                 <h2 class="section-title">Valeur & Bénéfices pour votre entreprise</h2>
                 <div class="value-grid">
-                    <div class="value-card">
+                    <article class="value-card">
                         <h3>Performance Opérationnelle</h3>
                         <ul>
                             <li><strong>Réduction de 85%</strong> du temps de provisionnement</li>
@@ -37,8 +35,8 @@
                             <li><strong>Déploiement continu</strong> en production</li>
                             <li><strong>Économies de 40%</strong> sur les coûts d'exploitation</li>
                         </ul>
-                    </div>
-                    <div class="value-card">
+                    </article>
+                    <article class="value-card">
                         <h3>Sécurité & Conformité</h3>
                         <ul>
                             <li><strong>Infrastructure sécurisée</strong> by design</li>
@@ -46,36 +44,38 @@
                             <li><strong>Conformité automatique</strong> aux standards</li>
                             <li><strong>Documentation</strong> auto-générée et maintenue</li>
                         </ul>
-                    </div>
-                    <div class="value-card">
-                        <h3>Agilité & Scalabilité</h3>
+                    </article>
+                </div>
+                
+                <!-- Section Agilité & Innovation centrée -->
+                <div class="value-grid-full">
+                    <article class="value-card value-card-centered">
+                        <h3>Agilité & Innovation</h3>
                         <ul>
                             <li><strong>Scaling automatique</strong> des ressources</li>
                             <li><strong>Environnements</strong> reproductibles à l'identique</li>
                             <li><strong>Déploiement parallèle</strong> multi-cloud</li>
-                            <li><strong>Gestion centralisée</strong> de toute l'infrastructure</li>
+                            <li><strong>Gestion centralisée</strong> de l'infrastructure</li>
                         </ul>
-                    </div>
-                    
+                    </article>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
-        <!-- Page 2: Approche et Livrables -->
-        <div class="pdf-page">
-            <!-- Section Approche -->
-            <div class="section">
+        <!-- Page 2: Approche et Définition -->
+        <main class="pdf-page" role="main">
+            <section class="section">
                 <h2 class="section-title">Notre Approche Méthodologique</h2>
-                <blockquote style="font-style: italic; color: #667eea; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #667eea; border-radius: 8px;">
+                <blockquote style="font-style: italic; color: #f5a623; margin-bottom: 20px; padding: 15px; background: #fffbf0; border-left: 4px solid #f5a623; border-radius: 8px;">
                     « Nous transformons votre infrastructure en code pour une gestion plus agile, prévisible et évolutive, en nous appuyant sur les meilleurs outils du marché. »
                 </blockquote>
                 <div class="timeline">
-                    <div class="timeline-item">
+                    <article class="timeline-item">
                         <div class="timeline-title">Phase 1: Audit & Analyse (1 semaine)</div>
                         <div class="timeline-content">
                             Évaluation complète de votre infrastructure existante, identification des goulots d'étranglement, analyse des processus actuels et définition des objectifs cibles.
                         </div>
-                    </div>
+                    </article>
                     <div class="timeline-item">
                         <div class="timeline-title">Phase 2: Conception & Architecture (1-2 semaines)</div>
                         <div class="timeline-content">
@@ -95,13 +95,41 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- Section Définition -->
+            <section class="section">
+                <h2 class="section-title">Définition du Service</h2>
+                <p style="margin-bottom: 20px; line-height: 1.6;">
+                    L'Infrastructure as Code (IaC) est une approche moderne de gestion et de provisionnement d'infrastructure informatique via des fichiers de configuration, permettant d'automatiser le déploiement, la configuration et la gestion des ressources informatiques de manière reproductible et cohérente.
+                </p>
+                <div class="value-grid">
+                    <article class="value-card">
+                        <h3>Composants Clés</h3>
+                        <ul>
+                            <li><strong>Déclaration d'infrastructure</strong> en code</li>
+                            <li><strong>Versionnement</strong> des configurations</li>
+                            <li><strong>Automatisation</strong> des déploiements</li>
+                            <li><strong>Tests automatisés</strong> d'infrastructure</li>
+                        </ul>
+                    </article>
+                    <article class="value-card">
+                        <h3>Avantages Principaux</h3>
+                        <ul>
+                            <li><strong>Réduction des erreurs</strong> humaines</li>
+                            <li><strong>Reproductibilité</strong> des environnements</li>
+                            <li><strong>Documentation</strong> auto-générée</li>
+                            <li><strong>Collaboration</strong> facilitée</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
 
             <!-- Section Livrables -->
-            <div class="section">
+            <section class="section">
                 <h2 class="section-title">Livrables & Résultats Attendus</h2>
                 <div class="value-grid">
-                    <div class="value-card">
+                    <article class="value-card">
                         <h3>Livrables Techniques</h3>
                         <ul>
                             <li>Code source versionné (Terraform/Ansible)</li>
@@ -110,8 +138,8 @@
                             <li>Environnements de test/préproduction</li>
                             <li>Politiques de sécurité intégrées</li>
                         </ul>
-                    </div>
-                    <div class="value-card">
+                    </article>
+                    <article class="value-card">
                         <h3>Transfert de Compétences</h3>
                         <ul>
                             <li>Formation pratique des équipes</li>
@@ -120,17 +148,51 @@
                             <li>Support technique post-formation</li>
                             <li>Certification des compétences acquises</li>
                         </ul>
-                    </div>
+                    </article>
                 </div>
             </div>
         </div>
 
-        <!-- Page 3: Équipe et Technologies -->
-        <div class="pdf-page">
+        <!-- Page 3: Technologies et Équipe -->
+        <main class="pdf-page" role="main">
+            <!-- Section Technologies -->
+            <section class="section">
+                <h2 class="section-title">Stack Technologique & Solutions</h2>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #27ae60; margin-bottom: 10px;">Technologies Principales</h3>
+                    <div class="tech-tags">
+                        <a href="https://www.terraform.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#d4edda';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Terraform</a>
+                        <a href="https://www.ansible.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#d4edda';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Ansible</a>
+                        <a href="https://kubernetes.io/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#d4edda';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Kubernetes</a>
+                        <a href="https://www.docker.com/" target="_blank" class="tech-tag" style="background: #e9ecef; color: #495057; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.8'; this.style.background='#d4edda';" onmouseout="this.style.opacity='1'; this.style.background='#e9ecef';">Docker</a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #27ae60; margin-bottom: 10px;">Plateformes Cloud Supportées</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Amazon Web Services</span>
+                        <span class="tech-tag">Microsoft Azure</span>
+                        <span class="tech-tag">Google Cloud Platform</span>
+                        <span class="tech-tag">VMware vSphere</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #27ae60; margin-bottom: 10px;">Outils Complémentaires</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">GitLab CI/CD</span>
+                        <span class="tech-tag">GitHub Actions</span>
+                        <span class="tech-tag">ArgoCD</span>
+                        <span class="tech-tag">Vault</span>
+                        <span class="tech-tag">Checkov</span>
+                    </div>
+                </div>
+            </section>
+
             <!-- Section Équipe -->
-            <div class="section">
+            <section class="section">
                 <h2 class="section-title">Équipe d'Experts Mobilisés</h2>
-                <table class="table">
+                <div class="table-responsive">
+                <table class="table" style="width: 100%; border-collapse: collapse; margin-bottom: 1rem;">
                     <thead>
                         <tr>
                             <th>Profil</th>
@@ -172,50 +234,15 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+                </div>
+            </section>
 
-            <!-- Section Technologies -->
-            <div class="section">
-                <h2 class="section-title">Stack Technologique & Outils</h2>
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #667eea; margin-bottom: 10px;">Technologies Principales</h3>
-                    <div class="tech-tags">
-                        <div class="tech-tag primary">Terraform</div>
-                        <div class="tech-tag primary">Ansible</div>
-                        <div class="tech-tag primary">Docker</div>
-                        <div class="tech-tag primary">Kubernetes</div>
-                        <div class="tech-tag primary">GitLab CI/CD</div>
-                        <div class="tech-tag primary">GitHub Actions</div>
-                    </div>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #667eea; margin-bottom: 10px;">Plateformes Cloud Supportées</h3>
-                    <div class="tech-tags">
-                        <div class="tech-tag">Amazon Web Services</div>
-                        <div class="tech-tag">Microsoft Azure</div>
-                        <div class="tech-tag">Google Cloud Platform</div>
-                        <div class="tech-tag">VMware vSphere</div>
-                        <div class="tech-tag">OpenStack</div>
-                    </div>
-                </div>
-                <div>
-                    <h3 style="color: #667eea; margin-bottom: 10px;">Outils de Monitoring & Sécurité</h3>
-                    <div class="tech-tags">
-                        <div class="tech-tag">Prometheus</div>
-                        <div class="tech-tag">Grafana</div>
-                        <div class="tech-tag">ELK Stack</div>
-                        <div class="tech-tag">Vault</div>
-                        <div class="tech-tag">Checkov</div>
-                        <div class="tech-tag">tfsec</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </main>
 
-        <!-- Page 4: Tarification et Calendrier -->
-        <div class="pdf-page">
+        <!-- Page 4: Tarification -->
+        <main class="pdf-page" role="main">
             <!-- Section Tarification -->
-            <div class="section">
+            <section class="section">
                 <h2 class="section-title">Investissement</h2>
                 <!-- Section Modèle de Tarification centrée et élargie -->
                 <div class="value-grid-full">
@@ -233,50 +260,49 @@
                     
                 </div>
                 
-                <div class="pricing-box">
-                    <h3>Investissement Total : 45 000 € HT</h3>
+                <div class="pricing-box" style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-top: 20px; text-align: center;">
+                    <h3 style="color: #27ae60; margin-bottom: 15px;">Investissement Total : 45 000 € HT</h3>
                     <p style="font-size: 1.1rem; margin-bottom: 20px;">Soit 1 800 € HT par jour d'expertise senior</p>
-                    
-                    </div>
+                    <p style="color: #6c757d; font-size: 0.9rem;">Garantie de résultat 3 mois inclus</p>
                 </div>
-            </div>
+            </section>
 
             <!-- Section Calendrier -->
-            <div class="section">
+            <section class="section">
                 <h2 class="section-title">Calendrier de Déploiement</h2>
                 <div class="timeline">
-                    <div class="timeline-item">
+                    <article class="timeline-item">
                         <div class="timeline-title">Semaine 1: Kick-off & Audit</div>
                         <div class="timeline-content">
                             Réunion de lancement, ateliers de découverte, analyse de l'existant, validation des objectifs.
                         </div>
-                    </div>
-                    <div class="timeline-item">
+                    </article>
+                    <article class="timeline-item">
                         <div class="timeline-title">Semaines 2-3: Conception</div>
                         <div class="timeline-content">
                             Architecture cible, sélection des outils, création des premiers templates, validation technique.
                         </div>
-                    </div>
-                    <div class="timeline-item">
+                    </article>
+                    <article class="timeline-item">
                         <div class="timeline-title">Semaines 4-7: Développement</div>
                         <div class="timeline-content">
                             Implémentation progressive, mise en place des pipelines, tests automatisés, déploiement pilote.
                         </div>
-                    </div>
-                    <div class="timeline-item">
+                    </article>
+                    <article class="timeline-item">
                         <div class="timeline-title">Semaine 8: Formation & Go-Live</div>
                         <div class="timeline-content">
                             Formation des équipes, documentation finale, déploiement en production, support initial.
                         </div>
-                    </div>
+                    </article>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
         <!-- Page 5: Contact et Final -->
-        <div class="pdf-page">
+        <main class="pdf-page" role="main">
             <!-- Section CTA -->
-            <div class="cta-section">
+            <div class="cta-section" style="text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(135deg, #27ae60, #219653); color: white; border-radius: 8px;">
                 <h2>Prêt à transformer votre infrastructure ?</h2>
                 <p style="font-size: 1.1rem; margin-bottom: 20px;">
                     Contactez-nous dès aujourd'hui pour démarrer votre projet d'Infrastructure as Code 
@@ -285,37 +311,117 @@
             </div>
 
             <!-- Contact Info -->
-            <div class="contact-info">
-                <p><strong>Wekey - Architecture & Transformation</strong></p>
-                <p>Email : <strong>contact@wekey.fr</strong> | Téléphone : <strong>+33 1 23 45 67 89</strong></p>
-                <p>Web : <strong>www.wekey.fr</strong> | LinkedIn : <strong>linkedin.com/company/wekey</strong></p>
-                <p><strong>Référence proposition :</strong> IAC-2025-001</p>
-                <p><strong>Date d'émission :</strong> Novembre 2025</p>
-                <p><strong>Validité de l'offre :</strong> 3 mois</p>
+            <div class="contact-info" style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                <p style="margin-bottom: 10px;"><strong>Wekey - Architecture & Transformation</strong></p>
+                <p style="margin-bottom: 5px;">Email : <strong>contact@wekey.fr</strong> | Téléphone : <strong>+33 1 23 45 67 89</strong></p>
+                <p style="margin-bottom: 5px;">Web : <strong>www.wekey.fr</strong> | LinkedIn : <strong>linkedin.com/company/wekey</strong></p>
+                <p style="margin-bottom: 5px;"><strong>Référence :</strong> IAC-2025-001 | <strong>Émise le :</strong> Novembre 2025</p>
+                <p style="margin-bottom: 0;"><strong>Validité :</strong> 3 mois</p>
             </div>
 
             <!-- Footer -->
-            <div class="footer">
-                <p>Cette proposition commerciale est confidentielle et destinée uniquement au destinataire.</p>
-                <p>Tous nos services sont soumis à nos conditions générales de vente disponibles sur demande.</p>
+            <div class="footer" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e9ecef; text-align: center; font-size: 0.85rem; color: #6c757d;">
+                <p style="margin-bottom: 5px;">Cette proposition commerciale est confidentielle et destinée uniquement au destinataire.</p>
+                <p style="margin-bottom: 0;">Tous nos services sont soumis à nos conditions générales de vente disponibles sur demande.</p>
             </div>
-        </div>
+        </main>
     </div>
 
     <!-- Bouton de génération PDF -->
-    <div class="button-container">
-        <button class="btn" id="generatePdf" onclick="generatePDF()">
+    <div class="button-container" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;">
+        <button class="btn" id="generatePdf" onclick="generatePDF()" style="background: linear-gradient(135deg, #27ae60, #219653); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(33, 150, 83, 0.4)'; this.style.background='linear-gradient(135deg, #219653, #27ae60)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(39, 174, 96, 0.3)'; this.style.background='linear-gradient(135deg, #27ae60, #219653)';">
             <i class="fas fa-file-pdf"></i>
             Télécharger la proposition commerciale (PDF)
         </button>
     </div>
 
     <!-- Loading indicator -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-        <p>Génération du PDF en cours...</p>
+    <div class="loading" id="loading" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2000;">
+        <div class="loading-spinner" style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #27ae60; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px;"></div>
+        <p style="color: #27ae60; font-weight: 600;">Génération du PDF en cours...</p>
     </div>
 
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .value-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-top: 4px solid #27ae60;
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.15);
+        }
+        
+        .value-card h3 {
+            color: #27ae60;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .value-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        
+        .value-card li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #27ae60;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 30px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #27ae60;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: #27ae60;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            color: #495057;
+            line-height: 1.6;
+        }
+    </style>
+    
     <script>
         // Initialiser jsPDF
         const { jsPDF } = window.jspdf;
@@ -343,8 +449,9 @@
                     title: 'Proposition Commerciale - Infrastructure as Code',
                     subject: 'Wekey - Architecture & Transformation',
                     author: 'Wekey',
-                    keywords: 'Infrastructure as Code, DevOps, Cloud, Automation',
-                    creator: 'Wekey - Architecture & Transformation'
+                    keywords: 'Infrastructure as Code, DevOps, Cloud, Automation, Terraform, Ansible, Kubernetes',
+                    creator: 'Wekey - Architecture & Transformation',
+                    creationDate: new Date()
                 });
                 
                 // Traiter chaque page séparément
@@ -391,9 +498,20 @@
                 // Afficher un message de succès
                 showSuccessMessage();
                 
+                // Suivi de la génération du PDF
+                console.log('PDF généré avec succès :', fileName);
+                
             } catch (error) {
                 console.error('Erreur lors de la génération du PDF:', error);
                 showErrorMessage();
+                
+                // Suivi d'erreur
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'exception', {
+                        'description': 'Erreur génération PDF: ' + error.message,
+                        'fatal': false
+                    });
+                }
             } finally {
                 // Réactiver le bouton et masquer le chargement
                 button.disabled = false;
@@ -402,61 +520,119 @@
         }
         
         function showSuccessMessage() {
-            const message = document.createElement('div');
-            message.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #28a745;
-                color: white;
-                padding: 15px 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 1000;
-                font-weight: 600;
-            `;
-            message.innerHTML = '<i class="fas fa-check-circle"></i> PDF généré avec succès !';
-            document.body.appendChild(message);
+            const button = document.getElementById('generatePdf');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> PDF Généré avec succès';
+            button.style.background = 'linear-gradient(135deg, #27ae60, #219653)';
+            
+            // Ajouter une animation de confirmation
+            const successDiv = document.createElement('div');
+            successDiv.innerHTML = 'Téléchargement démarré...';
+            successDiv.style.position = 'fixed';
+            successDiv.style.bottom = '100px';
+            successDiv.style.right = '30px';
+            successDiv.style.background = '#27ae60';
+            successDiv.style.color = 'white';
+            successDiv.style.padding = '10px 20px';
+            successDiv.style.borderRadius = '4px';
+            successDiv.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            successDiv.style.zIndex = '1000';
+            successDiv.style.animation = 'fadeIn 0.3s ease-in-out';
+            document.body.appendChild(successDiv);
             
             setTimeout(() => {
-                message.remove();
+                button.innerHTML = originalText;
+                button.style.background = 'linear-gradient(135deg, #27ae60, #219653)';
+                successDiv.style.animation = 'fadeOut 0.3s ease-in-out';
+                setTimeout(() => {
+                    successDiv.remove();
+                }, 300);
             }, 3000);
         }
         
         function showErrorMessage() {
-            const message = document.createElement('div');
-            message.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #dc3545;
-                color: white;
-                padding: 15px 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 1000;
-                font-weight: 600;
-            `;
-            message.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erreur lors de la génération du PDF';
-            document.body.appendChild(message);
+            const button = document.getElementById('generatePdf');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erreur - Voir la console';
+            button.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+            
+            // Ajouter un message d'erreur
+            const errorDiv = document.createElement('div');
+            errorDiv.innerHTML = 'Une erreur est survenue. Veuillez réessayer ou nous contacter.';
+            errorDiv.style.position = 'fixed';
+            errorDiv.style.bottom = '100px';
+            errorDiv.style.right = '30px';
+            errorDiv.style.background = '#e74c3c';
+            errorDiv.style.color = 'white';
+            errorDiv.style.padding = '10px 20px';
+            errorDiv.style.borderRadius = '4px';
+            errorDiv.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            errorDiv.style.zIndex = '1000';
+            errorDiv.style.animation = 'fadeIn 0.3s ease-in-out';
+            document.body.appendChild(errorDiv);
             
             setTimeout(() => {
-                message.remove();
+                button.innerHTML = originalText;
+                button.style.background = 'linear-gradient(135deg, #27ae60, #219653)';
+                errorDiv.style.animation = 'fadeOut 0.3s ease-in-out';
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 300);
             }, 3000);
         }
         
         // Fonction alternative pour les navigateurs qui ne supportent pas html2canvas
         function fallbackPDF() {
-            window.print();
+            const usePrint = confirm("La génération PDF nécessite un navigateur moderne. Souhaitez-vous utiliser l'impression à la place ?");
+            if (usePrint) {
+                window.print();
+            } else {
+                // Télécharger une version statique si disponible
+                const link = document.createElement('a');
+                link.href = 'path/to/static/Infrastructure-As-Code.pdf';
+                link.download = 'proposition-infrastructure-as-code.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         }
         
         // Vérifier si les bibliothèques sont chargées
         window.addEventListener('load', function() {
             if (typeof html2canvas === 'undefined' || typeof jsPDF === 'undefined') {
-                console.warn('Bibliothèques PDF non chargées, utilisation de l impression native');
-                document.getElementById('generatePdf').onclick = fallbackPDF;
-                document.getElementById('generatePdf').innerHTML = '<i class="fas fa-print"></i> Imprimer la proposition commerciale';
+                console.warn('Bibliothèques PDF non chargées, utilisation de la méthode de secours');
+                const button = document.getElementById('generatePdf');
+                button.onclick = fallbackPDF;
+                button.innerHTML = '<i class="fas fa-print"></i> Imprimer la proposition commerciale';
+                
+                // Avertissement visuel pour l'utilisateur
+                const warning = document.createElement('div');
+                warning.style.background = '#fff3cd';
+                warning.style.color = '#856404';
+                warning.style.padding = '10px';
+                warning.style.borderLeft = '4px solid #ffeeba';
+                warning.style.margin = '10px 0';
+                warning.style.borderRadius = '4px';
+                warning.innerHTML = '<strong>Note :</strong> Certaines fonctionnalités avancées du PDF pourraient ne pas être disponibles dans votre navigateur.';
+                document.querySelector('.pdf-container').prepend(warning);
             }
+            
+            // Ajouter des animations CSS dynamiquement
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateY(0); }
+                    to { opacity: 0; transform: translateY(-10px); }
+                }
+                .btn {
+                    transition: all 0.3s ease !important;
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>

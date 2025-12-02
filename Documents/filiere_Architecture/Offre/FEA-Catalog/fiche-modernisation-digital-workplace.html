@@ -212,9 +212,16 @@
             
             <!-- Bouton PDF -->
             <div style="text-align: center; margin-top: 2rem; width: 100%;">
-                <a href="pdf-modernisation-digital-workplace.html" target="_blank" class="print-button" style="background: linear-gradient(135deg, var(--accent-500), #e67e00); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(245, 166, 35, 0.4)'; this.style.background='linear-gradient(135deg, #e67e00, var(--accent-500))';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 166, 35, 0.3)'; this.style.background='linear-gradient(135deg, var(--accent-500), #e67e00)';">
+                <a href="pdf-modernisation-digital-workplace.html" target="_blank" class="print-button" 
+                   style="background: linear-gradient(135deg, #1abc9c, #16a085); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(26, 188, 156, 0.3); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;" 
+                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(22, 160, 133, 0.4)'; this.style.background='linear-gradient(135deg, #16a085, #1abc9c)';" 
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(26, 188, 156, 0.3)'; this.style.background='linear-gradient(135deg, #1abc9c, #16a085)';">
                     <i class="fas fa-file-pdf"></i> Télécharger la proposition commerciale (PDF)
                 </a>
+                <button onclick="downloadAsWord()" class="print-button" style="background: linear-gradient(135deg, #f5a623, #e67e00); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3); font-size: 14px; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(245, 166, 35, 0.4)'; this.style.background='linear-gradient(135deg, #e67e00, #f5a623)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 166, 35, 0.3)'; this.style.background='linear-gradient(135deg, #f5a623, #e67e00)';">
+                    <i class="fas fa-file-word"></i> Télécharger en Word
+                </button>
+
             </div>
             
             <!-- Bouton de retour -->
@@ -359,6 +366,8 @@
             });
         });
     </script>
+    <script src="JS/html-to-docx.js?v=3"></script>
 </body>
 </html>
+
 
