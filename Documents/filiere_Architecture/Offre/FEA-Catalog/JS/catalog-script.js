@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer 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' // Remplacez avec votre clé API Groq
+                    'Authorization': 'Bearer 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' // Remplacez avec votre clé API Groq
                 },
                 body: JSON.stringify({
                     model: 'llama-3.1-8b-instant', // modèle gratuit Groq
