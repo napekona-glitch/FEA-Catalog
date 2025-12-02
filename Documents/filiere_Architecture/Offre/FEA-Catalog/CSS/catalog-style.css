@@ -296,7 +296,6 @@ footer a {
 
 /* Styles créatifs pour le flyer marketing onepager */
 @media print {
-
     /* Masquer tous les éléments non nécessaires */
     .chatbot-container,
     .hero-cta,
@@ -306,69 +305,69 @@ footer a {
     .print-btn,
     nav,
     .table-like,
-    blockquote {
+    blockquote,
+    .chatbot-icon {
         display: none !important;
     }
 
-    /* Styles créatifs pour le flyer marketing multi-pages */
-    @media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
 
-        /* Masquer tous les éléments non nécessaires */
-        .chatbot-container,
-        .hero-cta,
-        .gcse-search,
-        .more-link,
-        .filter-pills,
-        .print-btn,
-        nav,
-        .table-like,
-        blockquote {
-            display: none !important;
-        }
+    body,
+    html {
+        font-size: 11pt !important;
+        line-height: 1.4 !important;
+        color: #000 !important;
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: 'Inter', Arial, sans-serif !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
 
-        /* Reset créatif pour le flyer */
-        * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
+    .page {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 15mm !important;
+        box-shadow: none !important;
+        background: #fff !important;
+        page-break-after: avoid !important;
+        page-break-before: avoid !important;
+        position: relative !important;
+        min-height: 297mm;
+        height: auto !important;
+    }
 
-        body,
-        html {
-            font-size: 11pt !important;
-            line-height: 1.4 !important;
-            color: #000 !important;
-            background: #fff !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            font-family: 'Inter', Arial, sans-serif !important;
-        }
+    /* Empêcher les sauts de page inutiles */
+    section {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
 
-        .page {
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 15mm !important;
-            box-shadow: none !important;
-            background: #fff !important;
-            page-break-after: auto !important;
-            page-break-before: auto !important;
-            position: relative !important;
-        }
+    /* S'assurer que le footer reste sur la même page */
+    footer {
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        margin-top: 20px;
+    }
 
-        .page:not(:last-child) {
-            page-break-after: always !important;
-        }
-
-        /* Header créatif avec bande diagonale */
-        header {
-            background: linear-gradient(135deg, #f0a320 0%, #e67e00 50%, #2c3e50 100%) !important;
-            color: #fff !important;
-            padding: 25mm 20mm !important;
-            text-align: center !important;
-            margin: -15mm -15mm 20mm -15mm !important;
-            border-radius: 0 0 15px 15px !important;
-            position: relative !important;
-            overflow: hidden !important;
-        }
+    /* Style pour l'en-tête */
+    header {
+        padding: 25mm 20mm !important;
+        text-align: center !important;
+        margin: -15mm -15mm 20mm -15mm !important;
+        border-radius: 0 0 15px 15px !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
 
         header::before {
             content: '' !important;
@@ -714,6 +713,7 @@ footer a {
         header,
         footer {
             page-break-inside: avoid !important;
+            break-inside: avoid !important;
         }
 
         /* Masquer les sauts de ligne */
@@ -721,15 +721,15 @@ footer a {
             display: none !important;
         }
     }
+}
 
-    /* Animation pour le bouton d'impression */
-    .print-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 35px rgba(240, 163, 32, 0.4);
-        transition: all 0.3s ease;
-    }
+/* Animation pour le bouton d'impression */
+.print-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(240, 163, 32, 0.4);
+    transition: all 0.3s ease;
+}
 
-    .print-btn:active {
-        transform: translateY(0);
-    }
+.print-btn:active {
+    transform: translateY(0);
 }
