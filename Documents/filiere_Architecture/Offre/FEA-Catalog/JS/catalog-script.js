@@ -19,15 +19,48 @@ document.addEventListener('DOMContentLoaded', function () {
         'fiche-audit-qualite-logicielle.html'
     ];
 
+    // Liste des noms de base des 15 offres (sans le préfixe "fiche-")
+    // Cette liste est utilisée pour identifier et corriger automatiquement les liens incorrects générés par le LLM
+    const offerBaseNames = [
+        'urbanisation-si',
+        'zero-trust-iam',
+        'monolithe-microservices',
+        'api-management-integration',
+        'migration-cloud-hybride',
+        'infrastructure-as-code',
+        'sd-wan-sase',
+        'ci-cd-industrialisation',
+        'observabilite-monitoring',
+        'pca-pra-continuite',
+        'architecture-data-mesh',
+        'mlops-ia-industrielle',
+        'rag-ia-generative-responsable',
+        'modernisation-digital-workplace',
+        'audit-qualite-logicielle'
+    ];
+
     // Fonction de nettoyage centralisée pour les liens
     function cleanLinksAndArtifacts(content) {
         return content
+            // CORRECTION PRINCIPALE: Ajouter le préfixe "fiche-" aux liens qui pointent vers les offres mais qui n'ont pas le préfixe
+            .replace(/href=["']([a-zA-Z0-9\-_]+\.html)["']/g, (match, filename) => {
+                // Extraire le nom de base sans .html
+                const baseName = filename.replace('.html', '');
+
+                // Si c'est une de nos 15 offres et qu'elle n'a pas déjà le préfixe "fiche-"
+                if (offerBaseNames.includes(baseName) && !filename.startsWith('fiche-')) {
+                    return `href="fiche-${filename}"`;
+                }
+
+                // Sinon, garder tel quel
+                return match;
+            })
             // Remplacer les patterns "FICHIER: nom-fichier.html" par des vrais liens SEULEMENT si le fichier existe
             .replace(/FICHIER:\s*([a-zA-Z0-9\-_]+\.html)/g, (match, filename) => {
                 return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
             })
             // Nettoyer les liens déjà existants mais mal formatés
-            .replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="audit-qualite-logicielle.html"')
+            .replace(/href=['\"]audit-de-qualite-logicielle\.html['"]/g, 'href="fiche-audit-qualite-logicielle.html"')
             // Remplacer les noms de fichiers seuls par des liens cliquables SEULEMENT si le fichier existe et n'est pas déjà dans une balise <a>
             .replace(/\b([a-zA-Z0-9\-_]+\.html)\b(?![^<]*<\/a>)/g, (match, filename) => {
                 return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
@@ -132,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
             profiles: ['Architecte d entreprise', 'Urbaniste SI'],
             duration: '1-2 mois',
             kpis: ['% couverture cartographique', '% redondances identifiées'],
-            answer: "🏗️ **Urbanisation SI**<br><br>Cette offre vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente.<br><br>**Points clés :**<br>• 🗺️ Cartographie complète du système d'information<br>• 🔍 Identification des redondances applicatives<br>• 📋 Roadmap de transformation sur 30/60/90 jours<br><br>**Profils :** Architecte d'entreprise, Urbaniste SI<br>**Durée :** 1-2 mois<br><br><a href=\"urbanisation-si.html\">Voir la fiche détaillée</a>",
+            answer: "🏗️ **Urbanisation SI**<br><br>Cette offre vous aide à rationaliser votre paysage applicatif et à définir une trajectoire de transformation cohérente.<br><br>**Points clés :**<br>• 🗺️ Cartographie complète du système d'information<br>• 🔍 Identification des redondances applicatives<br>• 📋 Roadmap de transformation sur 30/60/90 jours<br><br>**Profils :** Architecte d'entreprise, Urbaniste SI<br>**Durée :** 1-2 mois<br><br><a href=\"fiche-urbanisation-si.html\">Voir la fiche détaillée</a>",
             examples: [
                 "Comment rationaliser mon SI ?",
                 "Qu'est-ce que l'urbanisation du SI ?",
@@ -150,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
             profiles: ['Architecte Solution', 'Lead Tech'],
             duration: '2-3 mois',
             kpis: ['Vitesse de déploiement', 'Time-to-market'],
-            answer: "🔧 **Monolithe → Microservices**<br><br>Cette offre modernise votre architecture applicative pour plus de scalabilité et de performance.<br><br>**Points clés :**<br>• 🏗️ High-Level Design (HLD) de la nouvelle architecture<br>• ⚙️ Schémas détaillés des microservices<br>• 📋 Backlog technique priorisé<br><br>**Profils :** Architecte Solution, Lead Tech<br>**Durée :** 2-3 mois<br><br><a href=\"monolithe-microservices.html\">Voir la fiche détaillée</a>",
+            answer: "🔧 **Monolithe → Microservices**<br><br>Cette offre modernise votre architecture applicative pour plus de scalabilité et de performance.<br><br>**Points clés :**<br>• 🏗️ High-Level Design (HLD) de la nouvelle architecture<br>• ⚙️ Schémas détaillés des microservices<br>• 📋 Backlog technique priorisé<br><br>**Profils :** Architecte Solution, Lead Tech<br>**Durée :** 2-3 mois<br><br><a href=\"fiche-monolithe-microservices.html\">Voir la fiche détaillée</a>",
             examples: [
                 "Comment passer en microservices ?",
                 "Mon application est lente",
@@ -168,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
             profiles: ['Architecte Solution', 'Expert Middleware/API'],
             duration: '1-2 mois',
             kpis: ['% APIs inventoriées', 'Latence d intégration'],
-            answer: "🔗 **API Management & Intégration**<br><br>Cette offre structure votre parc d'APIs et industrialise vos intégrations pour une meilleure gouvernance.<br><br>**Points clés :**<br>• 📋 Catalogue complet des APIs existantes<br>• 🛡️ Gouvernance et politiques d'accès<br>• 🔧 Schémas d'intégration normalisés<br><br>**Profils :** Architecte Solution, Expert Middleware/API<br>**Durée :** 1-2 mois<br><br><a href=\"api-management-integration.html\">Voir la fiche détaillée</a>",
+            answer: "🔗 **API Management & Intégration**<br><br>Cette offre structure votre parc d'APIs et industrialise vos intégrations pour une meilleure gouvernance.<br><br>**Points clés :**<br>• 📋 Catalogue complet des APIs existantes<br>• 🛡️ Gouvernance et politiques d'accès<br>• 🔧 Schémas d'intégration normalisés<br><br>**Profils :** Architecte Solution, Expert Middleware/API<br>**Durée :** 1-2 mois<br><br><a href=\"fiche-api-management-integration.html\">Voir la fiche détaillée</a>",
             examples: [
                 "Comment gérer mes APIs ?",
                 "Mise en place gouvernance API",
@@ -185,21 +218,21 @@ document.addEventListener('DOMContentLoaded', function () {
             offers: [
                 {
                     name: 'Migration Cloud Hybride',
-                    link: 'migration-cloud-hybride.html',
+                    link: 'fiche-migration-cloud-hybride.html',
                     keywords: ['migration cloud', 'hybride', 'transformation', 'business case']
                 },
                 {
                     name: 'Infrastructure as Code',
-                    link: 'infrastructure-as-code.html',
+                    link: 'fiche-infrastructure-as-code.html',
                     keywords: ['iac', 'terraform', 'ansible', 'automatisation']
                 },
                 {
                     name: 'SD-WAN & SASE',
-                    link: 'sd-wan-sase.html',
+                    link: 'fiche-sd-wan-sase.html',
                     keywords: ['sd-wan', 'sase', 'réseau', 'sécurité réseau']
                 }
             ],
-            answer: "Pour vos enjeux <strong>Cloud & Infrastructure</strong>, plusieurs offres disponibles : <a href='migration-cloud-hybride.html'>Migration Cloud Hybride</a> (transformation), <a href='infrastructure-as-code.html'>Infrastructure as Code</a> (automatisation), <a href='sd-wan-sase.html'>SD-WAN & SASE</a> (réseau sécurisé).",
+            answer: "Pour vos enjeux <strong>Cloud & Infrastructure</strong>, plusieurs offres disponibles : <a href='fiche-migration-cloud-hybride.html'>Migration Cloud Hybride</a> (transformation), <a href='fiche-infrastructure-as-code.html'>Infrastructure as Code</a> (automatisation), <a href='fiche-sd-wan-sase.html'>SD-WAN & SASE</a> (réseau sécurisé).",
             examples: [
                 "Quelle offre pour migrer vers le cloud ?",
                 "Comment industrialiser mon infrastructure ?",
@@ -216,95 +249,95 @@ document.addEventListener('DOMContentLoaded', function () {
             offers: [
                 {
                     name: 'CI/CD & Industrialisation',
-                    link: 'ci-cd-industrialisation.html',
+                    link: 'fiche-ci-cd-industrialisation.html',
                     keywords: ['ci/cd', 'pipeline', 'industrialisation', 'automatisation']
                 },
                 {
                     name: 'Observabilité & Monitoring',
-                    link: 'observabilite-monitoring.html',
+                    link: 'fiche-observabilite-monitoring.html',
                     keywords: ['observabilité', 'monitoring', 'logs', 'metrics', 'traces']
                 }
             ],
-            answer: "Pour l'industrialisation DevOps : <a href=\"ci-cd-industrialisation.html\">CI/CD & Industrialisation</a> (pipelines, automatisation). Pour la supervision : <a href=\"observabilite-monitoring.html\">Observabilité & Monitoring</a> (logs, métriques, traces).",
+            answer: "Pour l'industrialisation DevOps : <a href=\"fiche-ci-cd-industrialisation.html\">CI/CD & Industrialisation</a> (pipelines, automatisation). Pour la supervision : <a href=\"fiche-observabilite-monitoring.html\">Observabilité & Monitoring</a> (logs, métriques, traces).",
         },
         {
             title: "SD-WAN & SASE",
             keywords: ["sd-wan", "sase", "réseau", "sécurité", "connectivité"],
             description: "Architecture réseau SD-WAN et sécurité SASE",
-            file: "sd-wan-sase.html",
-            answer: "L'offre <strong>SD-WAN & SASE</strong> modernise votre architecture réseau avec SD-WAN et sécurité SASE. Durée : 1-2 mois. <a href=\"sd-wan-sase.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-sd-wan-sase.html",
+            answer: "L'offre <strong>SD-WAN & SASE</strong> modernise votre architecture réseau avec SD-WAN et sécurité SASE. Durée : 1-2 mois. <a href=\"fiche-sd-wan-sase.html\">Voir la fiche détaillée</a>.",
             examples: ["Moderniser mon réseau", "SD-WAN", "Sécurité réseau", "SASE"]
         },
         {
             title: "CI/CD & Industrialisation",
             keywords: ["cicd", "pipeline", "devops", "industrialisation", "automatisation"],
             description: "Pipelines CI/CD et industrialisation",
-            file: "ci-cd-industrialisation.html",
-            answer: "L'offre <strong>CI/CD & Industrialisation</strong> met en place vos pipelines CI/CD avec documentation et formation. Durée : 2-4 semaines. <a href=\"ci-cd-industrialisation.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-ci-cd-industrialisation.html",
+            answer: "L'offre <strong>CI/CD & Industrialisation</strong> met en place vos pipelines CI/CD avec documentation et formation. Durée : 2-4 semaines. <a href=\"fiche-ci-cd-industrialisation.html\">Voir la fiche détaillée</a>.",
             examples: ["Mettre en place CI/CD", "Industrialiser mes développements", "Pipelines DevOps"]
         },
         {
             title: "Observabilité & Monitoring",
             keywords: ["observabilite", "monitoring", "logs", "metrics", "traces", "sre"],
             description: "Stack logs/metrics/traces et monitoring",
-            file: "observabilite-monitoring.html",
-            answer: "L'offre <strong>Observabilité & Monitoring</strong> déploie votre stack logs/metrics/traces avec dashboards et runbooks. Durée : 1-2 mois. <a href=\"observabilite-monitoring.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-observabilite-monitoring.html",
+            answer: "L'offre <strong>Observabilité & Monitoring</strong> déploie votre stack logs/metrics/traces avec dashboards et runbooks. Durée : 1-2 mois. <a href=\"fiche-observabilite-monitoring.html\">Voir la fiche détaillée</a>.",
             examples: ["Observer mes applications", "Monitoring", "Logs metrics traces", "SRE"]
         },
         {
             title: "Zero Trust & IAM",
             keywords: ["zero trust", "iam", "sécurité", "identité", "accès"],
             description: "Modèle Zero Trust et gestion des identités",
-            file: "zero-trust-iam.html",
-            answer: "L'offre <strong>Zero Trust & IAM</strong> implémente votre modèle Zero Trust avec plan IAM et gouvernance des accès. Durée : 1-2 mois. <a href=\"zero-trust-iam.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-zero-trust-iam.html",
+            answer: "L'offre <strong>Zero Trust & IAM</strong> implémente votre modèle Zero Trust avec plan IAM et gouvernance des accès. Durée : 1-2 mois. <a href=\"fiche-zero-trust-iam.html\">Voir la fiche détaillée</a>.",
             examples: ["Zero Trust", "Gestion des identités", "IAM", "Sécurité des accès"]
         },
         {
             title: "PCA/PRA & Continuité",
             keywords: ["pca", "pra", "continuité", "disaster", "recovery", "pdc"],
             description: "Plans PCA/PRA et continuité d'activité",
-            file: "pca-pra-continuite.html",
-            answer: "L'offre <strong>PCA/PRA & Continuité</strong> établit vos plans PCA/PRA avec tests de reprise et runbooks. Durée : 1-2 mois. <a href=\"pca-pra-continuite.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-pca-pra-continuite.html",
+            answer: "L'offre <strong>PCA/PRA & Continuité</strong> établit vos plans PCA/PRA avec tests de reprise et runbooks. Durée : 1-2 mois. <a href=\"fiche-pca-pra-continuite.html\">Voir la fiche détaillée</a>.",
             examples: ["PCA/PRA", "Continuité d'activité", "Plan de reprise", "Disaster recovery"]
         },
         {
             title: "Architecture Data Mesh",
             keywords: ["data mesh", "data", "données", "architecture", "domaine"],
             description: "Architecture Data Mesh et gouvernance des données",
-            file: "architecture-data-mesh.html",
-            answer: "L'offre <strong>Architecture Data Mesh</strong> conçoit vos modèles data domain avec gouvernance data et POC. Durée : 2-3 mois. <a href=\"architecture-data-mesh.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-architecture-data-mesh.html",
+            answer: "L'offre <strong>Architecture Data Mesh</strong> conçoit vos modèles data domain avec gouvernance data et POC. Durée : 2-3 mois. <a href=\"fiche-architecture-data-mesh.html\">Voir la fiche détaillée</a>.",
             examples: ["Data Mesh", "Architecture des données", "Gouvernance data", "Data domain"]
         },
         {
             title: "MLOps & IA Industrielle",
             keywords: ["mlops", "ia", "machine learning", "ai", "industrielle"],
             description: "Pipelines MLOps et IA industrielle",
-            file: "mlops-ia-industrielle.html",
-            answer: "L'offre <strong>MLOps & IA Industrielle</strong> déploie vos pipelines MLOps avec monitoring modèles et gouvernance IA. Durée : 1-2 mois. <a href=\"mlops-ia-industrielle.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-mlops-ia-industrielle.html",
+            answer: "L'offre <strong>MLOps & IA Industrielle</strong> déploie vos pipelines MLOps avec monitoring modèles et gouvernance IA. Durée : 1-2 mois. <a href=\"fiche-mlops-ia-industrielle.html\">Voir la fiche détaillée</a>.",
             examples: ["MLOps", "IA industrielle", "Machine learning", "Monitoring modèles"]
         },
         {
             title: "RAG & IA Générative Responsable",
             keywords: ["rag", "ia", "générative", "llm", "responsable"],
             description: "Architecture RAG et IA générative responsable",
-            file: "rag-ia-generative-responsable.html",
-            answer: "L'offre <strong>RAG & IA Générative Responsable</strong> construit votre architecture RAG avec intégration sources internes. Durée : 1-2 mois. <a href=\"rag-ia-generative-responsable.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-rag-ia-generative-responsable.html",
+            answer: "L'offre <strong>RAG & IA Générative Responsable</strong> construit votre architecture RAG avec intégration sources internes. Durée : 1-2 mois. <a href=\"fiche-rag-ia-generative-responsable.html\">Voir la fiche détaillée</a>.",
             examples: ["RAG", "IA générative", "LLM", "IA responsable"]
         },
         {
             title: "Modernisation Digital Workplace",
             keywords: ["workplace", "digital", "m365", "google", "collaboration"],
             description: "Modernisation du digital workplace",
-            file: "modernisation-digital-workplace.html",
-            answer: "L'offre <strong>Modernisation Digital Workplace</strong> définit vos schémas cibles workplace avec intégrations M365/Google. Durée : 1-2 mois. <a href=\"modernisation-digital-workplace.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-modernisation-digital-workplace.html",
+            answer: "L'offre <strong>Modernisation Digital Workplace</strong> définit vos schémas cibles workplace avec intégrations M365/Google. Durée : 1-2 mois. <a href=\"fiche-modernisation-digital-workplace.html\">Voir la fiche détaillée</a>.",
             examples: ["Moderniser mon workplace", "Digital workplace", "M365", "Google Workspace"]
         },
         {
             title: "Audit de Qualité Logicielle",
             keywords: ["audit", "qualité", "logiciel", "code", "test", "dette"],
             description: "Audit de qualité logicielle et dette technique",
-            file: "audit-qualite-logicielle.html",
-            answer: "L'offre <strong>Audit de Qualité Logicielle</strong> évalue votre maturité logicielle. Livrables : rapport d'audit, plan d'action. Durée : 2-4 semaines. <a href=\"audit-qualite-logicielle.html\">Voir la fiche détaillée</a>.",
+            file: "fiche-audit-qualite-logicielle.html",
+            answer: "L'offre <strong>Audit de Qualité Logicielle</strong> évalue votre maturité logicielle. Livrables : rapport d'audit, plan d'action. Durée : 2-4 semaines. <a href=\"fiche-audit-qualite-logicielle.html\">Voir la fiche détaillée</a>.",
             examples: ["Auditer mon code", "Réduire ma dette technique", "Qualité logicielle", "Audit de sécurité applicative"]
         }
     ];
@@ -489,33 +522,33 @@ document.addEventListener('DOMContentLoaded', function () {
                                     CATALOGUE COMPLET DES OFFRES:
                                     
                                     **ARCHITECTURE:**
-                                    1. Urbanisation SI: cartographie complète SI, identification redondances, roadmap transformation (1-2 mois, Architecte d'entreprise, Urbaniste SI) - FICHIER: urbanisation-si.html
-                                    2. Monolithe → Microservices: transformation architecture applicative moderne, HLD, schémas microservices (2-3 mois, Architecte Solution, Lead Tech) - FICHIER: monolithe-microservices.html
-                                    3. API Management & Intégration: gouvernance parc APIs, catalogue API, schémas intégration (1-2 mois, Architecte Solution, Expert Middleware) - FICHIER: api-management-integration.html
+                                    1. Urbanisation SI: cartographie complète SI, identification redondances, roadmap transformation (1-2 mois, Architecte d'entreprise, Urbaniste SI) - FICHIER: fiche-urbanisation-si.html
+                                    2. Monolithe → Microservices: transformation architecture applicative moderne, HLD, schémas microservices (2-3 mois, Architecte Solution, Lead Tech) - FICHIER: fiche-monolithe-microservices.html
+                                    3. API Management & Intégration: gouvernance parc APIs, catalogue API, schémas intégration (1-2 mois, Architecte Solution, Expert Middleware) - FICHIER: fiche-api-management-integration.html
                                     
                                     **CLOUD & INFRASTRUCTURE:**
-                                    4. Migration Cloud Hybride: transformation cloud hybride, plans migration 30/60/90 jours, business case (2-3 mois, Architecte Cloud, DevOps, Security) - FICHIER: migration-cloud-hybride.html
-                                    5. Infrastructure as Code: automatisation avec Terraform/Ansible, templates, documentation (2-4 semaines, DevOps Engineer, Cloud Architect) - FICHIER: infrastructure-as-code.html
-                                    6. SD-WAN & SASE: architecture réseau cible, migration SD-WAN, sécurité réseau (1-2 mois, Network Architect, Cloud Network Engineer) - FICHIER: sd-wan-sase.html
+                                    4. Migration Cloud Hybride: transformation cloud hybride, plans migration 30/60/90 jours, business case (2-3 mois, Architecte Cloud, DevOps, Security) - FICHIER: fiche-migration-cloud-hybride.html
+                                    5. Infrastructure as Code: automatisation avec Terraform/Ansible, templates, documentation (2-4 semaines, DevOps Engineer, Cloud Architect) - FICHIER: fiche-infrastructure-as-code.html
+                                    6. SD-WAN & SASE: architecture réseau cible, migration SD-WAN, sécurité réseau (1-2 mois, Network Architect, Cloud Network Engineer) - FICHIER: fiche-sd-wan-sase.html
                                     
                                     **DEVOPS & SRE:**
-                                    7. CI/CD & Industrialisation: pipelines CI/CD, documentation, formation (2-4 semaines, Architecte DevOps, SRE, Test Automation) - FICHIER: ci-cd-industrialisation.html
-                                    8. Observabilité & Monitoring: stack logs/metrics/traces, dashboards, runbooks (1-2 mois, SRE, Architecte Observabilité) - FICHIER: observabilite-monitoring.html
+                                    7. CI/CD & Industrialisation: pipelines CI/CD, documentation, formation (2-4 semaines, Architecte DevOps, SRE, Test Automation) - FICHIER: fiche-ci-cd-industrialisation.html
+                                    8. Observabilité & Monitoring: stack logs/metrics/traces, dashboards, runbooks (1-2 mois, SRE, Architecte Observabilité) - FICHIER: fiche-observabilite-monitoring.html
                                     
                                     **SÉCURITÉ & GOUVERNANCE:**
-                                    9. Zero Trust & IAM: modèle Zero Trust, plan IAM, gouvernance accès (1-2 mois, Security Architect, IAM Specialist) - FICHIER: zero-trust-iam.html
-                                    10. PCA/PRA & Continuité: plans PCA/PRA, tests reprise, runbooks (1-2 mois, Business Continuity Manager, Security Architect) - FICHIER: pca-pra-continuite.html
+                                    9. Zero Trust & IAM: modèle Zero Trust, plan IAM, gouvernance accès (1-2 mois, Security Architect, IAM Specialist) - FICHIER: fiche-zero-trust-iam.html
+                                    10. PCA/PRA & Continuité: plans PCA/PRA, tests reprise, runbooks (1-2 mois, Business Continuity Manager, Security Architect) - FICHIER: fiche-pca-pra-continuite.html
                                     
                                     **DATA & IA:**
-                                    11. Architecture Data Mesh: modèles data domain, gouvernance data, POC (2-3 mois, Data Architect, Data Engineer) - FICHIER: architecture-data-mesh.html
-                                    12. MLOps & IA industrielle: pipelines MLOps, monitoring modèles, gouvernance IA (1-2 mois, MLOps Engineer, AI Solution Architect) - FICHIER: mlops-ia-industrielle.html
-                                    13. RAG & IA générative responsable: architecture RAG, intégration sources internes, pilote métier (1-2 mois, Data Architect, AI Solution Architect, MLOps) - FICHIER: rag-ia-generative-responsable.html
+                                    11. Architecture Data Mesh: modèles data domain, gouvernance data, POC (2-3 mois, Data Architect, Data Engineer) - FICHIER: fiche-architecture-data-mesh.html
+                                    12. MLOps & IA industrielle: pipelines MLOps, monitoring modèles, gouvernance IA (1-2 mois, MLOps Engineer, AI Solution Architect) - FICHIER: fiche-mlops-ia-industrielle.html
+                                    13. RAG & IA générative responsable: architecture RAG, intégration sources internes, pilote métier (1-2 mois, Data Architect, AI Solution Architect, MLOps) - FICHIER: fiche-rag-ia-generative-responsable.html
                                     
                                     **DIGITAL WORKPLACE:**
-                                    14. Modernisation Digital Workplace: schémas cibles workplace, intégrations M365/Google (1-2 mois, Workplace Architect, IAM Engineer) - FICHIER: modernisation-digital-workplace.html
+                                    14. Modernisation Digital Workplace: schémas cibles workplace, intégrations M365/Google (1-2 mois, Workplace Architect, IAM Engineer) - FICHIER: fiche-modernisation-digital-workplace.html
                                     
                                     **QUALITÉ & TESTS:**
-                                    15. Audit de Qualité Logicielle: rapport audit, plan action, recommandations (2-4 semaines, Expert Qualité, DevOps) - FICHIER: audit-qualite-logicielle.html
+                                    15. Audit de Qualité Logicielle: rapport audit, plan action, recommandations (2-4 semaines, Expert Qualité, DevOps) - FICHIER: fiche-audit-qualite-logicielle.html
                                     
                                     INFORMATIONS TARIFAIRES (section "Modèles économiques"):
                                     - TJM indicatifs: 850€ (DevOps/SRE) à 1200€ (Architecte d'entreprise/AI Solution Architect)
@@ -551,7 +584,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     **Profils :** SRE, Architecte Observabilité
                                     **Durée :** 1-2 mois
                                     
-                                    <a href="observabilite-monitoring.html">Voir la fiche détaillée</a>
+                                    <a href="fiche-observabilite-monitoring.html">Voir la fiche détaillée</a>
                                     
                                     Ou si vos applications sont anciennes et monolithiques :
                                     
@@ -570,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     **Profils :** Architecte Solution, Lead Tech
                                     **Durée :** 2-3 mois
                                     
-                                    <a href="monolithe-microservices.html">Voir la fiche détaillée</a>
+                                    <a href="fiche-monolithe-microservices.html">Voir la fiche détaillée</a>
                                     
                                     Dites-m'en plus sur votre contexte pour vous guider vers la solution idéale !
                                     
@@ -602,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     **Profils :** Architecte d'entreprise, Urbaniste SI
                                     **Durée :** 1-2 mois
                                     
-                                    <a href="urbanisation-si.html">Voir la fiche détaillée</a>
+                                    <a href="fiche-urbanisation-si.html">Voir la fiche détaillée</a>
                                     
                                     ☁️ **Migration Cloud Hybride**
                                     Pour moderniser votre infrastructure et réduire vos coûts opérationnels
@@ -619,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     **Profils :** Architecte Cloud, DevOps Engineer, Security Engineer
                                     **Durée :** 2-3 mois
                                     
-                                    <a href="migration-cloud-hybride.html">Voir la fiche détaillée</a>
+                                    <a href="fiche-migration-cloud-hybride.html">Voir la fiche détaillée</a>
                                     
                                     Quel aspect de votre modernisation vous préoccupe le plus ?
                                     
@@ -635,7 +668,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     **Profils :** Data Architect, Data Engineer
                                     **Durée :** 2-3 mois
                                     
-                                    <a href="architecture-data-mesh.html">Voir la fiche détaillée</a>
+                                    <a href="fiche-architecture-data-mesh.html">Voir la fiche détaillée</a>
                                     
                                     🤖 **MLOps & IA Industrielle**
                                     Pour industrialiser vos modèles IA en production
@@ -647,7 +680,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     **Profils :** MLOps Engineer, AI Solution Architect
                                     **Durée :** 1-2 mois
                                     
-                                    <a href="mlops-ia-industrielle.html">Voir la fiche détaillée</a>
+                                    <a href="fiche-mlops-ia-industrielle.html">Voir la fiche détaillée</a>
                                     
                                     Quel est votre cas d'usage principal ?
                                     
@@ -657,7 +690,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                     - Mets les titres en gras avec ** 
                                     - Fais des paragraphes aérés avec des sauts de ligne (<br><br>)
                                     - Utilise des listes à puces avec •
-                                    - Inclus TOUJOURS les liens vers les fiches détaillées au format HTML exact: <a href="nom-fichier.html">Voir la fiche détaillée</a>
+                                    - Inclus TOUJOURS les liens vers les fiches détaillées au format HTML exact: <a href="fiche-nom-fichier.html">Voir la fiche détaillée</a>
+                                    - TOUS les liens doivent OBLIGATOIREMENT commencer par "fiche-" (exemple: fiche-urbanisation-si.html, fiche-mlops-ia-industrielle.html, etc.)
                                     - Mentionne "Wekey" ou "filière Architecture Wekey" dans tes réponses
                                     - N'utilise JAMAIS "FICHIER:" dans tes réponses finales
                                     
@@ -678,22 +712,22 @@ document.addEventListener('DOMContentLoaded', function () {
                                     - "Complexité" → Urbanisation, API, standardisation
                                     
                                     CONTRAINTE CRUCIALE SUR LES LIENS:
-                                    - TOUS les liens doivent pointer EXCLUSIVEMENT vers les 15 fichiers existants suivants:
-                                    * urbanisation-si.html
-                                    * zero-trust-iam.html
-                                    * monolithe-microservices.html
-                                    * api-management-integration.html
-                                    * migration-cloud-hybride.html
-                                    * infrastructure-as-code.html
-                                    * sd-wan-sase.html
-                                    * ci-cd-industrialisation.html
-                                    * observabilite-monitoring.html
-                                    * pca-pra-continuite.html
-                                    * architecture-data-mesh.html
-                                    * mlops-ia-industrielle.html
-                                    * rag-ia-generative-responsable.html
-                                    * modernisation-digital-workplace.html
-                                    * audit-qualite-logicielle.html
+                                    - TOUS les liens doivent pointer EXCLUSIVEMENT vers les 15 fichiers existants suivants (avec le préfixe "fiche-"):
+                                    * fiche-urbanisation-si.html
+                                    * fiche-zero-trust-iam.html
+                                    * fiche-monolithe-microservices.html
+                                    * fiche-api-management-integration.html
+                                    * fiche-migration-cloud-hybride.html
+                                    * fiche-infrastructure-as-code.html
+                                    * fiche-sd-wan-sase.html
+                                    * fiche-ci-cd-industrialisation.html
+                                    * fiche-observabilite-monitoring.html
+                                    * fiche-pca-pra-continuite.html
+                                    * fiche-architecture-data-mesh.html
+                                    * fiche-mlops-ia-industrielle.html
+                                    * fiche-rag-ia-generative-responsable.html
+                                    * fiche-modernisation-digital-workplace.html
+                                    * fiche-audit-qualite-logicielle.html
                                     - JAMAIS créer de liens vers des fichiers qui n'existent pas dans cette liste
                                     - Si un nom de fichier n'est pas dans cette liste, mentionner seulement le nom sans lien
                                     
@@ -836,10 +870,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Suggestions par catégorie si aucun match précis
         const categorySuggestions = {
-            'cloud': '☁️ <strong>Offres Cloud & Infrastructure Wekey</strong><br><br>• <strong>Migration Cloud Hybride</strong> : transformation cloud hybride<br>• <strong>Infrastructure as Code</strong> : automatisation Terraform/Ansible<br>• <strong>SD-WAN & SASE</strong> : réseau sécurisé<br><br><a href="migration-cloud-hybride.html">Voir Migration Cloud</a> | <a href="infrastructure-as-code.html">Voir IaC</a>',
-            'sécurité': '🛡️ <strong>Offres Sécurité & Gouvernance Wekey</strong><br><br>• <strong>Zero Trust & IAM</strong> : modèle Zero Trust, plan IAM<br>• <strong>PCA/PRA & Continuité</strong> : plans continuité, tests reprise<br><br><a href="zero-trust-iam.html">Voir Zero Trust</a> | <a href="pca-pra-continuite.html">Voir PCA/PRA</a>',
-            'data': '📊 <strong>Offres Data & IA Wekey</strong><br><br>• <strong>Architecture Data Mesh</strong> : modèles data domain, gouvernance<br>• <strong>MLOps & IA industrielle</strong> : pipelines MLOps, monitoring<br>• <strong>RAG & IA générative</strong> : architecture RAG, intégration sources<br><br><a href="architecture-data-mesh.html">Voir Data Mesh</a> | <a href="mlops-ia-industrielle.html">Voir MLOps</a>',
-            'devops': '🔧 <strong>Offres DevOps & Industrialisation Wekey</strong><br><br>• <strong>CI/CD & Industrialisation</strong> : pipelines, documentation<br>• <strong>Observabilité & Monitoring</strong> : logs/metrics/traces<br><br><a href="ci-cd-industrialisation.html">Voir CI/CD</a> | <a href="observabilite-monitoring.html">Voir Observabilité</a>'
+            'cloud': '☁️ <strong>Offres Cloud & Infrastructure Wekey</strong><br><br>• <strong>Migration Cloud Hybride</strong> : transformation cloud hybride<br>• <strong>Infrastructure as Code</strong> : automatisation Terraform/Ansible<br>• <strong>SD-WAN & SASE</strong> : réseau sécurisé<br><br><a href="fiche-migration-cloud-hybride.html">Voir Migration Cloud</a> | <a href="fiche-infrastructure-as-code.html">Voir IaC</a>',
+            'sécurité': '🛡️ <strong>Offres Sécurité & Gouvernance Wekey</strong><br><br>• <strong>Zero Trust & IAM</strong> : modèle Zero Trust, plan IAM<br>• <strong>PCA/PRA & Continuité</strong> : plans continuité, tests reprise<br><br><a href="fiche-zero-trust-iam.html">Voir Zero Trust</a> | <a href="fiche-pca-pra-continuite.html">Voir PCA/PRA</a>',
+            'data': '📊 <strong>Offres Data & IA Wekey</strong><br><br>• <strong>Architecture Data Mesh</strong> : modèles data domain, gouvernance<br>• <strong>MLOps & IA industrielle</strong> : pipelines MLOps, monitoring<br>• <strong>RAG & IA générative</strong> : architecture RAG, intégration sources<br><br><a href="fiche-architecture-data-mesh.html">Voir Data Mesh</a> | <a href="fiche-mlops-ia-industrielle.html">Voir MLOps</a>',
+            'devops': '🔧 <strong>Offres DevOps & Industrialisation Wekey</strong><br><br>• <strong>CI/CD & Industrialisation</strong> : pipelines, documentation<br>• <strong>Observabilité & Monitoring</strong> : logs/metrics/traces<br><br><a href="fiche-ci-cd-industrialisation.html">Voir CI/CD</a> | <a href="fiche-observabilite-monitoring.html">Voir Observabilité</a>'
         };
 
         for (const [key, suggestion] of Object.entries(categorySuggestions)) {
@@ -848,12 +882,204 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        return "🎯 <strong>Assistant Filière Architecture Wekey</strong><br><br>Je suis spécialisé dans nos <strong>15 offres packagées</strong> :<br><br>🏗️ <strong>Architecture</strong> : Urbanisation SI, Microservices, API<br>☁️ <strong>Cloud & Infra</strong> : Migration, IaC, SD-WAN<br>🔧 <strong>DevOps & SRE</strong> : CI/CD, Observabilité<br>🛡️ <strong>Sécurité</strong> : Zero Trust, PCA/PRA<br>📊 <strong>Data & IA</strong> : Data Mesh, MLOps, RAG<br>💼 <strong>Workplace</strong> : Modernisation digitale<br>🔍 <strong>Qualité</strong> : Audit logicielle<br><br>Décrivez votre problématique, je vous oriente vers l'offre adaptée !";
+        // Réponse par défaut si aucune catégorie ne correspond
+        return "Je suis votre assistant architecte Wekey. Je peux vous aider sur les sujets suivants :\n" +
+            "• Architecture et urbanisation SI\n" +
+            "• Cloud et infrastructure\n" +
+            "• DevOps et industrialisation\n" +
+            "• Sécurité et gouvernance\n" +
+            "• Data et IA\n\n" +
+            "Pouvez-vous préciser votre besoin ?";
+    }
+
+    // Message d'accueil du chatbot
+    const welcomeMessage = `
+        <div style="margin-bottom: 15px;">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent-500), #e67e00); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                    <i class="fas fa-user-tie" style="color: white; font-size: 16px;"></i>
+                </div>
+                <div style="font-weight: 600; font-size: 1.1rem; color: var(--gray-800);">Architecte Wekey</div>
+            </div>
+            
+            <p>Bonjour, je suis votre assistant architecte Wekey. Je suis là pour vous aider à identifier les solutions les plus adaptées à vos besoins parmi nos offres packagées.</p>
+            
+            <div style="background: white; border-radius: 10px; padding: 12px; margin: 12px 0; border: 1px solid var(--gray-200);">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--accent-600); font-size: 0.9rem; display: flex; align-items: center;">
+                    <i class="fas fa-lightbulb" style="margin-right: 6px;"></i>
+                    Comment puis-je vous aider ?
+                </div>
+                <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--gray-700);">
+                    <li>Je souhaite moderniser mon infrastructure</li>
+                    <li>J'ai des problèmes de performance applicative</li>
+                    <li>Je veux sécuriser mon système d'information</li>
+                    <li>Je cherche à optimiser mes coûts IT</li>
+                </ul>
+            </div>
+            
+            <div style="font-size: 0.9rem; margin-top: 15px;">
+                <div style="font-weight: 500; margin-bottom: 8px; color: var(--gray-700);">Nos domaines d'expertise :</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;">
+                    <span style="background: #e3f2fd; color: #1565c0; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">🏗️ Architecture</span>
+                    <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">☁️ Cloud</span>
+                    <span style="background: #fff3e0; color: #e65100; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">🔧 DevOps</span>
+                    <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">🛡️ Sécurité</span>
+                    <span style="background: #e0f7fa; color: #006064; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">📊 Data & IA</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Fonction pour analyser et reformuler la question avec une approche d'architecte conseil
+    function reformulateQuestion(question) {
+        // Mots vides à ignorer
+        const stopWords = new Set(['et', 'ou', 'mais', 'donc', 'or', 'ni', 'car', 'que', 'qui', 'quoi', 'quand', 'où', 'comment', 'pourquoi', 'est-ce que', 'les', 'des', 'du', 'de', 'la', 'le', 'un', 'une', 'au', 'aux', 'dans', 'par', 'pour', 'sur', 'sous', 'avec', 'sans', 'chez', 'vers', 'à', 'a', 'ce', 'cet', 'cette', 'ces', 'mon', 'ton', 'son', 'notre', 'votre', 'leur', 'mes', 'tes', 'ses', 'nos', 'vos', 'leurs', 'je', 'tu', 'il', 'elle', 'nous', 'vous', 'ils', 'elles', 'me', 'te', 'se', 'y', 'en', 'ne', 'pas', 'plus', 'très', 'bien', 'mal', 'peu', 'beaucoup', 'plus', 'moins', 'très', 'trop']);
+
+        // Catégories et offres Wekey associées
+        const categories = {
+            'architecture': {
+                keywords: ['architecture', 'urbanisation', 'microservices', 'api', 'monolithe', 'architecture d\'entreprise'],
+                offers: ['Urbanisation SI', 'Monolithe vers Microservices', 'API Management & Integration'],
+                questions: [
+                    'Quels sont vos principaux défis en matière d\'architecture ?',
+                    'Souhaitez-vous moderniser un système existant ou en concevoir un nouveau ?',
+                    'Avez-vous des contraintes particulières en termes de performance ou de sécurité ?'
+                ]
+            },
+            'cloud': {
+                keywords: ['cloud', 'aws', 'azure', 'gcp', 'hybride', 'migration', 'infrastructure'],
+                offers: ['Migration Cloud Hybride', 'Infrastructure as Code', 'SD-WAN & SASE'],
+                questions: [
+                    'Quelle est votre stratégie cloud actuelle ?',
+                    'Avez-vous des contraintes de conformité ou de souveraineté des données ?',
+                    'Quels sont vos objectifs en termes de coûts et de performance ?'
+                ]
+            },
+            'devops': {
+                keywords: ['devops', 'ci/cd', 'intégration continue', 'déploiement continu', 'industrialisation'],
+                offers: ['CI/CD & Industrialisation', 'Observabilité & Monitoring'],
+                questions: [
+                    'Quelle est votre maturité actuelle en matière de DevOps ?',
+                    'Avez-vous des outils existants que vous souhaitez conserver ?',
+                    'Quels sont vos principaux défis en termes de déploiement ?'
+                ]
+            },
+            'securite': {
+                keywords: ['sécurité', 'sécurisation', 'zero trust', 'iam', 'pca', 'pra', 'cybersécurité'],
+                offers: ['Zero Trust & IAM', 'PCA/PRA & Continuité'],
+                questions: [
+                    'Quels sont vos principaux enjeux de sécurité ?',
+                    'Avez-vous des exigences de conformité particulières ?',
+                    'Quels sont vos objectifs en termes de continuité d\'activité ?'
+                ]
+            },
+            'data': {
+                keywords: ['data', 'données', 'ia', 'intelligence artificielle', 'mlops', 'data mesh', 'rag'],
+                offers: ['Architecture Data Mesh', 'MLOps & IA Industrielle', 'RAG & IA Générative Responsable'],
+                questions: [
+                    'Quels sont vos principaux défis en matière de gestion des données ?',
+                    'Avez-vous déjà des projets d\'IA en cours ?',
+                    'Quels sont vos objectifs en termes de valorisation de vos données ?'
+                ]
+            },
+            'workplace': {
+                keywords: ['workplace', 'digital workplace', 'modernisation', 'collaboration'],
+                offers: ['Modernisation Digital Workplace'],
+                questions: [
+                    'Quels sont vos principaux défis en matière de collaboration ?',
+                    'Avez-vous des besoins spécifiques en termes de mobilité ?',
+                    'Quels outils utilisez-vous actuellement ?'
+                ]
+            },
+            'qualite': {
+                keywords: ['qualité', 'audit', 'qualité logicielle', 'tests', 'revue de code'],
+                offers: ['Audit Qualité Logicielle'],
+                questions: [
+                    'Quels sont vos principaux défis en matière de qualité logicielle ?',
+                    'Avez-vous des indicateurs de qualité existants ?',
+                    'Quels sont vos objectifs en termes d\'amélioration continue ?'
+                ]
+            }
+        };
+
+        // Nettoyer et analyser la question
+        let cleanQuestion = question
+            .toLowerCase()
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        // Détecter la catégorie principale et les mots-clés
+        let detectedCategory = null;
+        let matchedKeywords = [];
+        let relatedOffers = [];
+        let followUpQuestions = [];
+
+        for (const [category, data] of Object.entries(categories)) {
+            const categoryKeywords = data.keywords.filter(keyword => cleanQuestion.includes(keyword));
+
+            if (categoryKeywords.length > 0) {
+                detectedCategory = category;
+                matchedKeywords = [...matchedKeywords, ...categoryKeywords];
+                relatedOffers = [...relatedOffers, ...data.offers];
+
+                // Ajouter des questions de suivi pertinentes
+                if (data.questions && data.questions.length > 0) {
+                    const randomQuestion = data.questions[Math.floor(Math.random() * data.questions.length)];
+                    if (!followUpQuestions.includes(randomQuestion)) {
+                        followUpQuestions.push(randomQuestion);
+                    }
+                }
+            }
+        }
+
+        // Formuler la réponse de l'architecte
+        let response = {
+            analysis: '',
+            offers: [...new Set(relatedOffers)], // Supprimer les doublons
+            followUp: followUpQuestions
+        };
+
+        // Construction de l'analyse
+        if (detectedCategory) {
+            const categoryNames = {
+                'architecture': 'd\'architecture et d\'urbanisation SI',
+                'cloud': 'de cloud et d\'infrastructure',
+                'devops': 'de DevOps et d\'industrialisation',
+                'securite': 'de sécurité informatique',
+                'data': 'de gestion des données et d\'IA',
+                'workplace': 'de modernisation du poste de travail',
+                'qualite': 'de qualité logicielle'
+            };
+
+            response.analysis = `En tant qu'architecte Wekey, je comprends que votre question porte sur ${categoryNames[detectedCategory]}. `;
+
+            if (matchedKeywords.length > 0) {
+                response.analysis += `Plus précisément, vous évoquez : ${matchedKeywords.join(', ')}. `;
+            }
+
+            if (response.offers.length > 0) {
+                response.analysis += `Dans notre catalogue, nous avons plusieurs offres qui pourraient vous intéresser : ${response.offers.join(', ')}. `;
+            }
+
+            if (response.followUp.length > 0) {
+                response.analysis += `Pour mieux vous conseiller, pourriez-vous me préciser : ${response.followUp[0]}`;
+            }
+        } else {
+            // Si aucune catégorie n'est détectée
+            response.analysis = `En tant qu'architecte Wekey, je souhaite bien comprendre votre besoin. `;
+            response.analysis += `Pourriez-vous me donner plus de détails sur votre problématique ? `;
+            response.analysis += `Par exemple : souhaitez-vous moderniser votre SI, améliorer la sécurité, ou mettre en place une nouvelle solution ?`;
+        }
+
+        return response;
     }
 
     async function sendMessage() {
         const text = userInput.value.trim();
         if (!text) return;
+
+        // Afficher le message de l'utilisateur
         appendMessage(text, 'user');
         userInput.value = '';
 
@@ -872,14 +1098,74 @@ document.addEventListener('DOMContentLoaded', function () {
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
         try {
+            // Analyser la question avec une approche d'architecte
+            const analysis = reformulateQuestion(text);
+
+            // Afficher l'analyse de l'architecte
+            const analysisDiv = document.createElement('div');
+            analysisDiv.className = 'chatbot-message bot';
+            analysisDiv.style.marginBottom = '10px';
+            analysisDiv.style.padding = '15px';
+            analysisDiv.style.borderRadius = '15px';
+            analysisDiv.style.background = 'var(--accent-50)';
+            analysisDiv.style.borderLeft = '4px solid var(--accent-500)';
+            analysisDiv.style.marginRight = 'auto';
+            analysisDiv.style.maxWidth = '90%';
+            analysisDiv.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+
+            // Construction du contenu de l'analyse
+            let content = document.createElement('div');
+            content.innerHTML = `
+                <div style="margin-bottom: 10px; font-weight: 500; color: var(--gray-800);">
+                    <i class="fas fa-user-tie" style="color: var(--accent-500); margin-right: 8px;"></i>
+                    Analyse de votre architecte Wekey :
+                </div>
+                <div style="margin-bottom: 15px; line-height: 1.5;">
+                    ${analysis.analysis}
+                </div>
+            `;
+
+            // Ajouter les offres pertinentes si elles existent
+            if (analysis.offers && analysis.offers.length > 0) {
+                const offersList = analysis.offers.map(offer =>
+                    `<span style="display: inline-block; background: var(--accent-100); color: var(--accent-800); 
+                      padding: 4px 10px; margin: 4px; border-radius: 12px; font-size: 0.85rem; font-weight: 500;">
+                        ${offer}
+                    </span>`
+                ).join('');
+
+                const offersSection = document.createElement('div');
+                offersSection.style.marginTop = '15px';
+                offersSection.style.padding = '10px';
+                offersSection.style.background = 'white';
+                offersSection.style.borderRadius = '8px';
+                offersSection.style.border = '1px solid var(--gray-200)';
+                offersSection.innerHTML = `
+                    <div style="font-size: 0.85rem; color: var(--gray-600); margin-bottom: 8px;">
+                        <i class="fas fa-box-open" style="margin-right: 6px;"></i>
+                        Offres Wekey pertinentes :
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        ${offersList}
+                    </div>
+                `;
+                content.appendChild(offersSection);
+            }
+
+            analysisDiv.appendChild(content);
+            chatMessages.replaceChild(analysisDiv, loadingDiv);
+
+            // Obtenir la réponse du bot
             const resp = await getBotResponse(text);
-            // Remplacer le message de chargement par la réponse
-            chatMessages.removeChild(loadingDiv);
+
+            // Afficher la réponse
             appendMessage(resp, 'bot');
+
         } catch (error) {
+            console.error('Erreur lors de la génération de la réponse :', error);
             // Remplacer le message de chargement par un message d'erreur
             chatMessages.removeChild(loadingDiv);
-            appendMessage('Désolé, une erreur est survenue. Veuillez réessayer.', 'bot');
+            appendMessage('Désolé, une erreur est survenue. Veuillez reformuler votre demande.', 'bot');
         }
     }
 
