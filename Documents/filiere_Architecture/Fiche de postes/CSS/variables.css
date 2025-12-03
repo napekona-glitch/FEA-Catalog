@@ -1,33 +1,38 @@
-/* Variables CSS basées sur la palette wekey-image.png */
+/* Variables CSS rafraîchies pour une meilleure harmonie */
 :root {
-  /* Palette de jaune/orange centrée sur #F9D86C */
-  --primary-dark: #F9D86C;    /* Jaune principal */
-  --primary-medium: #F5C842;  /* Jaune légèrement plus foncé */
-  --primary-light: #F8E08E;   /* Jaune plus clair */
+  /* Palette principale raffinée */
+  --primary-dark: #E8C15E;    /* Jaune doré plus doux */
+  --primary-medium: #F0B23A;  /* Jaune doré chaud */
+  --primary-light: #FAE7B5;   /* Jaune pâle très doux */
   
-  /* Accents dans la même gamme */
-  --accent-secondary: #E8B84E; /* Jaune doré */
-  --accent-light: #F8F0C6;     /* Jaune très clair */
+  /* Accents redéfinis */
+  --accent-secondary: #D4A93B; /* Doré plus profond */
+  --accent-light: #F5EDD6;     /* Crème chaud */
   
-  /* Couleurs neutres */
+  /* Nouveaux tons neutres */
   --bg-white: #FFFFFF;
-  --bg-light: #FFFDF5;         /* Blanc légèrement teinté de jaune */
+  --bg-light: #FFFBF0;         /* Blanc cassé légèrement doré */
+  --bg-lighter: #FFFDF8;       /* Très léger pour les fonds */
   
-  /* Textes */
-  --text-primary: #2C2C2C;     /* Presque noir pour un bon contraste */
-  --text-secondary: #5A5A5A;   /* Gris foncé */
-  --text-light: #4A3F15;       /* Marron très foncé pour contraste sur fond clair */
+  /* Hiérarchie de textes améliorée */
+  --text-primary: #2A2A2A;     /* Noir profond */
+  --text-secondary: #4A4A4A;   /* Gris anthracite */
+  --text-tertiary: #6B6B6B;    /* Gris moyen pour texte secondaire */
+  --text-light: #5E4E1F;       /* Brun doré pour contraste */
   
-  /* Accents fonctionnels */
-  --accent-success: #8BC34A;   /* Vert légèrement jaunâtre */
-  --accent-warning: #FFC107;   /* Jaune d'avertissement */
+  /* Accents fonctionnels plus harmonieux */
+  --accent-success: #7CB342;   /* Vert mousse */
+  --accent-warning: #FFB300;   /* Jaune moutarde */
+  --accent-error: #E64A19;     /* Terre cuite */
+  --accent-info: #0288D1;      /* Bleu canard */
   
-  /* Dégradés harmonieux */
-  --gradient-primary: linear-gradient(135deg, #F9D86C 0%, #F5C842 100%);
-  --gradient-hover: linear-gradient(135deg, #F5C842 0%, #E8B84E 100%);
-  --gradient-light: linear-gradient(135deg, #F8F0C6 0%, #F8E08E 100%);
+  /* Dégradés raffinés */
+  --gradient-primary: linear-gradient(135deg, #F0D18C 0%, #E8C15E 100%);
+  --gradient-hover: linear-gradient(135deg, #E8C15E 0%, #D4A93B 100%);
+  --gradient-light: linear-gradient(135deg, #FDF8EC 0%, #FAE7B5 100%);
+  --gradient-subtle: linear-gradient(to right, #FFFBF0 0%, #FFFFFF 50%, #FFFBF0 100%);
   
-  /* Ombres subtiles */
+  /* Ombres et effets */
   --shadow-light: 0 2px 8px rgba(232, 184, 78, 0.15);
   --shadow-medium: 0 4px 12px rgba(232, 184, 78, 0.2);
   --shadow-strong: 0 8px 24px rgba(232, 184, 78, 0.25);

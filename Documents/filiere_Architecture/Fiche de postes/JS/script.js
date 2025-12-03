@@ -228,41 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
             behavior: 'smooth'
         });
     });
-
-    // Recherche simple dans les fiches
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Rechercher dans les fiches...';
-    searchInput.style.cssText = `
-        margin: 20px auto;
-        padding: 12px 20px;
-        border: 2px solid #3498db;
-        border-radius: 25px;
-        width: 300px;
-        max-width: 90%;
-        font-size: 16px;
-        display: block;
-    `;
-    
-    const indexSection = document.querySelector('#index .container');
-    if (indexSection) {
-        indexSection.insertBefore(searchInput, indexSection.querySelector('h2').nextSibling);
-    }
-    
-    searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const allCards = document.querySelectorAll('.fiche-card, .evaluation-card');
-        
-        allCards.forEach(card => {
-            const text = card.textContent.toLowerCase();
-            if (text.includes(searchTerm)) {
-                card.style.display = 'block';
-                card.style.opacity = '1';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    });
-
+ 
     console.log('Site FEA - Fiches de Poste chargé avec succès !');
 });
