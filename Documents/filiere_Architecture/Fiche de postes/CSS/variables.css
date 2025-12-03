@@ -1,0 +1,37 @@
+/* Variables CSS basées sur la palette wekey-image.png */
+:root {
+  /* Palette de jaune/orange centrée sur #F9D86C */
+  --primary-dark: #F9D86C;    /* Jaune principal */
+  --primary-medium: #F5C842;  /* Jaune légèrement plus foncé */
+  --primary-light: #F8E08E;   /* Jaune plus clair */
+  
+  /* Accents dans la même gamme */
+  --accent-secondary: #E8B84E; /* Jaune doré */
+  --accent-light: #F8F0C6;     /* Jaune très clair */
+  
+  /* Couleurs neutres */
+  --bg-white: #FFFFFF;
+  --bg-light: #FFFDF5;         /* Blanc légèrement teinté de jaune */
+  
+  /* Textes */
+  --text-primary: #2C2C2C;     /* Presque noir pour un bon contraste */
+  --text-secondary: #5A5A5A;   /* Gris foncé */
+  --text-light: #4A3F15;       /* Marron très foncé pour contraste sur fond clair */
+  
+  /* Accents fonctionnels */
+  --accent-success: #8BC34A;   /* Vert légèrement jaunâtre */
+  --accent-warning: #FFC107;   /* Jaune d'avertissement */
+  
+  /* Dégradés harmonieux */
+  --gradient-primary: linear-gradient(135deg, #F9D86C 0%, #F5C842 100%);
+  --gradient-hover: linear-gradient(135deg, #F5C842 0%, #E8B84E 100%);
+  --gradient-light: linear-gradient(135deg, #F8F0C6 0%, #F8E08E 100%);
+  
+  /* Ombres subtiles */
+  --shadow-light: 0 2px 8px rgba(232, 184, 78, 0.15);
+  --shadow-medium: 0 4px 12px rgba(232, 184, 78, 0.2);
+  --shadow-strong: 0 8px 24px rgba(232, 184, 78, 0.25);
+  
+  /* Ajout d'une variable pour les bordures */
+  --border-color: rgba(232, 184, 78, 0.2);
+}
