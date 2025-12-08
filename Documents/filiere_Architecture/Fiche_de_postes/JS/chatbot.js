@@ -1,3 +1,5 @@
+console.log('Chargement du fichier chatbot.js');
+
 // Configuration des experts par page
 const experts = {
     'architecte-entreprise': {
@@ -38,9 +40,23 @@ const experts = {
 
 class Chatbot {
     constructor() {
+        console.log('Initialisation du Chatbot...');
         this.messages = [];
         this.currentExpert = this.detectExpert();
+        console.log('Expert détecté:', this.currentExpert);
+        
+        // Vérifier si le service Groq est disponible
+        this.groqService = window.groqService || null;
+        console.log('Service Groq disponible:', !!this.groqService);
+        
         this.initialize();
+        
+        // Initialiser le service Groq si disponible
+        if (this.groqService) {
+            console.log('Initialisation de la conversation Groq...');
+            this.groqService.initializeConversation(this.currentExpert);
+            console.log('Conversation Groq initialisée');
+        }
     }
 
     detectExpert() {
@@ -53,36 +69,15 @@ class Chatbot {
     }
 
     initialize() {
-        this.createChatUI();
-        this.addWelcomeMessage();
-        this.setupEventListeners();
-    }
-
-    createChatUI() {
-        const chatContainer = document.createElement('div');
-        chatContainer.id = 'chatbot-container';
-        chatContainer.innerHTML = `
-            <div class="chatbot-header">
-                <div class="chatbot-avatar">
-                    <img src="../wekey-image.png" alt="${this.currentExpert.name}">
-                </div>
-                <div class="chatbot-info">
-                    <h4>${this.currentExpert.name}</h4>
-                    <p>${this.currentExpert.description}</p>
-                    <div class="expertise-tags">
-                        ${this.currentExpert.expertise.map(tag => `<span>${tag}</span>`).join('')}
-                    </div>
-                </div>
-                <button id="minimize-chat">_</button>
-                <button id="close-chat">×</button>
-            </div>
-            <div class="chatbot-messages" id="chat-messages"></div>
-            <div class="chatbot-input">
-                <input type="text" id="user-input" placeholder="Posez votre question..." />
-                <button id="send-message">Envoyer</button>
-            </div>
-        `;
-        document.body.appendChild(chatContainer);
+        console.log('Initialisation du chatbot...');
+        try {
+            this.setupEventListeners();
+            console.log('Écouteurs d\'événements configurés');
+            this.addWelcomeMessage();
+            console.log('Message de bienvenue ajouté');
+        } catch (error) {
+            console.error('Erreur lors de l\'initialisation du chatbot:', error);
+        }
     }
 
     addWelcomeMessage() {
@@ -92,6 +87,11 @@ class Chatbot {
 
     addMessage(role, content) {
         const messagesContainer = document.getElementById('chat-messages');
+        if (!messagesContainer) {
+            console.error('Conteneur de messages non trouvé');
+            return;
+        }
+
         const messageElement = document.createElement('div');
         messageElement.className = `message ${role}-message`;
         messageElement.innerHTML = `
@@ -106,39 +106,86 @@ class Chatbot {
     }
 
     async processUserInput() {
+        console.log('Traitement de l\'entrée utilisateur...');
         const input = document.getElementById('user-input');
         const userMessage = input.value.trim();
         
-        if (!userMessage) return;
+        if (!userMessage) {
+            console.log('Message vide, sortie');
+            return;
+        }
         
+        console.log('Message utilisateur:', userMessage);
         // Afficher le message de l'utilisateur
         this.addMessage('user', userMessage);
         input.value = '';
+        
+        // Désactiver l'input pendant le traitement
+        input.disabled = true;
+        const sendButton = document.getElementById('send-message');
+        sendButton.disabled = true;
         
         // Afficher un indicateur de frappe
         const typingIndicator = this.showTypingIndicator();
         
         try {
-            // Ici, vous pourriez appeler une API d'IA comme OpenAI
-            // Pour l'instant, nous allons simuler une réponse
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            let response;
             
-            // Récupérer une réponse appropriée
-            const response = this.generateResponse(userMessage);
+            // Utiliser Groq si disponible, sinon utiliser la réponse par défaut
+            if (this.groqService) {
+                console.log('Tentative d\'envoi du message à Groq...');
+                try {
+                    response = await this.groqService.sendMessage(userMessage);
+                    console.log('Réponse reçue de Groq:', response);
+                } catch (error) {
+                    console.error('Erreur avec le service Groq:', error);
+                    // En cas d'erreur avec Groq, basculer sur la réponse par défaut
+                    console.log('Utilisation de la réponse par défaut');
+                    response = this.generateResponse(userMessage);
+                }
+            } else {
+                console.log('Service Groq non disponible, utilisation de la réponse par défaut');
+                // Simulation de délai pour l'expérience utilisateur
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                response = this.generateResponse(userMessage);
+            }
             
             // Remplacer l'indicateur de frappe par la réponse
-            typingIndicator.remove();
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
             this.addMessage('assistant', response);
             
         } catch (error) {
-            console.error('Error processing message:', error);
-            typingIndicator.remove();
-            this.addMessage('assistant', 'Désolé, une erreur est survenue. Veuillez réessayer.');
+            console.error('Erreur lors du traitement du message:', error);
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+            this.addMessage('assistant', 'Désolé, une erreur est survenue. Veuillez réessayer plus tard.');
+            
+            // En cas d'erreur, réinitialiser la conversation
+            if (this.groqService) {
+                try {
+                    this.groqService.resetConversation(this.currentExpert);
+                } catch (e) {
+                    console.error('Erreur lors de la réinitialisation de la conversation:', e);
+                }
+            }
+        } finally {
+            // Réactiver l'input après le traitement
+            input.disabled = false;
+            sendButton.disabled = false;
+            input.focus();
         }
     }
 
     showTypingIndicator() {
         const messagesContainer = document.getElementById('chat-messages');
+        if (!messagesContainer) {
+            console.error('Conteneur de messages non trouvé pour l\'indicateur de frappe');
+            return null;
+        }
+
         const typingElement = document.createElement('div');
         typingElement.className = 'message assistant-message typing-indicator';
         typingElement.innerHTML = `
@@ -177,255 +224,226 @@ class Chatbot {
 
     setupEventListeners() {
         // Envoyer un message avec le bouton
-        document.getElementById('send-message').addEventListener('click', () => this.processUserInput());
+        const sendButton = document.getElementById('send-message');
+        if (sendButton) {
+            sendButton.addEventListener('click', () => this.processUserInput());
+        }
         
         // Ou avec la touche Entrée
-        document.getElementById('user-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.processUserInput();
-            }
-        });
+        const userInput = document.getElementById('user-input');
+        if (userInput) {
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.processUserInput();
+                }
+            });
+        }
         
         // Gérer la fermeture et la minimisation
-        document.getElementById('minimize-chat').addEventListener('click', () => {
-            document.getElementById('chatbot-container').classList.toggle('minimized');
-        });
+        const minimizeChat = document.getElementById('minimize-chat');
+        if (minimizeChat) {
+            minimizeChat.addEventListener('click', () => {
+                const container = document.getElementById('chatbot-container');
+                if (container) {
+                    container.classList.toggle('minimized');
+                }
+            });
+        }
         
-        document.getElementById('close-chat').addEventListener('click', () => {
-            document.getElementById('chatbot-container').style.display = 'none';
-            // Optionnel: Afficher un bouton flottant pour rouvrir le chat
-        });
+        const closeChat = document.getElementById('close-chat');
+        if (closeChat) {
+            closeChat.addEventListener('click', () => {
+                const container = document.getElementById('chatbot-container');
+                if (container) {
+                    container.style.display = 'none';
+                }
+            });
+        }
+
+        // Gérer le bouton toggle
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const chatNotification = document.getElementById('chat-notification');
+        let isFirstInteraction = true;
+
+        if (chatbotToggle && chatbotContainer) {
+            // Fonction pour ouvrir le chat
+            function openChat() {
+                chatbotContainer.classList.add('active');
+                chatbotToggle.style.display = 'none';
+                
+                // Masquer la notification si c'est la première interaction
+                if (isFirstInteraction) {
+                    if (chatNotification) {
+                        chatNotification.style.display = 'none';
+                    }
+                    isFirstInteraction = false;
+                }
+            }
+
+            // Fonction pour fermer le chat
+            function closeChatFunc() {
+                chatbotContainer.classList.remove('active');
+                chatbotToggle.style.display = 'flex';
+            }
+
+            // Fonction pour minimiser le chat
+            function minimizeChatFunc() {
+                chatbotContainer.classList.remove('active');
+                chatbotToggle.style.display = 'flex';
+                
+                // Afficher une notification pour indiquer qu'il y a eu une activité
+                if (chatNotification) {
+                    chatNotification.style.display = 'block';
+                }
+            }
+
+            // Événements
+            chatbotToggle.addEventListener('click', openChat);
+            closeChat.addEventListener('click', closeChatFunc);
+            minimizeChat.addEventListener('click', minimizeChatFunc);
+
+            // Fermer le chat en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (!chatbotContainer.contains(event.target) && 
+                    !chatbotToggle.contains(event.target) && 
+                    chatbotContainer.classList.contains('active')) {
+                    minimizeChatFunc();
+                }
+            });
+
+            // Empêcher la propagation des clics à l'intérieur du chat
+            chatbotContainer.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            // Afficher une notification après 10 secondes si l'utilisateur n'a pas encore interagi
+            setTimeout(() => {
+                if (isFirstInteraction && chatNotification) {
+                    chatNotification.style.display = 'block';
+                }
+            }, 10000);
+        }
     }
 }
 
 // Démarrer le chatbot quand le DOM est chargé
 document.addEventListener('DOMContentLoaded', () => {
-    window.chatbot = new Chatbot();
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const chatbotToggle = document.getElementById('chatbot-toggle');
-    const chatbotContainer = document.getElementById('chatbot-container');
-    const closeChat = document.getElementById('close-chat');
-    const minimizeChat = document.getElementById('minimize-chat');
-    const chatNotification = document.getElementById('chat-notification');
-    let isFirstInteraction = true;
-
-    // Fonction pour ouvrir le chat
-    function openChat() {
-        chatbotContainer.classList.add('active');
-        chatbotToggle.style.display = 'none';
-        
-        // Masquer la notification si c'est la première interaction
-        if (isFirstInteraction) {
-            chatNotification.style.display = 'none';
-            isFirstInteraction = false;
-        }
-    }
-
-    // Fonction pour fermer le chat
-    function closeChatFunc() {
-        chatbotContainer.classList.remove('active');
-        chatbotToggle.style.display = 'flex';
-    }
-
-    // Fonction pour minimiser le chat
-    function minimizeChatFunc() {
-        chatbotContainer.classList.remove('active');
-        chatbotToggle.style.display = 'flex';
-        
-        // Afficher une notification pour indiquer qu'il y a eu une activité
-        chatNotification.style.display = 'block';
-    }
-
-    // Événements
-    chatbotToggle.addEventListener('click', openChat);
-    closeChat.addEventListener('click', closeChatFunc);
-    minimizeChat.addEventListener('click', minimizeChatFunc);
-
-    // Fermer le chat en cliquant à l'extérieur
-    document.addEventListener('click', function(event) {
-        if (!chatbotContainer.contains(event.target) && 
-            !chatbotToggle.contains(event.target) && 
-            chatbotContainer.classList.contains('active')) {
-            minimizeChatFunc();
-        }
-    });
-
-    // Empêcher la propagation des clics à l'intérieur du chat
-    chatbotContainer.addEventListener('click', function(event) {
-        event.stopPropagation();
-    });
-
-    // Gestion de l'envoi des messages (exemple basique)
-    const userInput = document.getElementById('user-input');
-    const sendButton = document.getElementById('send-message');
-    const chatMessages = document.querySelector('.chatbot-messages');
-
-    function sendMessage() {
-        const message = userInput.value.trim();
-        if (message === '') return;
-
-        // Ajouter le message de l'utilisateur
-        addMessage(message, 'user-message');
-        userInput.value = '';
-
-        // Simuler une réponse du bot
-        setTimeout(() => {
-            const responses = [
-                "Je comprends votre question. Laissez-moi vous aider avec les fiches de poste.",
-                "C'est une excellente question ! Voici ce que je peux vous dire...",
-                "Je suis là pour vous aider à trouver les informations dont vous avez besoin.",
-                "Permettez-moi de vous guider vers la bonne fiche de poste."
-            ];
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            addMessage(randomResponse, 'bot-message');
-        }, 1000);
-    }
-
-    function addMessage(text, className) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${className}`;
-        messageDiv.innerHTML = `<p>${text}</p>`;
-        
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // Animation d'apparition
-        messageDiv.style.opacity = '0';
-        messageDiv.style.transform = 'translateY(10px)';
-        setTimeout(() => {
-            messageDiv.style.transition = 'all 0.3s ease';
-            messageDiv.style.opacity = '1';
-            messageDiv.style.transform = 'translateY(0)';
-        }, 10);
-    }
-
-    // Envoyer un message avec le bouton ou la touche Entrée
-    sendButton.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-
-    // Afficher une notification après 10 secondes si l'utilisateur n'a pas encore interagi
+    console.log('DOM chargé, démarrage du chatbot');
+    
+    // Attendre un peu que les scripts se chargent
     setTimeout(() => {
-        if (isFirstInteraction) {
-            chatNotification.style.display = 'block';
-        }
-    }, 10000);
-});
-document.addEventListener('DOMContentLoaded', function() {
-    const chatbotToggle = document.getElementById('chatbot-toggle');
-    const chatbotContainer = document.getElementById('chatbot-container');
-    const closeChat = document.getElementById('close-chat');
-    const minimizeChat = document.getElementById('minimize-chat');
-    const chatNotification = document.getElementById('chat-notification');
-    let isFirstInteraction = true;
-
-    // Fonction pour ouvrir le chat
-    function openChat() {
-        chatbotContainer.classList.add('active');
-        chatbotToggle.style.display = 'none';
+        console.log('Configuration Groq:', window.GROQ_CONFIG || 'Non chargée');
+        console.log('Service Groq:', window.groqService ? 'Disponible' : 'Non disponible');
         
-        // Masquer la notification si c'est la première interaction
-        if (isFirstInteraction) {
-            chatNotification.style.display = 'none';
-            isFirstInteraction = false;
+        if (!window.groqService && window.GROQ_CONFIG) {
+            console.log('Tentative de création manuelle du service Groq...');
+            try {
+                // Créer manuellement le service si nécessaire
+                class GroqService {
+                    constructor() {
+                        console.log('Initialisation du service Groq...');
+                        this.config = window.GROQ_CONFIG || {};
+                        console.log('Configuration Groq chargée:', this.config.API_URL ? 'Oui' : 'Non');
+                        console.log('Clé API présente:', this.config.API_KEY ? 'Oui' : 'Non');
+                        
+                        // Validation de la clé API
+                        if (this.config.API_KEY) {
+                            console.log('Longueur de la clé API:', this.config.API_KEY.length);
+                            console.log('Début de la clé API:', this.config.API_KEY.substring(0, 10) + '...');
+                            
+                            if (!this.config.API_KEY.startsWith('gsk_')) {
+                                console.error('La clé API ne commence pas par "gsk_"');
+                            }
+                            if (this.config.API_KEY.length < 20) {
+                                console.error('La clé API semble trop courte');
+                            }
+                        } else {
+                            console.error('Aucune clé API trouvée');
+                        }
+                        
+                        this.conversationHistory = [];
+                        console.log('Service Groq initialisé');
+                    }
+
+                    initializeConversation(expert) {
+                        this.conversationHistory = [
+                            {
+                                role: 'system',
+                                content: `Tu es un assistant expert en ${expert.name.toLowerCase()}. 
+                                Tu es spécialisé dans: ${expert.expertise.join(', ')}. 
+                                Tu réponds de manière précise et professionnelle en français. 
+                                Sois concis et va droit au but.`
+                            }
+                        ];
+                    }
+
+                    async sendMessage(message) {
+                        console.log('Envoi du message à Groq:', message);
+                        this.conversationHistory.push({
+                            role: 'user',
+                            content: message
+                        });
+
+                        try {
+                            // Debug: afficher les détails de la requête
+                            console.log('URL de l\'API:', this.config.API_URL);
+                            console.log('Modèle:', this.config.MODEL);
+                            console.log('Authorization header:', this.config.HEADERS.Authorization);
+                            
+                            const response = await fetch(this.config.API_URL, {
+                                method: 'POST',
+                                headers: this.config.HEADERS,
+                                body: JSON.stringify({
+                                    model: this.config.MODEL,
+                                    messages: this.conversationHistory,
+                                    temperature: this.config.TEMPERATURE,
+                                    max_tokens: this.config.MAX_TOKENS
+                                })
+                            });
+
+                            console.log('Statut de la réponse:', response.status);
+                            console.log('Headers de la réponse:', response.headers);
+
+                            if (!response.ok) {
+                                const errorText = await response.text();
+                                console.error('Détail de l\'erreur:', errorText);
+                                throw new Error(`Erreur HTTP: ${response.status} - ${errorText}`);
+                            }
+
+                            const data = await response.json();
+                            console.log('Réponse de l\'API:', data);
+                            
+                            if (!data.choices || data.choices.length === 0) {
+                                throw new Error('Aucune réponse générée par l\'API');
+                            }
+                            
+                            const botResponse = data.choices[0].message.content;
+                            
+                            this.conversationHistory.push({
+                                role: 'assistant',
+                                content: botResponse
+                            });
+
+                            return botResponse;
+                        } catch (error) {
+                            console.error('Erreur lors de l\'appel à l\'API Groq:', error);
+                            throw error;
+                        }
+                    }
+
+                    resetConversation(expert) {
+                        this.initializeConversation(expert);
+                    }
+                }
+                
+                window.groqService = new GroqService();
+                console.log('Service Groq créé manuellement');
+            } catch (error) {
+                console.error('Erreur lors de la création manuelle du service Groq:', error);
+            }
         }
-    }
-
-    // Fonction pour fermer le chat
-    function closeChatFunc() {
-        chatbotContainer.classList.remove('active');
-        chatbotToggle.style.display = 'flex';
-    }
-
-    // Fonction pour minimiser le chat
-    function minimizeChatFunc() {
-        chatbotContainer.classList.remove('active');
-        chatbotToggle.style.display = 'flex';
         
-        // Afficher une notification pour indiquer qu'il y a eu une activité
-        chatNotification.style.display = 'block';
-    }
-
-    // Événements
-    chatbotToggle.addEventListener('click', openChat);
-    closeChat.addEventListener('click', closeChatFunc);
-    minimizeChat.addEventListener('click', minimizeChatFunc);
-
-    // Fermer le chat en cliquant à l'extérieur
-    document.addEventListener('click', function(event) {
-        if (!chatbotContainer.contains(event.target) && 
-            !chatbotToggle.contains(event.target) && 
-            chatbotContainer.classList.contains('active')) {
-            minimizeChatFunc();
-        }
-    });
-
-    // Empêcher la propagation des clics à l'intérieur du chat
-    chatbotContainer.addEventListener('click', function(event) {
-        event.stopPropagation();
-    });
-
-    // Gestion de l'envoi des messages (exemple basique)
-    const userInput = document.getElementById('user-input');
-    const sendButton = document.getElementById('send-message');
-    const chatMessages = document.querySelector('.chatbot-messages');
-
-    function sendMessage() {
-        const message = userInput.value.trim();
-        if (message === '') return;
-
-        // Ajouter le message de l'utilisateur
-        addMessage(message, 'user-message');
-        userInput.value = '';
-
-        // Simuler une réponse du bot
-        setTimeout(() => {
-            const responses = [
-                "Je comprends votre question. Laissez-moi vous aider avec les fiches de poste.",
-                "C'est une excellente question ! Voici ce que je peux vous dire...",
-                "Je suis là pour vous aider à trouver les informations dont vous avez besoin.",
-                "Permettez-moi de vous guider vers la bonne fiche de poste."
-            ];
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            addMessage(randomResponse, 'bot-message');
-        }, 1000);
-    }
-
-    function addMessage(text, className) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${className}`;
-        messageDiv.innerHTML = `<p>${text}</p>`;
-        
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // Animation d'apparition
-        messageDiv.style.opacity = '0';
-        messageDiv.style.transform = 'translateY(10px)';
-        setTimeout(() => {
-            messageDiv.style.transition = 'all 0.3s ease';
-            messageDiv.style.opacity = '1';
-            messageDiv.style.transform = 'translateY(0)';
-        }, 10);
-    }
-
-    // Envoyer un message avec le bouton ou la touche Entrée
-    sendButton.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-
-    // Afficher une notification après 10 secondes si l'utilisateur n'a pas encore interagi
-    setTimeout(() => {
-        if (isFirstInteraction) {
-            chatNotification.style.display = 'block';
-        }
-    }, 10000);
+        window.chatbot = new Chatbot();
+    }, 500); // Attendre 500ms que les scripts se chargent
 });
