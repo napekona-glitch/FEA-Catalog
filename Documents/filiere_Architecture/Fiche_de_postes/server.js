@@ -6,8 +6,13 @@ const app = express();
 const PORT = 3001;
 
 // Configuration
-const GROQ_API_KEY = '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';
+const GROQ_API_KEY = process.env.GROQ_API_KEY || '';
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+if (!GROQ_API_KEY) {
+    console.error('ERROR: GROQ_API_KEY environment variable is not set');
+    process.exit(1);
+}
 
 // Middleware
 app.use(cors());
