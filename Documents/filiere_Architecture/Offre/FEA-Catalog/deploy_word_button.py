@@ -59,7 +59,7 @@ def update_offer_files():
             # Find the PDF button closing tag
             # We look for the closing </a> of the print-button
             # This regex looks for the PDF button link and its closing tag
-            pattern = r'(<a href="pdf-[^"]+"\s+target="_blank"\s+class="print-button"[^>]*>.*?</a>)'
+            pattern = r'(<a href="./pdf-[^"]+"\s+target="_blank"\s+class="print-button"[^>]*>.*?</a>)'
             
             if re.search(pattern, content, re.DOTALL):
                 # Insert Word button after PDF button

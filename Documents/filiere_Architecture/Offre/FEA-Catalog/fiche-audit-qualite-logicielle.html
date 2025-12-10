@@ -10,7 +10,7 @@
     <title>Audit de Qualité Logicielle – Fiche service</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="CSS/service-detail.css">
+    <link rel="stylesheet" href="./CSS/service-detail.css">
 </head>
 
 <body>
@@ -263,7 +263,7 @@
 
             <!-- Bouton PDF -->
             <div style="text-align: center; margin-top: 2rem; width: 100%;">
-                <a href="pdf-audit-qualite-logicielle.html" target="_blank" class="print-button"
+                <a href="./pdf-audit-qualite-logicielle.html" target="_blank" class="print-button"
                     style="background: linear-gradient(135deg, #7f8c8d, #5d6d7e); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(127, 140, 141, 0.3); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;"
                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(93, 109, 126, 0.4)'; this.style.background='linear-gradient(135deg, #5d6d7e, #7f8c8d)';"
                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(127, 140, 141, 0.3)'; this.style.background='linear-gradient(135deg, #7f8c8d, #5d6d7e)';">
@@ -325,6 +325,12 @@
             const sendButton = document.getElementById('sendButton');
             const closeButton = document.getElementById('chatbotClose');
 
+            // Vérifier si les éléments du chatbot existent avant de continuer
+            if (!chatContainer || !chatMessages || !userInput || !sendButton || !closeButton) {
+                console.log('Chatbot elements not found - chatbot is disabled');
+                return;
+            }
+
             // Afficher/masquer le chat
             const chatIcon = document.createElement('div');
             chatIcon.className = 'chatbot-icon';
@@ -332,17 +338,25 @@
             document.body.appendChild(chatIcon);
 
             chatIcon.addEventListener('click', function () {
-                chatContainer.classList.add('visible');
-                chatIcon.style.display = 'none';
+                if (chatContainer) {
+                    chatContainer.classList.add('visible');
+                    chatIcon.style.display = 'none';
+                }
             });
 
-            closeButton.addEventListener('click', function () {
-                chatContainer.classList.remove('visible');
-                chatIcon.style.display = 'flex';
-            });
+            if (closeButton) {
+                closeButton.addEventListener('click', function () {
+                    if (chatContainer) {
+                        chatContainer.classList.remove('visible');
+                        chatIcon.style.display = 'flex';
+                    }
+                });
+            }
 
             // Envoyer un message
             function sendMessage() {
+                if (!userInput) return;
+                
                 const message = userInput.value.trim();
                 if (message === '') return;
 
@@ -357,17 +371,23 @@
                 }, 500);
             }
 
-            // Gestion de la touche Entrée
-            userInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
+            // Gestion des événements
+            if (sendButton) {
+                sendButton.addEventListener('click', sendMessage);
+            }
 
-            sendButton.addEventListener('click', sendMessage);
+            if (userInput) {
+                userInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
 
             // Fonction pour ajouter un message au chat
             function appendMessage(text, sender) {
+                if (!chatMessages) return;
+                
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `chatbot-message ${sender}`;
                 messageDiv.textContent = text;

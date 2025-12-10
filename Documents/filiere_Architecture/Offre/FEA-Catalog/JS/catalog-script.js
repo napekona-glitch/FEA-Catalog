@@ -40,38 +40,39 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     // Fonction de nettoyage centralisée pour les liens
-    function cleanLinksAndArtifacts(content) {
-        return content
-            // CORRECTION PRINCIPALE: Ajouter le préfixe "fiche-" aux liens qui pointent vers les offres mais qui n'ont pas le préfixe
-            .replace(/href=["']([a-zA-Z0-9\-_]+\.html)["']/g, (match, filename) => {
-                // Extraire le nom de base sans .html
-                const baseName = filename.replace('.html', '');
+   function cleanLinksAndArtifacts(content) {
+    // D'abord, traiter les listes numérotées
+    content = content
+        // Remplacer les listes numérotées avec sauts de ligne
+        .replace(/(\d+\.)\s+([^\n]+)(?=\n|$)/g, '$1 $2<br>')
+        // Nettoyer les espaces multiples
+        .replace(/\s+/g, ' ')
+        // Nettoyer les <br> en double
+        .replace(/(<br>\s*)+/g, '<br>')
+        // Formater les listes à puces
+        .replace(/(•|[-*+])\s*/g, '• ');
 
-                // Si c'est une de nos 15 offres et qu'elle n'a pas déjà le préfixe "fiche-"
-                if (offerBaseNames.includes(baseName) && !filename.startsWith('fiche-')) {
-                    return `href="fiche-${filename}"`;
-                }
-
-                // Sinon, garder tel quel
-                return match;
-            })
-            // Remplacer les patterns "FICHIER: nom-fichier.html" par des vrais liens SEULEMENT si le fichier existe
-            .replace(/FICHIER:\s*([a-zA-Z0-9\-_]+\.html)/g, (match, filename) => {
-                return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
-            })
-            // Nettoyer les liens déjà existants mais mal formatés
-            .replace(/href=['\"]audit-de-qualite-logicielle\.html['"]/g, 'href="fiche-audit-qualite-logicielle.html"')
-            // Remplacer les noms de fichiers seuls par des liens cliquables SEULEMENT si le fichier existe et n'est pas déjà dans une balise <a>
-            .replace(/\b([a-zA-Z0-9\-_]+\.html)\b(?![^<]*<\/a>)/g, (match, filename) => {
-                return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
-            })
-            // Nettoyer les "FICHIER:" restants
-            .replace(/FICHIER:\s*/g, '')
-            // Nettoyer les espaces multiples mais préserver les <br>
-            .replace(/\s+/g, ' ')
-            .trim();
-    }
-
+    // Ensuite, le reste du nettoyage
+    return content
+        .replace(/href=["']([a-zA-Z0-9\-_]+\.html)["']/g, (match, filename) => {
+            const baseName = filename.replace('.html', '');
+            if (offerBaseNames.includes(baseName) && !filename.startsWith('fiche-')) {
+                return `href="fiche-${filename}"`;
+            }
+            return match;
+        })
+        .replace(/FICHIER:\s*([a-zA-Z0-9\-_]+\.html)/g, (match, filename) => {
+            return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
+        })
+        .replace(/href=['"]audit-de-qualite-logicielle\.html['"]/g, 'href="fiche-audit-qualite-logicielle.html"')
+        .replace(/\b([a-zA-Z0-9\-_]+\.html)\b(?![^<]*<\/a>)/g, (match, filename) => {
+            return existingFiles.includes(filename) ? `<a href="${filename}">${filename}</a>` : filename;
+        })
+        .replace(/FICHIER:\s*/g, '')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .trim();
+}
     const chatContainer = document.getElementById('chatbotContainer');
     const chatMessages = document.getElementById('chatbotMessages');
     const userInput = document.getElementById('userInput');
@@ -464,12 +465,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function getBotResponse(message) {
         try {
-            // Appel à l'API Groq pour une réponse intelligente
-            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            // Configuration du backend Cloudflare
+            const BACKEND_URL = 'https://groq-api-proxy-public.napekona.workers.dev/api/groq'; // Mode production
+            
+            // Appel au backend Cloudflare pour une réponse intelligente
+            const response = await fetch(BACKEND_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer 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' // Remplacez avec votre clé API Groq
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     model: 'llama-3.1-8b-instant', // modèle gratuit Groq
@@ -756,6 +759,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const data = await response.json();
+            console.log('Réponse du backend:', data); // Log pour debug
+            
+            // Validation de la structure de la réponse
+            if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+                console.error('Structure de réponse invalide:', data);
+                throw new Error('Réponse API invalide - structure attendue non trouvée');
+            }
+            
             let responseContent = data.choices[0].message.content;
 
             // Nettoyage avec la fonction centralisée
@@ -765,7 +776,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             console.error('Erreur lors de l\'appel à Groq:', error);
-
+            console.error('URL appelée:', BACKEND_URL);
+            console.error('Type d\'erreur:', error.name);
+            console.error('Message:', error.message);
+            
             // Fallback vers le système basique si Groq n'est pas disponible
             return getBasicResponse(message);
         }
