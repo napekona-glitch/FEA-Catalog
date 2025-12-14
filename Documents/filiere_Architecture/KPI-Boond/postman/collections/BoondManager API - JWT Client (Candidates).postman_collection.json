@@ -1,0 +1,1299 @@
+{
+  "info": {
+    "_postman_id": "c89e6f89-7d12-4c2c-a42e-3dcb043dffef",
+    "name": "BoondManager API - JWT Client (Candidates)",
+    "description": "Collection utilisant l'authentification X-Jwt-Client-Boondmanager. Le pre-request script construit le JWT à partir des variables userToken, clientToken, clientKey.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET Candidates",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "51fbd249-7f0b-47b3-91e6-b9ecc00fff88",
+            "exec": [
+              "pm.test('Status code is 200', function () { ",
+              "    pm.response.to.have.status(200); ",
+              "});",
+              "",
+              "if (pm.response.code === 401) { ",
+              "    console.warn('401 Unauthorized: vérifiez vos tokens/user permissions.'); ",
+              "}",
+              "",
+              "// Table Visualization for Candidates",
+              "var template = `",
+              "<style>",
+              "    .candidates-container {",
+              "        font-family: 'Segoe UI', Arial, sans-serif;",
+              "        max-width: 100%;",
+              "        margin: 0 auto;",
+              "    }",
+              "    .header-section {",
+              "        background: linear-gradient(135deg, #FF6C37 0%, #ff8c5a 100%);",
+              "        color: white;",
+              "        padding: 20px;",
+              "        border-radius: 8px 8px 0 0;",
+              "        margin-bottom: 0;",
+              "    }",
+              "    .header-section h2 {",
+              "        margin: 0 0 8px 0;",
+              "        font-size: 24px;",
+              "        font-weight: 600;",
+              "    }",
+              "    .count-badge {",
+              "        background-color: rgba(255,255,255,0.2);",
+              "        color: white;",
+              "        padding: 6px 14px;",
+              "        border-radius: 20px;",
+              "        font-size: 14px;",
+              "        font-weight: 500;",
+              "        display: inline-block;",
+              "    }",
+              "    .candidates-table {",
+              "        width: 100%;",
+              "        border-collapse: collapse;",
+              "        font-size: 13px;",
+              "        background: white;",
+              "        box-shadow: 0 2px 8px rgba(0,0,0,0.1);",
+              "    }",
+              "    .candidates-table th {",
+              "        background-color: #2d3748;",
+              "        color: white;",
+              "        padding: 14px 12px;",
+              "        text-align: left;",
+              "        font-weight: 600;",
+              "        font-size: 12px;",
+              "        text-transform: uppercase;",
+              "        letter-spacing: 0.5px;",
+              "        border: none;",
+              "    }",
+              "    .candidates-table td {",
+              "        padding: 12px;",
+              "        border-bottom: 1px solid #e2e8f0;",
+              "        color: #4a5568;",
+              "    }",
+              "    .candidates-table tr:nth-child(even) {",
+              "        background-color: #f7fafc;",
+              "    }",
+              "    .candidates-table tr:hover {",
+              "        background-color: #edf2f7;",
+              "        transition: background-color 0.2s ease;",
+              "    }",
+              "    .candidates-table tr:last-child td {",
+              "        border-bottom: none;",
+              "    }",
+              "    .state-badge {",
+              "        display: inline-block;",
+              "        padding: 4px 10px;",
+              "        border-radius: 12px;",
+              "        font-size: 11px;",
+              "        font-weight: 600;",
+              "        background-color: #e6fffa;",
+              "        color: #234e52;",
+              "    }",
+              "    .date-cell {",
+              "        white-space: nowrap;",
+              "        color: #718096;",
+              "        font-size: 12px;",
+              "    }",
+              "    .name-cell {",
+              "        font-weight: 600;",
+              "        color: #2d3748;",
+              "    }",
+              "    .no-data {",
+              "        text-align: center;",
+              "        padding: 40px;",
+              "        color: #a0aec0;",
+              "        font-style: italic;",
+              "    }",
+              "</style>",
+              "",
+              "<div class=\"candidates-container\">",
+              "    <div class=\"header-section\">",
+              "        <h2>Candidates List</h2>",
+              "        <span class=\"count-badge\">{{totalCount}} candidate(s) found</span>",
+              "    </div>",
+              "    ",
+              "    <table class=\"candidates-table\">",
+              "        <thead>",
+              "            <tr>",
+              "                <th>#</th>",
+              "                <th>Name</th>",
+              "                <th>Title</th>",
+              "                <th>State</th>",
+              "                <th>HR Manager</th>",
+              "                <th>Last Action Date</th>",
+              "                <th>Creation Date</th>",
+              "                <th>Source</th>",
+              "                <th>Availability</th>",
+              "            </tr>",
+              "        </thead>",
+              "        <tbody>",
+              "            {{#if candidates.length}}",
+              "                {{#each candidates}}",
+              "                <tr>",
+              "                    <td>{{index}}</td>",
+              "                    <td class=\"name-cell\">{{name}}</td>",
+              "                    <td>{{title}}</td>",
+              "                    <td><span class=\"state-badge\">{{state}}</span></td>",
+              "                    <td>{{hrManager}}</td>",
+              "                    <td class=\"date-cell\">{{lastActionDate}}</td>",
+              "                    <td class=\"date-cell\">{{creationDate}}</td>",
+              "                    <td>{{source}}</td>",
+              "                    <td>{{availability}}</td>",
+              "                </tr>",
+              "                {{/each}}",
+              "            {{/if}}",
+              "            {{#unless candidates.length}}",
+              "                <tr>",
+              "                    <td colspan=\"9\" class=\"no-data\">No candidates found</td>",
+              "                </tr>",
+              "            {{/unless}}",
+              "        </tbody>",
+              "    </table>",
+              "</div>",
+              "`;",
+              "",
+              "function constructVisualizerPayload() {",
+              "    var response = pm.response.json();",
+              "    var candidatesData = response.data || response.candidates || response || [];",
+              "    ",
+              "    // Handle if candidatesData is not an array",
+              "    if (!Array.isArray(candidatesData)) {",
+              "        candidatesData = [];",
+              "    }",
+              "    ",
+              "    var candidates = candidatesData.map(function(candidate, idx) {",
+              "        // Extract attributes - handle both flat structure and nested attributes",
+              "        var attrs = candidate.attributes || candidate;",
+              "        var relationships = candidate.relationships || {};",
+              "        ",
+              "        // Get HR Manager name from relationships or direct field",
+              "        var hrManagerName = 'N/A';",
+              "        if (relationships.hrManager && relationships.hrManager.data) {",
+              "            hrManagerName = relationships.hrManager.data.name || relationships.hrManager.data.id || 'N/A';",
+              "        } else if (attrs.hrManager) {",
+              "            hrManagerName = typeof attrs.hrManager === 'object' ? (attrs.hrManager.name || attrs.hrManager.id || 'N/A') : attrs.hrManager;",
+              "        }",
+              "        ",
+              "        // Get source name",
+              "        var sourceName = 'N/A';",
+              "        if (relationships.source && relationships.source.data) {",
+              "            sourceName = relationships.source.data.name || relationships.source.data.id || 'N/A';",
+              "        } else if (attrs.source) {",
+              "            sourceName = typeof attrs.source === 'object' ? (attrs.source.name || 'N/A') : attrs.source;",
+              "        }",
+              "        ",
+              "        // Get state name",
+              "        var stateName = 'N/A';",
+              "        if (attrs.state !== undefined) {",
+              "            stateName = typeof attrs.state === 'object' ? (attrs.state.name || attrs.state.value || 'N/A') : attrs.state;",
+              "        }",
+              "        ",
+              "        // Get availability",
+              "        var availabilityValue = 'N/A';",
+              "        if (attrs.availability !== undefined) {",
+              "            availabilityValue = typeof attrs.availability === 'object' ? (attrs.availability.name || attrs.availability.value || 'N/A') : attrs.availability;",
+              "        }",
+              "        ",
+              "        // Format dates",
+              "        var lastActionDate = attrs.lastActionDate || 'N/A';",
+              "        var creationDate = attrs.creationDate || 'N/A';",
+              "        ",
+              "        return {",
+              "            index: idx + 1,",
+              "            name: (attrs.firstName || '') + ' ' + (attrs.lastName || attrs.name || 'N/A'),",
+              "            title: attrs.title || 'N/A',",
+              "            state: stateName,",
+              "            hrManager: hrManagerName,",
+              "            lastActionDate: lastActionDate,",
+              "            creationDate: creationDate,",
+              "            source: sourceName,",
+              "            availability: availabilityValue",
+              "        };",
+              "    });",
+              "    ",
+              "    return {",
+              "        candidates: candidates,",
+              "        totalCount: candidates.length",
+              "    };",
+              "}",
+              "",
+              "pm.visualizer.set(template, constructVisualizerPayload());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "96d2d86c-14d0-41fe-b0f9-ea7e9776d275",
+            "exec": [
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "92336979-7f0a-4ddf-92f3-0f7a8820d37a",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates?filter[availabilityDate<=]=2026-03-13",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates"
+          ],
+          "query": [
+            {
+              "key": "flags",
+              "value": "160",
+              "disabled": true
+            },
+            {
+              "key": "columns",
+              "value": "evaluations",
+              "disabled": true
+            },
+            {
+              "key": "columns",
+              "value": "experience",
+              "disabled": true
+            },
+            {
+              "key": "columns",
+              "value": "languages",
+              "disabled": true
+            },
+            {
+              "key": "filter[availabilityDate<",
+              "value": "]=2026-03-13"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Candidate by ID attached Flags",
+      "id": "ba77a642-4a2b-4120-9f2d-475117a1660e",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates",
+            "{{candidateId}}"
+          ],
+          "variable": [
+            {
+              "key": "candidateId",
+              "value": "12345"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Create Candidate",
+      "id": "a9687406-374f-489f-b4ee-216e91c9e1a0",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"firstName\": \"John\", \"lastName\": \"Doe\", \"email\": \"john.doe@example.com\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/candidates",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Update Candidate",
+      "id": "f96b3a10-bc25-4832-97b8-5f05281a23a0",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"firstName\": \"Jane\", \"lastName\": \"Doe\", \"email\": \"jane.doe@example.com\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates",
+            "{{candidateId}}"
+          ],
+          "variable": [
+            {
+              "key": "candidateId",
+              "value": "12345"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Positionnings",
+      "id": "533f7e9e-f234-45c2-98be-7476ab6d3740",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates",
+            "{{candidateId}}"
+          ],
+          "variable": [
+            {
+              "key": "candidateId",
+              "value": "12345"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Opportunities",
+      "id": "b439a6fd-d751-4fef-ba9b-b36f0ced9a76",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates",
+            "{{candidateId}}"
+          ],
+          "variable": [
+            {
+              "key": "candidateId",
+              "value": "12345"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Candidates Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "51fbd249-7f0b-47b3-91e6-b9ecc00fff88",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "if (pm.response.code === 401) { console.warn('401 Unauthorized: vérifiez vos tokens/user permissions.'); }"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "96d2d86c-14d0-41fe-b0f9-ea7e9776d275",
+            "exec": [
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "d7e12803-d151-4d7c-883b-c2024df379da",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Dictionary",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "51fbd249-7f0b-47b3-91e6-b9ecc00fff88",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "if (pm.response.code === 401) { console.warn('401 Unauthorized: vérifiez vos tokens/user permissions.'); }"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "96d2d86c-14d0-41fe-b0f9-ea7e9776d275",
+            "exec": [
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "53f07c14-95d9-49b1-b432-bd6c6473d29a",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Resources",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "190203f2-e68c-4eb4-8031-2c80e4ce5889",
+            "exec": [
+              "// Visualization Script",
+              "// Visualization Script",
+              "var template = `",
+              "<style>",
+              "    .resources-container {",
+              "        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;",
+              "        padding: 20px;",
+              "        max-width: 100%;",
+              "    }",
+              "    .resources-title {",
+              "        color: #333;",
+              "        font-size: 24px;",
+              "        font-weight: 600;",
+              "        margin-bottom: 20px;",
+              "        padding-bottom: 10px;",
+              "        border-bottom: 2px solid #e0e0e0;",
+              "    }",
+              "    .resources-summary {",
+              "        background: #f8f9fa;",
+              "        padding: 12px 16px;",
+              "        border-radius: 6px;",
+              "        margin-bottom: 20px;",
+              "        color: #555;",
+              "    }",
+              "    .resources-table {",
+              "        width: 100%;",
+              "        border-collapse: collapse;",
+              "        background: #fff;",
+              "        border-radius: 8px;",
+              "        overflow: hidden;",
+              "        box-shadow: 0 1px 3px rgba(0,0,0,0.1);",
+              "    }",
+              "    .resources-table thead {",
+              "        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);",
+              "        color: white;",
+              "    }",
+              "    .resources-table th {",
+              "        padding: 14px 16px;",
+              "        text-align: left;",
+              "        font-weight: 600;",
+              "        font-size: 13px;",
+              "        text-transform: uppercase;",
+              "        letter-spacing: 0.5px;",
+              "    }",
+              "    .resources-table td {",
+              "        padding: 12px 16px;",
+              "        border-bottom: 1px solid #eee;",
+              "        font-size: 14px;",
+              "        color: #333;",
+              "    }",
+              "    .resources-table tbody tr:hover {",
+              "        background-color: #f5f7ff;",
+              "    }",
+              "    .resources-table tbody tr:last-child td {",
+              "        border-bottom: none;",
+              "    }",
+              "    .no-data {",
+              "        text-align: center;",
+              "        padding: 40px;",
+              "        color: #888;",
+              "        font-style: italic;",
+              "    }",
+              "    .badge {",
+              "        display: inline-block;",
+              "        padding: 4px 8px;",
+              "        border-radius: 4px;",
+              "        font-size: 12px;",
+              "        font-weight: 500;",
+              "        background: #e3f2fd;",
+              "        color: #1976d2;",
+              "    }",
+              "</style>",
+              "<div class=\"resources-container\">",
+              "    <h2 class=\"resources-title\">Resources Overview</h2>",
+              "    <div class=\"resources-summary\">",
+              "        <strong>Total Resources:</strong> {{totalCount}}",
+              "    </div>",
+              "    {{#if hasData}}",
+              "    <table class=\"resources-table\">",
+              "        <thead>",
+              "            <tr>",
+              "                <th>#</th>",
+              "                <th>ID</th>",
+              "                <th>Type</th>",
+              "                {{#each columns}}",
+              "                <th>{{this}}</th>",
+              "                {{/each}}",
+              "            </tr>",
+              "        </thead>",
+              "        <tbody>",
+              "            {{#each resources}}",
+              "            <tr>",
+              "                <td>{{index}}</td>",
+              "                <td><span class=\"badge\">{{id}}</span></td>",
+              "                <td>{{type}}</td>",
+              "                {{#each attributes}}",
+              "                <td>{{this}}</td>",
+              "                {{/each}}",
+              "            </tr>",
+              "            {{/each}}",
+              "        </tbody>",
+              "    </table>",
+              "    {{else}}",
+              "    <div class=\"no-data\">No resources data available</div>",
+              "    {{/if}}",
+              "</div>",
+              "`;",
+              "",
+              "function createPayload() {",
+              "    var response = pm.response.json();",
+              "    var data = response.data || response || [];",
+              "    ",
+              "    // Handle if data is not an array",
+              "    if (!Array.isArray(data)) {",
+              "        data = [data];",
+              "    }",
+              "    ",
+              "    // Extract column names from first item's attributes",
+              "    var columns = [];",
+              "    if (data.length > 0 && data[0].attributes) {",
+              "        var attrs = data[0].attributes;",
+              "        columns = Object.keys(attrs).slice(0, 5); // Limit to first 5 attributes for readability",
+              "    }",
+              "    ",
+              "    // Transform resources for display",
+              "    var resources = data.map(function(item, idx) {",
+              "        var attributeValues = [];",
+              "        if (item.attributes && columns.length > 0) {",
+              "            columns.forEach(function(col) {",
+              "                var val = item.attributes[col];",
+              "                if (val === null || val === undefined) {",
+              "                    attributeValues.push('-');",
+              "                } else if (typeof val === 'object') {",
+              "                    attributeValues.push(JSON.stringify(val));",
+              "                } else {",
+              "                    attributeValues.push(String(val));",
+              "                }",
+              "            });",
+              "        }",
+              "        ",
+              "        return {",
+              "            index: idx + 1,",
+              "            id: item.id || '-',",
+              "            type: item.type || '-',",
+              "            attributes: attributeValues",
+              "        };",
+              "    });",
+              "    ",
+              "    return {",
+              "        totalCount: data.length,",
+              "        hasData: data.length > 0,",
+              "        columns: columns,",
+              "        resources: resources",
+              "    };",
+              "}",
+              "",
+              "pm.visualizer.set(template, createPayload());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "7ccea4e5-b6d0-427c-ae90-2f0e8312e93c",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "27123ebc-f5ab-43af-a776-8e51f174ba15",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/resources",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "resources"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Candidates Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "51fbd249-7f0b-47b3-91e6-b9ecc00fff88",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "if (pm.response.code === 401) { console.warn('401 Unauthorized: vérifiez vos tokens/user permissions.'); }"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "96d2d86c-14d0-41fe-b0f9-ea7e9776d275",
+            "exec": [
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "8ce3ed27-2a60-4a56-8c95-8c213da37a70",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates?candidateStates=2&flags=160&hrManager=KONA Napé&lastActionDate=2025-06-01&columns=name&columns=title&columns=state&columns=activePositionings&columns=availability&columns=mobilityAreas&columns=details&columns=updated&columns=mainManager&columns=resume&columns=hrManager&columns=expertiseAreas&columns=creationDate&columns=lastActionDate&columns=source&columns=diplomas&columns=activityAreas&columns=globalEvaluation&columns=evaluations&columns=experience&columns=references&columns=languages&columns=tools",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates"
+          ],
+          "query": [
+            {
+              "key": "candidateStates",
+              "value": "2"
+            },
+            {
+              "key": "flags",
+              "value": "160"
+            },
+            {
+              "key": "hrManager",
+              "value": "KONA Napé"
+            },
+            {
+              "key": "lastActionDate",
+              "value": "2025-06-01"
+            },
+            {
+              "key": "columns",
+              "value": "name"
+            },
+            {
+              "key": "columns",
+              "value": "title"
+            },
+            {
+              "key": "columns",
+              "value": "state"
+            },
+            {
+              "key": "columns",
+              "value": "activePositionings"
+            },
+            {
+              "key": "columns",
+              "value": "availability"
+            },
+            {
+              "key": "columns",
+              "value": "mobilityAreas"
+            },
+            {
+              "key": "columns",
+              "value": "details"
+            },
+            {
+              "key": "columns",
+              "value": "updated"
+            },
+            {
+              "key": "columns",
+              "value": "mainManager"
+            },
+            {
+              "key": "columns",
+              "value": "resume"
+            },
+            {
+              "key": "columns",
+              "value": "hrManager"
+            },
+            {
+              "key": "columns",
+              "value": "expertiseAreas"
+            },
+            {
+              "key": "columns",
+              "value": "creationDate"
+            },
+            {
+              "key": "columns",
+              "value": "lastActionDate"
+            },
+            {
+              "key": "columns",
+              "value": "source"
+            },
+            {
+              "key": "columns",
+              "value": "diplomas"
+            },
+            {
+              "key": "columns",
+              "value": "activityAreas"
+            },
+            {
+              "key": "columns",
+              "value": "globalEvaluation"
+            },
+            {
+              "key": "columns",
+              "value": "evaluations"
+            },
+            {
+              "key": "columns",
+              "value": "experience"
+            },
+            {
+              "key": "columns",
+              "value": "references"
+            },
+            {
+              "key": "columns",
+              "value": "languages"
+            },
+            {
+              "key": "columns",
+              "value": "tools"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Candidates Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "51fbd249-7f0b-47b3-91e6-b9ecc00fff88",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "if (pm.response.code === 401) { console.warn('401 Unauthorized: vérifiez vos tokens/user permissions.'); }"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "96d2d86c-14d0-41fe-b0f9-ea7e9776d275",
+            "exec": [
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "b6b3d9ea-8fa7-4a74-a8ef-b1f6e7fcf1f9",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates?candidateStates=2&flags=160&hrManager=KONA Napé&lastActionDate=2025-06-01&columns=name&columns=title&columns=state&columns=activePositionings&columns=availability&columns=mobilityAreas&columns=details&columns=updated&columns=mainManager&columns=resume&columns=hrManager&columns=expertiseAreas&columns=creationDate&columns=lastActionDate&columns=source&columns=diplomas&columns=activityAreas&columns=globalEvaluation&columns=evaluations&columns=experience&columns=references&columns=languages&columns=tools",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates"
+          ],
+          "query": [
+            {
+              "key": "candidateStates",
+              "value": "2"
+            },
+            {
+              "key": "flags",
+              "value": "160"
+            },
+            {
+              "key": "hrManager",
+              "value": "KONA Napé"
+            },
+            {
+              "key": "lastActionDate",
+              "value": "2025-06-01"
+            },
+            {
+              "key": "columns",
+              "value": "name"
+            },
+            {
+              "key": "columns",
+              "value": "title"
+            },
+            {
+              "key": "columns",
+              "value": "state"
+            },
+            {
+              "key": "columns",
+              "value": "activePositionings"
+            },
+            {
+              "key": "columns",
+              "value": "availability"
+            },
+            {
+              "key": "columns",
+              "value": "mobilityAreas"
+            },
+            {
+              "key": "columns",
+              "value": "details"
+            },
+            {
+              "key": "columns",
+              "value": "updated"
+            },
+            {
+              "key": "columns",
+              "value": "mainManager"
+            },
+            {
+              "key": "columns",
+              "value": "resume"
+            },
+            {
+              "key": "columns",
+              "value": "hrManager"
+            },
+            {
+              "key": "columns",
+              "value": "expertiseAreas"
+            },
+            {
+              "key": "columns",
+              "value": "creationDate"
+            },
+            {
+              "key": "columns",
+              "value": "lastActionDate"
+            },
+            {
+              "key": "columns",
+              "value": "source"
+            },
+            {
+              "key": "columns",
+              "value": "diplomas"
+            },
+            {
+              "key": "columns",
+              "value": "activityAreas"
+            },
+            {
+              "key": "columns",
+              "value": "globalEvaluation"
+            },
+            {
+              "key": "columns",
+              "value": "evaluations"
+            },
+            {
+              "key": "columns",
+              "value": "experience"
+            },
+            {
+              "key": "columns",
+              "value": "references"
+            },
+            {
+              "key": "columns",
+              "value": "languages"
+            },
+            {
+              "key": "columns",
+              "value": "tools"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Flags",
+      "id": "4aab8228-c50d-4c60-ab0b-699550b18b74",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates",
+            "{{candidateId}}"
+          ],
+          "variable": [
+            {
+              "key": "candidateId",
+              "value": "12345"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Candidate by ID attached Flags Copy",
+      "id": "91b58cd6-93be-4772-9119-cd3922cd489b",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Jwt-Client-Boondmanager",
+            "value": "{{jwtClient}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "candidates",
+            "{{candidateId}}"
+          ],
+          "variable": [
+            {
+              "key": "candidateId",
+              "value": "12345"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "a773701b-e3a3-4411-8717-4a01ba107e19",
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          "",
+          "// Pre-request script: build X-Jwt-Client-Boondmanager JWT from collection/env variables",
+          "// Required variables: userToken, clientToken, clientKey",
+          "// Uses CryptoJS available in Postman sandbox",
+          "",
+          "function toBase64(obj) {",
+          "  const json = typeof obj === 'string' ? obj : JSON.stringify(obj);",
+          "  const wordArray = CryptoJS.enc.Utf8.parse(json);",
+          "  return CryptoJS.enc.Base64.stringify(wordArray);",
+          "}",
+          "",
+          "const header = { alg: \"HS256\", typ: \"JWT\" };",
+          "const payload = {",
+          "  userToken: pm.variables.get('userToken'),",
+          "  clientToken: pm.variables.get('clientToken'),",
+          "  time: Math.floor(Date.now() / 1000),",
+          "  mode: 'normal'",
+          "};",
+          "",
+          "if (!payload.userToken || !payload.clientToken || !pm.variables.get('clientKey')) {",
+          "  console.warn('Missing one of required variables: userToken, clientToken, clientKey');",
+          "}",
+          "",
+          "const headerB64 = toBase64(header);",
+          "const payloadB64 = toBase64(payload);",
+          "const secret = pm.variables.get('clientKey');",
+          "const signature = CryptoJS.HmacSHA256(`${headerB64}.${payloadB64}`, secret);",
+          "const signatureB64 = CryptoJS.enc.Base64.stringify(signature);",
+          "",
+          "const jwt = `${headerB64}.${payloadB64}.${signatureB64}`;",
+          "pm.variables.set('jwtClient', jwt);",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "f6d88231-392f-4799-a8f6-725a891a1661",
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "bb3713ca-b58a-480f-8210-8db028c7909e",
+      "key": "baseUrl",
+      "value": "https://ui.boondmanager.com/api/1.0"
+    },
+    {
+      "id": "f256f711-953d-4f74-b10c-246924f943c5",
+      "key": "userToken",
+      "value": "REPLACE_WITH_YOUR_USER_TOKEN"
+    },
+    {
+      "id": "a39f8283-45da-450f-887c-3ff4eb7b0f96",
+      "key": "clientToken",
+      "value": "REPLACE_WITH_YOUR_CLIENT_TOKEN"
+    },
+    {
+      "id": "81231b63-326c-4e7a-ba2b-72af6b65a40f",
+      "key": "clientKey",
+      "value": "REPLACE_WITH_YOUR_CLIENT_KEY"
+    },
+    {
+      "id": "cc13ea60-56e6-41e0-a7ec-5feb3db50539",
+      "key": "jwtClient",
+      "value": ""
+    },
+    {
+      "id": "ad7a71d7-2eb0-4074-9827-32e30ee1e169",
+      "key": "candidateId",
+      "value": ""
+    }
+  ]
+}
